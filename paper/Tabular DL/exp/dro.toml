@@ -1,0 +1,9 @@
+[optimizer]
+type = "AdamW"
+lr = ["_tune_", "loguniform", 0.00003, 0.001]
+weight_decay = ["_tune_", "?loguniform", 0.0, 0.0001, 0.1]
+loss = "dro"
+loss_penalty = "kl"
+loss_shift_cost = ["_tune_", "loguniform", 0.001, 1]
+loss_ndraws = ["_tune_", "loguniform", 0.001, 10]
+

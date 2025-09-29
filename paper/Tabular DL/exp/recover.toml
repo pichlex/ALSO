@@ -1,0 +1,6 @@
+[optimizer]
+type = "AdamW"
+loss = "importance"
+loss_tau = ["_tune_", "?uniform", 0.0, 0.0, 3]
+lr = ["_tune_", "loguniform", 0.00003, 0.001]
+weight_decay = ["_tune_", "?loguniform", 0.0, 0.0001, 0.1]

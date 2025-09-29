@@ -1,0 +1,1 @@
+python main.py --optim-mode recover --tau 0.025 --num_epochs_food 3 --num_epochs_joint 7 --learning_rate 0.0003 --seeds '[42, 43, 44, 45, 46]'

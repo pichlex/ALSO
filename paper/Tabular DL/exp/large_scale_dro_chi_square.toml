@@ -1,0 +1,9 @@
+[optimizer]
+type = "AdamW"
+lr = ["_tune_", "loguniform", 0.00003, 0.001]
+weight_decay = ["_tune_", "?loguniform", 0.0, 0.0001, 0.1]
+loss = "dro_ls"
+loss_geometry = "chi-square"
+loss_size= ["_tune_", "loguniform", 0.001, 10000.0]
+loss_reg = ["_tune_", "loguniform", 0.001, 1]
+

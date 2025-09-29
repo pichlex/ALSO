@@ -1,0 +1,6 @@
+[optimizer]
+type = "ALSO"
+lr = ["_tune_", "loguniform", 0.00003, 0.001]
+pi_lr = ["_tune_", "loguniform", 0.00001, 0.001]
+weight_decay = ["_tune_", "?loguniform", 0.0, 0.0001, 0.1]
+pi_decay = ["_tune_", "loguniform", 0.001, 1]
