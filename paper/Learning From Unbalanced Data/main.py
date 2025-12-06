@@ -226,7 +226,7 @@ def tune_params(
             config["tau"] = trial.suggest_float("tau", 1e-4, 1e1, log=True)
             config["exp_warmup_steps"] = trial.suggest_int("exp_warmup_steps", 10, 200)
 
-        return run_optimization(config, None, tuning=True)
+        return run_optimization(config, None, tuning=True, mlflow_client=mlflow_client, log_artifacts=True,)
 
     # Run optimization with specified number of trials and progress bar
     study.optimize(
