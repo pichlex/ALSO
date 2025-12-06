@@ -91,7 +91,7 @@ def run_optimization(
     if config["use_ls_dro"]:
         # Apply large-scale DRO loss wrapper
         loss_fn = RobustLoss(base_loss_fn=loss_fn, size=0.99, reg=1e-5, geometry="cvar")
-    model, val_results, test_results, train_losses = train(
+    model, val_results, test_results, train_losses, pi_history = train(
         model,
         optimizer,
         train_dataloader,
@@ -151,6 +151,11 @@ def run_optimization(
         with open(config_path, "w") as f:
             json.dump(config_snapshot, f)
 
+        if pi_history:
+            pi_array = np.stack(pi_history)
+            pi_path = run_dir / "pi_history.npy"
+            np.save(pi_path, pi_array)
+
         tuned_params_path = None
         if "run_name" in config and "unbalance_coef" in config:
             candidate = (
@@ -163,6 +168,8 @@ def run_optimization(
             mlflow_client.log_artifact(str(history_path))
             mlflow_client.log_artifact(str(best_metrics_path))
             mlflow_client.log_artifact(str(config_path))
+            if pi_history:
+                mlflow_client.log_artifact(str(pi_path))
             if tuned_params_path is not None:
                 mlflow_client.log_artifact(str(tuned_params_path))
 

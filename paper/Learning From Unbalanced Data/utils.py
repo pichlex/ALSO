@@ -127,6 +127,7 @@ def train_step(
     config: Dict[str, Any],
     compute_weights_fn: Optional[Callable] = None,
     tuning: bool = False,
+    pi_snapshots: Optional[List[np.ndarray]] = None,
 ) -> float:
     """
     Performs a single training step (one epoch) for the model.
@@ -197,6 +198,10 @@ def train_step(
             except TypeError:
                 # Fall back for standard optimizers (Adam, SGD, etc.)
                 optimizer.step(closure=closure)
+
+        if pi_snapshots is not None and hasattr(optimizer, "pi"):
+            pi_cpu = optimizer.pi.detach().cpu().numpy()
+            pi_snapshots.append(pi_cpu.copy())
 
         total_loss += loss_log_val
         num_batches += 1
@@ -280,6 +285,7 @@ def train(
     Dict[str, List[float]],
     Dict[str, List[float]],
     List[float],
+    List[np.ndarray],
 ]:
     """
     Trains the model for multiple epochs and evaluates on validation and test data.
@@ -303,10 +309,12 @@ def train(
         - validation metrics history
         - test metrics history
         - list of training losses per epoch
+        - list of pi snapshots (one per training step, if available)
     """
     val_metrics = defaultdict(list)
     test_metrics = defaultdict(list)
     train_losses: List[float] = []
+    pi_history: List[np.ndarray] = []
     config["train_step"], config["val_step"], config["test_step"] = 0, 0, 0
 
     # Use different number of epochs for tuning if specified
@@ -329,6 +337,7 @@ def train(
             config,
             tuning=tuning,
             compute_weights_fn=compute_weights_fn,
+            pi_snapshots=pi_history,
         )
         train_losses.append(train_loss)
 
@@ -359,7 +368,7 @@ def train(
             for key, value in test_results.items():
                 mlflow_client.log_metric(f"test_{key}", value, step=e)
 
-    return model, val_metrics, test_metrics, train_losses
+    return model, val_metrics, test_metrics, train_losses, pi_history
 
 
 class ImportanceLoss(torch.nn.Module):
