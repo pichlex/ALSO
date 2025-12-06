@@ -1,0 +1,111 @@
+# ----------------------------------------
+# Python
+# ----------------------------------------
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.ipynb_checkpoints/
+
+# Poetry / Pipenv / Pyenv
+.poetry/
+pip-wheel-metadata/
+Pipfile.lock
+pythonenv*
+.python-version
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+
+# Cache
+.cache/
+*.log
+*.tmp
+
+# ----------------------------------------
+# Jupyter Notebooks
+# ----------------------------------------
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+.jupyter/
+
+# Notebook helper files
+*.nbconvert.ipynb
+
+# ----------------------------------------
+# Machine Learning / Data / Models
+# ----------------------------------------
+
+# Large datasets
+data/
+datasets/
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.jsonl
+
+# Model outputs
+models/
+checkpoints/
+weights/
+*.h5
+*.hdf5
+*.pt
+*.pth
+*.ckpt
+*.pickle
+*.pkl
+*.joblib
+
+# TensorBoard / logs
+logs/
+runs/
+tensorboard/
+events.out.tfevents.*
+
+# ML experiment trackers
+mlruns/
+wandb/
+wandb/**/*
+
+# HuggingFace cache / models
+huggingface/
+hf_cache/
+~/.cache/huggingface/
+*.bin
+
+# ----------------------------------------
+# IDE / Editor
+# ----------------------------------------
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# PyCharm / JetBrains
+.idea/
+*.iml
+
+# Sublime
+*.sublime-workspace
+*.sublime-project
+
+# ----------------------------------------
+# OS / Misc
+# ----------------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
