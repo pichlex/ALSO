@@ -152,6 +152,7 @@ def train_step(
     num_batches = 0
     for _, ((X, y), indexes) in enumerate(dataloader):
         X, y = X.to(device), y.to(device)
+        loss_log_val: float = 0.0
 
         def closure(w=None, scale=None):
             """
@@ -166,6 +167,7 @@ def train_step(
             Returns:
                 Tuple of (per-sample losses, logged loss value)
             """
+            nonlocal loss_log_val
             optimizer.zero_grad()
             preds = model(X)
             losses = loss_fn(preds, y)
@@ -181,6 +183,7 @@ def train_step(
                 loss = losses.mean()
                 loss.backward()
                 loss_log = loss.item()
+            loss_log_val = float(loss_log)
             return losses, loss_log
 
         closure.device = device
@@ -195,7 +198,7 @@ def train_step(
                 # Fall back for standard optimizers (Adam, SGD, etc.)
                 optimizer.step(closure=closure)
 
-        total_loss += loss_log
+        total_loss += loss_log_val
         num_batches += 1
 
     # Safeguard against empty dataloader
@@ -235,6 +238,7 @@ def eval_step(
     total_loss = 0
     total_true = np.array([])
     total_pred = np.array([])
+    num_batches = 0
     for t, ((X, y), _) in enumerate(dataloader):
         X, y = X.to(device), y.to(device)
         preds = model(X)
@@ -244,6 +248,7 @@ def eval_step(
         total_pred = np.append(total_pred, y_pred.cpu().detach().numpy())
         loss = losses.mean()
         total_loss += loss.item()
+        num_batches += 1
 
     # Determine whether to use binary or weighted averaging for metrics
     average = "weighted" if len(np.unique(total_true)) > 2 else "binary"
@@ -253,7 +258,9 @@ def eval_step(
     )
     recall = recall_score(total_true, total_pred, average=average)
     results = {"f1": f1, "precision": precision, "recall": recall}
-    return total_loss / t, results
+    if num_batches == 0:
+        return 0.0, results
+    return total_loss / num_batches, results
 
 
 def train(
