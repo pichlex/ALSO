@@ -149,7 +149,8 @@ def train_step(
     """
     model.train()
     total_loss = 0
-    for t, ((X, y), indexes) in enumerate(dataloader):
+    num_batches = 0
+    for _, ((X, y), indexes) in enumerate(dataloader):
         X, y = X.to(device), y.to(device)
 
         def closure(w=None, scale=None):
@@ -194,7 +195,13 @@ def train_step(
                 # Fall back for standard optimizers (Adam, SGD, etc.)
                 optimizer.step(closure=closure)
 
-    return total_loss / t
+        total_loss += loss_log
+        num_batches += 1
+
+    # Safeguard against empty dataloader
+    if num_batches == 0:
+        return float(total_loss)
+    return total_loss / num_batches
 
 
 @torch.no_grad()
@@ -260,7 +267,13 @@ def train(
     config: Dict[str, Any],
     tuning: bool = False,
     compute_weights_fn: Optional[Callable] = None,
-) -> Tuple[torch.nn.Module, Dict[str, List[float]], Dict[str, List[float]]]:
+    mlflow_client: Optional[Any] = None,
+) -> Tuple[
+    torch.nn.Module,
+    Dict[str, List[float]],
+    Dict[str, List[float]],
+    List[float],
+]:
     """
     Trains the model for multiple epochs and evaluates on validation and test data.
 
@@ -275,12 +288,18 @@ def train(
         config: Dictionary containing configuration parameters
         tuning: Whether the model is being tuned (controls logging behavior)
         compute_weights_fn: Optional function to compute sample weights
+        mlflow_client: Optional MLflow client/module for metric logging
 
     Returns:
-        Tuple containing (trained model, validation metrics history, test metrics history)
+        Tuple containing:
+        - trained model
+        - validation metrics history
+        - test metrics history
+        - list of training losses per epoch
     """
     val_metrics = defaultdict(list)
     test_metrics = defaultdict(list)
+    train_losses: List[float] = []
     config["train_step"], config["val_step"], config["test_step"] = 0, 0, 0
 
     # Use different number of epochs for tuning if specified
@@ -304,6 +323,7 @@ def train(
             tuning=tuning,
             compute_weights_fn=compute_weights_fn,
         )
+        train_losses.append(train_loss)
 
         # Evaluate on validation set
         _, val_results = eval_step(
@@ -325,7 +345,14 @@ def train(
         for key in test_results:
             test_metrics[key].append(test_results[key])
 
-    return model, val_metrics, test_metrics
+        if mlflow_client is not None:
+            mlflow_client.log_metric("train_loss", train_loss, step=e)
+            for key, value in val_results.items():
+                mlflow_client.log_metric(f"val_{key}", value, step=e)
+            for key, value in test_results.items():
+                mlflow_client.log_metric(f"test_{key}", value, step=e)
+
+    return model, val_metrics, test_metrics, train_losses
 
 
 class ImportanceLoss(torch.nn.Module):
