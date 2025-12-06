@@ -228,8 +228,12 @@ def tune_params(
 
         return run_optimization(config, None, tuning=True)
 
-    # Run optimization with specified number of trials
-    study.optimize(tune_function, n_trials=config["tune_runs"])
+    # Run optimization with specified number of trials and progress bar
+    study.optimize(
+        tune_function,
+        n_trials=config["tune_runs"],
+        show_progress_bar=True,
+    )
 
     # Save best parameters to disk
     with open(f_name, "w") as f:
