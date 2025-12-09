@@ -166,7 +166,7 @@ def tune_params(
             pass
 
     study = optuna.create_study(
-        direction="maximize", study_name=f"{name}_{config['unbalance_coef']}"
+        direction="maximize", study_name=f"{name}"}"
     )
 
     def tune_function(trial):
