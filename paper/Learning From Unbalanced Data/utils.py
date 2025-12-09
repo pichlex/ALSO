@@ -344,9 +344,10 @@ def train(
             pi_snapshot = optimizer.pi.detach().clone()
             pi_history.append(pi_snapshot.cpu().tolist())
             if log_to_mlflow:
+                uc = config.get("unbalance_coef", "na")
                 mlflow.log_dict(
                     {"epoch": int(e), "pi": pi_snapshot.cpu().tolist()},
-                    f"pi/epoch_{int(e)}.json",
+                    f"pi/uc_{uc}/epoch_{int(e)}.json",
                 )
 
     return model, val_metrics, test_metrics, pi_history

@@ -63,7 +63,10 @@ def run_optimization(
     if mlflow_enabled:
         experiment_base = config.get("mlflow_experiment", "Learning From Unbalanced Data")
         mlflow.set_experiment(f"{experiment_base}_seed{config['seed']}")
-        run_title = f"{config.get('run_name', config['optimizer'])}_seed{config['seed']}"
+        run_title = (
+            f"{config.get('run_name', config['optimizer'])}"
+            f"_uc{config.get('unbalance_coef', 'na')}_seed{config['seed']}"
+        )
         mlflow_ctx = mlflow.start_run(run_name=run_title)
 
     start = time.monotonic()
@@ -293,6 +296,7 @@ def main(
             if config["use_ls_dro"]:
                 run_name += "_ls_dro"
 
+            run_name = f"{run_name}_uc{unbalance_coef}"
             if run_name not in metrics.keys():
                 metrics[run_name] = defaultdict(list)
             config["run_name"] = run_name
