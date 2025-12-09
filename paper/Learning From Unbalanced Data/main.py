@@ -296,6 +296,7 @@ def main(
             if config["use_ls_dro"]:
                 run_name += "_ls_dro"
 
+            tune_name = run_name
             run_name = f"{run_name}_uc{unbalance_coef}"
             if run_name not in metrics.keys():
                 metrics[run_name] = defaultdict(list)
@@ -308,9 +309,9 @@ def main(
                 # Tune hyperparameters if requested or on the first run of a new experiment
                 if tune or i == 0:
                     if i == 0:
-                        config = tune_params(config, run_name, use_old_tune_params)
+                        config = tune_params(config, tune_name, use_old_tune_params)
                     else:
-                        config = tune_params(config, run_name, True)
+                        config = tune_params(config, tune_name, True)
 
                 # Run the optimization and collect metrics
                 metrics[run_name] = run_optimization(config, metrics[run_name])
