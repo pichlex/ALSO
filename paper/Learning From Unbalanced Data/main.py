@@ -297,7 +297,7 @@ def main(
                 run_name += "_ls_dro"
 
             tune_name = run_name
-            run_name = f"{run_name}_uc{unbalance_coef}"
+            run_name = f"{run_name}"
             if run_name not in metrics.keys():
                 metrics[run_name] = defaultdict(list)
             config["run_name"] = run_name
