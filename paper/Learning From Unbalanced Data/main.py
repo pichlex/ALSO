@@ -154,7 +154,12 @@ def tune_params(
     Returns:
         Updated config dictionary with tuned hyperparameters
     """
-    f_name = f'tuned_params/{name}_{config["unbalance_coef"]}.json'
+    base_name = name or "study"
+    uc_suffix = f"_uc{config['unbalance_coef']}"
+    if base_name.endswith(uc_suffix):
+        base_name = base_name[: -len(uc_suffix)]
+
+    f_name = f'tuned_params/{base_name}_{config["unbalance_coef"]}.json'
     if os.path.exists(f_name) and use_old_tune_params:
         try:
             with open(f_name) as f:
@@ -166,7 +171,7 @@ def tune_params(
             pass
 
     study = optuna.create_study(
-        direction="maximize", study_name=f"{name}"}"
+        direction="maximize", study_name=f"{base_name}_{config['unbalance_coef']}"
     )
 
     def tune_function(trial):
