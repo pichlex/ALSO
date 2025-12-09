@@ -7,6 +7,7 @@ specifically for the CIFAR-10 dataset with binary classification setup.
 
 import torch
 import numpy as np
+import mlflow
 from sklearn.metrics import f1_score, precision_score, recall_score
 from tqdm.auto import tqdm
 from typing import Dict, List, Tuple, Optional, Callable, Any
@@ -260,7 +261,12 @@ def train(
     config: Dict[str, Any],
     tuning: bool = False,
     compute_weights_fn: Optional[Callable] = None,
-) -> Tuple[torch.nn.Module, Dict[str, List[float]], Dict[str, List[float]]]:
+) -> Tuple[
+    torch.nn.Module,
+    Dict[str, List[float]],
+    Dict[str, List[float]],
+    List[Optional[List[float]]],
+]:
     """
     Trains the model for multiple epochs and evaluates on validation and test data.
 
@@ -277,11 +283,13 @@ def train(
         compute_weights_fn: Optional function to compute sample weights
 
     Returns:
-        Tuple containing (trained model, validation metrics history, test metrics history)
+        Tuple containing (trained model, validation metrics history, test metrics history, pi snapshots)
     """
     val_metrics = defaultdict(list)
     test_metrics = defaultdict(list)
+    pi_history: List[Optional[List[float]]] = []
     config["train_step"], config["val_step"], config["test_step"] = 0, 0, 0
+    log_to_mlflow = config.get("report_to") == "mlflow" and not tuning
 
     # Use different number of epochs for tuning if specified
     if "n_epoches_tune" not in config:
@@ -325,7 +333,23 @@ def train(
         for key in test_results:
             test_metrics[key].append(test_results[key])
 
-    return model, val_metrics, test_metrics
+        # Log metrics and pi snapshots to MLflow when requested
+        if log_to_mlflow:
+            for key, value in val_results.items():
+                mlflow.log_metric(f"val_{key}", value, step=e)
+            for key, value in test_results.items():
+                mlflow.log_metric(f"test_{key}", value, step=e)
+
+        if not tuning and hasattr(optimizer, "pi"):
+            pi_snapshot = optimizer.pi.detach().clone()
+            pi_history.append(pi_snapshot.cpu().tolist())
+            if log_to_mlflow:
+                mlflow.log_dict(
+                    {"epoch": int(e), "pi": pi_snapshot.cpu().tolist()},
+                    f"pi/epoch_{int(e)}.json",
+                )
+
+    return model, val_metrics, test_metrics, pi_history
 
 
 class ImportanceLoss(torch.nn.Module):

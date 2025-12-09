@@ -285,7 +285,7 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
             pi_reg=pi_reg,
             pi_init=pi_reg,
             loss_scale=1,
-            eps=1e-20,
+            eps=1e-32,
         )
 
     elif config["optimizer"] == "dro_loss":

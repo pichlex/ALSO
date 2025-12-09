@@ -13,10 +13,12 @@ import json
 import os.path
 import time
 from collections import defaultdict
+from contextlib import nullcontext
 from typing import Any, Dict, List, Optional, Union
 
 import click
 import numpy as np
+import mlflow
 import optuna
 from scipy import stats
 
@@ -56,42 +58,79 @@ def run_optimization(
         compute_weights_fn,
     ) = get_problem(config)
 
+    mlflow_enabled = config.get("report_to") == "mlflow" and not tuning
+    mlflow_ctx = nullcontext()
+    if mlflow_enabled:
+        experiment_base = config.get("mlflow_experiment", "Learning From Unbalanced Data")
+        mlflow.set_experiment(f"{experiment_base}_seed{config['seed']}")
+        run_title = f"{config.get('run_name', config['optimizer'])}_seed{config['seed']}"
+        mlflow_ctx = mlflow.start_run(run_name=run_title)
+
     start = time.monotonic()
-    if config["use_exp"]:
-        # Apply importance-weighted loss with exponential transformation
-        loss_fn = ImportanceLoss(
+    with mlflow_ctx:
+        if mlflow_enabled:
+            loggable_params = {
+                k: v
+                for k, v in config.items()
+                if isinstance(v, (int, float, str, bool))
+            }
+            mlflow.log_params(loggable_params)
+            mlflow.set_tags(
+                {
+                    "optimizer": config.get("optimizer"),
+                    "unbalance_coef": config.get("unbalance_coef"),
+                    "seed": config.get("seed"),
+                }
+            )
+        if config["use_exp"]:
+            # Apply importance-weighted loss with exponential transformation
+            loss_fn = ImportanceLoss(
+                loss_fn,
+                tau=config["tau"],
+                C=config["C"],
+                warmup_steps=config["exp_warmup_steps"],
+            )
+        if config["use_ls_dro"]:
+            # Apply large-scale DRO loss wrapper
+            loss_fn = RobustLoss(
+                base_loss_fn=loss_fn, size=0.99, reg=1e-5, geometry="cvar"
+            )
+        _, val_results, test_results, pi_history = train(
+            model,
+            optimizer,
+            train_dataloader,
+            val_dataloader,
+            test_dataloader,
             loss_fn,
-            tau=config["tau"],
-            C=config["C"],
-            warmup_steps=config["exp_warmup_steps"],
+            device,
+            config,
+            tuning=tuning,
+            compute_weights_fn=compute_weights_fn,
         )
-    if config["use_ls_dro"]:
-        # Apply large-scale DRO loss wrapper
-        loss_fn = RobustLoss(base_loss_fn=loss_fn, size=0.99, reg=1e-5, geometry="cvar")
-    _, val_results, test_results = train(
-        model,
-        optimizer,
-        train_dataloader,
-        val_dataloader,
-        test_dataloader,
-        loss_fn,
-        device,
-        config,
-        tuning=tuning,
-        compute_weights_fn=compute_weights_fn,
-    )
 
-    if tuning:
-        # For hyperparameter tuning, return the best validation F1 score
-        return np.max(val_results["f1"])
+        if tuning:
+            # For hyperparameter tuning, return the best validation F1 score
+            return np.max(val_results["f1"])
 
-    # For evaluation, record metrics at the epoch with best validation F1
-    idx = np.argmax(val_results["f1"])
-    for metric in test_results:
-        metrics[metric].append(test_results[metric][idx])
-    end = time.monotonic()
-    metrics["time"].append(end - start)
-    return metrics
+        # For evaluation, record metrics at the epoch with best validation F1
+        idx = np.argmax(val_results["f1"])
+        for metric in test_results:
+            metrics[metric].append(test_results[metric][idx])
+        end = time.monotonic()
+        metrics["time"].append(end - start)
+
+        if mlflow_enabled:
+            mlflow.log_metric("best_epoch", int(idx))
+            for metric in test_results:
+                mlflow.log_metric(f"best_test_{metric}", test_results[metric][idx])
+                mlflow.log_metric(f"best_val_{metric}", val_results[metric][idx])
+            mlflow.log_metric("duration_sec", end - start)
+            mlflow.log_dict(
+                {"val": val_results, "test": test_results}, "metrics_history.json"
+            )
+            if pi_history:
+                mlflow.log_dict({"pi_history": pi_history}, "pi_history.json")
+        return metrics
 
 
 def tune_params(
@@ -171,6 +210,7 @@ def tune_params(
 @click.option("--tune", is_flag=True, help="If set, run hyperparameter tuning using Optuna.")
 @click.option("--use-old-tune-params", is_flag=True, help="If set, use previously saved tuning parameters if they exist.")
 @click.option("--augment", is_flag=True, help="If set, use data augmentation.")
+@click.option("--seed", type=int, default=None, help="Base seed for experiments.")
 def main(
     device: Optional[int],
     config_path: str,
@@ -178,6 +218,7 @@ def main(
     tune: bool,
     use_old_tune_params: bool,
     augment: bool,
+    seed: Optional[int],
 ):
     """Main entry point for running the Unbalanced CIFAR10 experiments.
 
@@ -192,6 +233,9 @@ def main(
     config["device_id"] = device
     config["balanced_test"] = balanced_test
     config["augment"] = augment
+    if seed is not None:
+        config["seed"] = seed
+    base_seed = config.get("seed", 0)
     unbalance_coef_list = config["unbalance_coefs"]
 
     # Set default optimization parameters
@@ -199,7 +243,8 @@ def main(
     config["optimizer_mode"] = "optimistic"
     config["use_adam"] = True
     if "report_to" not in config.keys():
-        config["report_to"] = "none"
+        config["report_to"] = "mlflow"
+    config.setdefault("mlflow_experiment", "Learning From Unbalanced Data")
 
     # Define experiment configurations to run
     # Each tuple represents: (optimizer_name, use_sampler, use_static_weights, use_exp, use_init_static_weights, use_ls_dro)
@@ -250,10 +295,11 @@ def main(
 
             if run_name not in metrics.keys():
                 metrics[run_name] = defaultdict(list)
+            config["run_name"] = run_name
 
             # Run multiple trials with different random seeds
-            for i, seed in enumerate(range(config["eval_runs"])):
-                config["seed"] = seed
+            for i in range(config["eval_runs"]):
+                config["seed"] = base_seed
 
                 # Tune hyperparameters if requested or on the first run of a new experiment
                 if tune or i == 0:
