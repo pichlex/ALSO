@@ -128,7 +128,7 @@ def train_step(
     config: Dict[str, Any],
     compute_weights_fn: Optional[Callable] = None,
     tuning: bool = False,
-) -> float:
+) -> Tuple[float, int]:
     """
     Performs a single training step (one epoch) for the model.
 
@@ -146,7 +146,7 @@ def train_step(
         tuning: Whether the model is being tuned (controls logging behavior)
 
     Returns:
-        Average loss value for the epoch
+        Tuple of (average loss value for the epoch, number of batches processed)
     """
     use_dynamic = config.get("dynamic_batch", False)
     threshold = float(config.get("pi_threshold", 0.9))
@@ -154,6 +154,7 @@ def train_step(
     generator = torch.Generator()
     if "seed" in config:
         generator.manual_seed(config["seed"])
+    log_to_mlflow = config.get("report_to") == "mlflow" and not tuning
 
     model.train()
     total_loss = 0.0
@@ -174,6 +175,9 @@ def train_step(
             X = torch.stack(X_list).to(device)
             y = torch.tensor(y_list, device=device)
             indexes = torch.tensor(idx_list, device=device)
+            batch_size = len(batch_idx)
+            if log_to_mlflow:
+                mlflow.log_metric("batch_size", batch_size, step=config["train_step"])
 
             def closure(w=None, scale=None):
                 """
@@ -210,11 +214,16 @@ def train_step(
             loss_val = optimizer.step(closure=closure, groups_indexes=indexes)
             if loss_val is not None:
                 total_loss += loss_val
-            consumed += len(batch_idx)
+            consumed += batch_size
             steps += 1
+            if log_to_mlflow:
+                config["train_step"] += 1
     else:
         for steps, ((X, y), indexes) in enumerate(dataloader, start=1):
             X, y = X.to(device), y.to(device)
+            batch_size = y.size(0)
+            if log_to_mlflow:
+                mlflow.log_metric("batch_size", batch_size, step=config["train_step"])
 
             def closure(w=None, scale=None):
                 """
@@ -259,8 +268,10 @@ def train_step(
                     loss_val = optimizer.step(closure=closure)
             if loss_val is not None:
                 total_loss += loss_val
+            if log_to_mlflow:
+                config["train_step"] += 1
 
-    return total_loss / max(1, steps)
+    return total_loss / max(1, steps), steps
 
 
 @torch.no_grad()
@@ -355,6 +366,7 @@ def train(
     pi_history: List[Optional[List[float]]] = []
     config["train_step"], config["val_step"], config["test_step"] = 0, 0, 0
     log_to_mlflow = config.get("report_to") == "mlflow" and not tuning
+    log_pi_snapshots = config.get("log_pi", True)
 
     # Use different number of epochs for tuning if specified
     if "n_epoches_tune" not in config:
@@ -367,7 +379,7 @@ def train(
 
     for e in e_list:
         # Train for one epoch
-        train_loss = train_step(
+        train_loss, n_batches = train_step(
             model,
             optimizer,
             train_dataloader,
@@ -377,6 +389,8 @@ def train(
             tuning=tuning,
             compute_weights_fn=compute_weights_fn,
         )
+        if log_to_mlflow:
+            mlflow.log_metric("batches_per_epoch", n_batches, step=e)
 
         # Evaluate on validation set
         _, val_results = eval_step(
@@ -405,7 +419,7 @@ def train(
             for key, value in test_results.items():
                 mlflow.log_metric(f"test_{key}", value, step=e)
 
-        if not tuning and hasattr(optimizer, "pi"):
+        if log_pi_snapshots and not tuning and hasattr(optimizer, "pi"):
             pi_snapshot = optimizer.pi.detach().clone()
             pi_history.append(pi_snapshot.cpu().tolist())
             if log_to_mlflow:
