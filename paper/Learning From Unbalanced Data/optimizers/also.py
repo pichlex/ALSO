@@ -160,6 +160,42 @@ class ALSO(torch.optim.Optimizer):
         pi_new_log /= 1 + self.pi_decay * self.pi_lr
         return torch.nn.functional.softmax(pi_new_log, dim=-1)
 
+    def select_batch(
+        self,
+        threshold: float,
+        strategy: str = "pi",
+        generator: Optional[torch.Generator] = None,
+    ) -> Tuple[int, torch.Tensor]:
+        """
+        Choose batch size and indexes based on current pi mass and sampling strategy.
+
+        Args:
+            threshold: cumulative mass threshold (e.g., 0.9) for determining batch size
+            strategy: "pi" to sample proportionally to pi, "uniform" for uniform sampling
+            generator: optional torch.Generator for reproducibility
+
+        Returns:
+            Tuple of (batch_size, tensor of selected indexes)
+        """
+        with torch.no_grad():
+            sorted_pi, _ = torch.sort(self.pi, descending=True)
+            cumsum = sorted_pi.cumsum(0)
+            cutoff = torch.searchsorted(cumsum, threshold, right=False).item() + 1
+            batch_size = max(1, min(cutoff, self.pi.numel()))
+
+            if strategy == "uniform":
+                idx = torch.randperm(
+                    self.pi.numel(), device=self.pi.device, generator=generator
+                )[:batch_size]
+            elif strategy == "pi":
+                probs = self.pi / self.pi.sum()
+                idx = torch.multinomial(
+                    probs, batch_size, replacement=False, generator=generator
+                )
+            else:
+                raise ValueError(f"Unknown strategy: {strategy}")
+            return batch_size, idx
+
     def _descent_ascent_step(self, closure, groups_indexes) -> float:
         """Perform a descent-ascent optimization step."""
 

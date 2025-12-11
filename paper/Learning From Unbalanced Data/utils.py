@@ -148,54 +148,119 @@ def train_step(
     Returns:
         Average loss value for the epoch
     """
+    use_dynamic = config.get("dynamic_batch", False)
+    threshold = float(config.get("pi_threshold", 0.9))
+    sampling = config.get("pi_sampling", "pi")
+    generator = torch.Generator()
+    if "seed" in config:
+        generator.manual_seed(config["seed"])
+
     model.train()
-    total_loss = 0
-    for t, ((X, y), indexes) in enumerate(dataloader):
-        X, y = X.to(device), y.to(device)
+    total_loss = 0.0
+    steps = 0
 
-        def closure(w=None, scale=None):
-            """
-            Closure function for optimizers that support it.
+    if use_dynamic:
+        if not hasattr(optimizer, "select_batch"):
+            raise AttributeError("dynamic_batch requires optimizer.select_batch")
+        dataset = dataloader.dataset
+        total_samples = len(dataset)
+        consumed = 0
+        while consumed < total_samples:
+            _, batch_idx = optimizer.select_batch(
+                threshold=threshold, strategy=sampling, generator=generator
+            )
+            batch = [dataset[int(i)] for i in batch_idx.tolist()]
+            (X_list, y_list), idx_list = zip(*batch)
+            X = torch.stack(X_list).to(device)
+            y = torch.tensor(y_list, device=device)
+            indexes = torch.tensor(idx_list, device=device)
 
-            Computes loss and gradients, with optional sample weighting.
+            def closure(w=None, scale=None):
+                """
+                Closure function for optimizers that support it.
 
-            Args:
-                w: Optional tensor of weights for each sample
-                scale: Optional scaling factor for losses
+                Computes loss and gradients, with optional sample weighting.
 
-            Returns:
-                Tuple of (per-sample losses, logged loss value)
-            """
-            optimizer.zero_grad()
-            preds = model(X)
-            losses = loss_fn(preds, y)
-            if w is None and compute_weights_fn is not None:
-                w = compute_weights_fn(losses)
-                scale = 1
-            if w is not None and scale is not None:
-                losses = losses * scale
-                loss = (w * losses).sum()
-                loss.backward()
-                loss_log = losses.mean().item()
-            else:
-                loss = losses.mean()
-                loss.backward()
-                loss_log = loss.item()
-            return losses, loss_log
+                Args:
+                    w: Optional tensor of weights for each sample
+                    scale: Optional scaling factor for losses
 
-        closure.device = device
+                Returns:
+                    Tuple of (per-sample losses, logged loss value)
+                """
+                optimizer.zero_grad()
+                preds = model(X)
+                losses = loss_fn(preds, y)
+                if w is None and compute_weights_fn is not None:
+                    w = compute_weights_fn(losses)
+                    scale = 1
+                if w is not None and scale is not None:
+                    losses = losses * scale
+                    loss = (w * losses).sum()
+                    loss.backward()
+                    loss_log = losses.mean().item()
+                else:
+                    loss = losses.mean()
+                    loss.backward()
+                    loss_log = loss.item()
+                return losses, loss_log
 
-        try:
-            # For optimizers supporting group-based weights (like ALSO)
-            optimizer.step(closure=closure, groups_indexes=indexes.to(device))
-        except TypeError:
+            closure.device = device
+
+            loss_val = optimizer.step(closure=closure, groups_indexes=indexes)
+            if loss_val is not None:
+                total_loss += loss_val
+            consumed += len(batch_idx)
+            steps += 1
+    else:
+        for steps, ((X, y), indexes) in enumerate(dataloader, start=1):
+            X, y = X.to(device), y.to(device)
+
+            def closure(w=None, scale=None):
+                """
+                Closure function for optimizers that support it.
+
+                Computes loss and gradients, with optional sample weighting.
+
+                Args:
+                    w: Optional tensor of weights for each sample
+                    scale: Optional scaling factor for losses
+
+                Returns:
+                    Tuple of (per-sample losses, logged loss value)
+                """
+                optimizer.zero_grad()
+                preds = model(X)
+                losses = loss_fn(preds, y)
+                if w is None and compute_weights_fn is not None:
+                    w = compute_weights_fn(losses)
+                    scale = 1
+                if w is not None and scale is not None:
+                    losses = losses * scale
+                    loss = (w * losses).sum()
+                    loss.backward()
+                    loss_log = losses.mean().item()
+                else:
+                    loss = losses.mean()
+                    loss.backward()
+                    loss_log = loss.item()
+                return losses, loss_log
+
+            closure.device = device
+
             try:
-                optimizer.step(closure=closure, dataset_indexes=indexes.to(device))
+                # For optimizers supporting group-based weights (like ALSO)
+                loss_val = optimizer.step(closure=closure, groups_indexes=indexes.to(device))
             except TypeError:
-                # Fall back for standard optimizers (Adam, SGD, etc.)
-                optimizer.step(closure=closure)
+                try:
+                    loss_val = optimizer.step(closure=closure, dataset_indexes=indexes.to(device))
+                except TypeError:
+                    # Fall back for standard optimizers (Adam, SGD, etc.)
+                    loss_val = optimizer.step(closure=closure)
+            if loss_val is not None:
+                total_loss += loss_val
 
-    return total_loss / t
+    return total_loss / max(1, steps)
 
 
 @torch.no_grad()

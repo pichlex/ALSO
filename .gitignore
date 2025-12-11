@@ -1,0 +1,21 @@
+.DS_Store
+**/data/**
+
+# -------------------------
+# PYTHON
+# -------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyd
+*.so
+*.dll
+
+# Virtual environments
+venv/
+.env/
+.venv/
+env/
+ENV/
+
