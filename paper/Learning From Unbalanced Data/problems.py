@@ -209,7 +209,7 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
     loss_fn = nn.CrossEntropyLoss(reduction="none")  # Per-sample losses for weighting
 
     # Calculate loss scaling factor
-    config["loss_scale"] = len(ds_train) / config["batch_size"]
+    #config["loss_scale"] = len(ds_train) / config["batch_size"]
 
     # Create data loaders with reproducible randomness
     train_dataloader = DataLoader(
