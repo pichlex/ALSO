@@ -171,7 +171,8 @@ def train_step(
                 threshold=threshold, strategy=sampling, generator=generator
             )
             batch = [dataset[int(i)] for i in batch_idx.tolist()]
-            (X_list, y_list), idx_list = zip(*batch)
+            data_list, idx_list = zip(*batch)
+            X_list, y_list = zip(*data_list)
             X = torch.stack(X_list).to(device)
             y = torch.tensor(y_list, device=device)
             indexes = torch.tensor(idx_list, device=device)
