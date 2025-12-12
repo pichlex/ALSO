@@ -151,7 +151,7 @@ def train_step(
     use_dynamic = config.get("dynamic_batch", False)
     threshold = float(config.get("pi_threshold", 0.9))
     sampling = config.get("pi_sampling", "pi")
-    generator = torch.Generator()
+    generator = torch.Generator(device=device)
     if "seed" in config:
         generator.manual_seed(config["seed"])
     log_to_mlflow = config.get("report_to") == "mlflow" and not tuning
