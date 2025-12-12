@@ -62,10 +62,13 @@ def run_optimization(
     mlflow_ctx = nullcontext()
     if mlflow_enabled:
         experiment_base = config.get("mlflow_experiment", "Learning From Unbalanced Data")
-        mlflow.set_experiment(f"{experiment_base}_seed{config['seed']}_batch_size{config['batch_size']}")
+        dynamic_batch = config.get("dynamic_batch", False)
+        pi_threshold = config.get("pi_threshold", "none")
+        pi_sampling = config.get("pi_sampling", "none")
+        mlflow.set_experiment(f"{experiment_base}_seed{config['seed']}_batch_size{config['batch_size']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}")
         run_title = (
             f"{config.get('run_name', config['optimizer'])}"
-            f"_uc{config.get('unbalance_coef', 'na')}_seed{config['seed']}_batch_size{config['batch_size']}"
+            f"_uc{config.get('unbalance_coef', 'na')}_seed{config['seed']}_batch_size{config['batch_size']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}"
         )
         mlflow_ctx = mlflow.start_run(run_name=run_title)
 
