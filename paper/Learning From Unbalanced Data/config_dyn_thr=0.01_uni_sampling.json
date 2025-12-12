@@ -9,6 +9,7 @@
     "n_epoches": 20,
     "eval_runs": 1,
 
+    "batch_size": 64,
     "dynamic_batch": true,
     "pi_threshold": 0.01,
     "pi_sampling": "uniform",
