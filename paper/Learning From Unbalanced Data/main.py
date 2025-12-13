@@ -65,7 +65,7 @@ def run_optimization(
         dynamic_batch = config.get("dynamic_batch", False)
         pi_threshold = config.get("pi_threshold", "none")
         pi_sampling = config.get("pi_sampling", "none")
-        pi_strategy = config.get(["pi_strategy"], "desc")
+        pi_strategy = config.get("pi_strategy", "desc")
         # mlflow.set_experiment(f"{experiment_base}_seed{config['seed']}_batch_size{config['batch_size']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}")
         mlflow.set_experiment(f"{experiment_base}_seed{config['seed']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}_pi_strategy={pi_strategy}")
         run_title = (
