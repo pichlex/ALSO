@@ -65,10 +65,12 @@ def run_optimization(
         dynamic_batch = config.get("dynamic_batch", False)
         pi_threshold = config.get("pi_threshold", "none")
         pi_sampling = config.get("pi_sampling", "none")
-        mlflow.set_experiment(f"{experiment_base}_seed{config['seed']}_batch_size{config['batch_size']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}")
+        pi_strategy = config.get(["pi_strategy"], "desc")
+        # mlflow.set_experiment(f"{experiment_base}_seed{config['seed']}_batch_size{config['batch_size']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}")
+        mlflow.set_experiment(f"{experiment_base}_seed{config['seed']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}_pi_strategy={pi_strategy}")
         run_title = (
             f"{config.get('run_name', config['optimizer'])}"
-            f"_uc{config.get('unbalance_coef', 'na')}_seed{config['seed']}_batch_size{config['batch_size']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}"
+            f"_uc{config.get('unbalance_coef', 'na')}_seed{config['seed']}_batch_size{config['batch_size']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}_pi_strategy={pi_strategy}"
         )
         mlflow_ctx = mlflow.start_run(run_name=run_title)
 
@@ -248,6 +250,7 @@ def main(
         config["seed"] = seed
     base_seed = config.get("seed", 0)
     unbalance_coef_list = config["unbalance_coefs"]
+    base_batch_size = config.get("batch_size")
 
     # Set default optimization parameters
     config["mode"] = "optimistic"
@@ -277,6 +280,11 @@ def main(
     # Run experiments for each imbalance coefficient
     for unbalance_coef in unbalance_coef_list:
         config["unbalance_coef"] = unbalance_coef
+        # Optional scaling of batch size by current unbalance coefficient when pi_strategy == "uc"
+        if config.get("pi_strategy") == "uc" and base_batch_size is not None:
+            config["batch_size"] = int(base_batch_size * unbalance_coef)
+        else:
+            config["batch_size"] = base_batch_size
         print(
             f"===================== unbalance_coefficient: {unbalance_coef} ======================="
         )

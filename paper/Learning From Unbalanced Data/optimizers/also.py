@@ -164,6 +164,7 @@ class ALSO(torch.optim.Optimizer):
         self,
         threshold: float,
         strategy: str = "pi",
+        order: str = "desc",
         generator: Optional[torch.Generator] = None,
     ) -> Tuple[int, torch.Tensor]:
         """
@@ -172,13 +173,14 @@ class ALSO(torch.optim.Optimizer):
         Args:
             threshold: cumulative mass threshold (e.g., 0.9) for determining batch size
             strategy: "pi" to sample proportionally to pi, "uniform" for uniform sampling
+            order: "desc" to accumulate mass from largest pi (default), "asc" from smallest
             generator: optional torch.Generator for reproducibility
 
         Returns:
             Tuple of (batch_size, tensor of selected indexes)
         """
         with torch.no_grad():
-            sorted_pi, _ = torch.sort(self.pi, descending=True)
+            sorted_pi, _ = torch.sort(self.pi, descending=(order != "asc"))
             cumsum = sorted_pi.cumsum(0)
             cutoff = torch.searchsorted(cumsum, threshold, right=False).item() + 1
             batch_size = max(1, min(cutoff, self.pi.numel()))

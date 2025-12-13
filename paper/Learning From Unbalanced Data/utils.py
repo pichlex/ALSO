@@ -151,6 +151,7 @@ def train_step(
     use_dynamic = config.get("dynamic_batch", False)
     threshold = float(config.get("pi_threshold", 0.9))
     sampling = config.get("pi_sampling", "pi")
+    pi_order = config.get("pi_strategy", "desc")
     generator = torch.Generator(device=device)
     if "seed" in config:
         generator.manual_seed(config["seed"])
@@ -168,7 +169,7 @@ def train_step(
         consumed = 0
         while consumed < total_samples:
             _, batch_idx = optimizer.select_batch(
-                threshold=threshold, strategy=sampling, generator=generator
+                threshold=threshold, strategy=sampling, order=pi_order, generator=generator
             )
             batch = [dataset[int(i)] for i in batch_idx.tolist()]
             data_list, idx_list = zip(*batch)
