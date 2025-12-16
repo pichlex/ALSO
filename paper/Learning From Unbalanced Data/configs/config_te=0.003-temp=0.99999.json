@@ -1,5 +1,5 @@
 {
-    "task": "UNBALANCED-CIFAR10-tail-temp-0.1",
+    "task": "UNBALANCED-CIFAR10-tail-temp-0.99999",
     "seed": 21,
     "model": "resnet18",
 
@@ -12,7 +12,7 @@
     "batch_size": 64,
     "dynamic_batch": true,
     "pi_threshold": 0.003,
-    "pi_temperature": 0.9,
+    "pi_temperature": 0.99999,
     "pi_sampling": "pi",
     "unbalance_coefs": [1, 2, 5, 10, 20, 30, 40, 50]
 }
