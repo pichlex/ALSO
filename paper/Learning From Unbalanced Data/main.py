@@ -68,10 +68,10 @@ def run_optimization(
         pi_strategy = config.get("pi_strategy", "desc")
         pi_temperature = config.get("pi_temperature", None)
         # mlflow.set_experiment(f"{experiment_base}_seed{config['seed']}_batch_size{config['batch_size']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}")
-        mlflow.set_experiment(f"{experiment_base}_tail_cutoff_seed{config['seed']}_pi_temp={pi_temperature}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}_pi_strategy={pi_strategy}")
+        mlflow.set_experiment(f"cached_tail_cutoff_seed{config['seed']}_pi_temp={pi_temperature}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}")
         run_title = (
             f"{config.get('run_name', config['optimizer'])}"
-            f"_uc{config.get('unbalance_coef', 'na')}_tail_cutoff_seed{config['seed']}_pi_temp={pi_temperature}_batch_size{config['batch_size']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}_pi_strategy={pi_strategy}"
+            f"_uc{config.get('unbalance_coef', 'na')}_cached_tail_cutoff_seed{config['seed']}_pi_temp={pi_temperature}_batch_size{config['batch_size']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}"
         )
         mlflow_ctx = mlflow.start_run(run_name=run_title)
 
@@ -258,6 +258,7 @@ def main(
     config["optimizer_mode"] = "optimistic"
     config["use_adam"] = True
     config.setdefault("pi_temperature", 1.0)
+    config.setdefault("cached_batch", False)
     if "report_to" not in config.keys():
         config["report_to"] = "mlflow"
     config.setdefault("mlflow_experiment", "Learning From Unbalanced Data")

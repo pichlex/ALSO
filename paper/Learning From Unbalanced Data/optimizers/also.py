@@ -172,6 +172,7 @@ class ALSO(torch.optim.Optimizer):
         strategy: str = "pi",
         order: str = "desc",
         generator: Optional[torch.Generator] = None,
+        excluded_mask: Optional[Tensor] = None,
     ) -> Tuple[int, torch.Tensor]:
         """
         Choose batch size and indexes based on current pi mass and sampling strategy.
@@ -181,6 +182,7 @@ class ALSO(torch.optim.Optimizer):
             strategy: "pi" to sample proportionally to pi, "uniform" for uniform sampling
             order: "desc" to accumulate mass from largest pi (default), "asc" from smallest
             generator: optional torch.Generator for reproducibility
+            excluded_mask: optional boolean mask marking indexes to exclude from selection
 
         Returns:
             Tuple of (batch_size, tensor of selected indexes)
@@ -192,18 +194,31 @@ class ALSO(torch.optim.Optimizer):
             # Choose batch size as tail mass count: N - n_{1-thr}
             batch_size = max(1, self.pi.numel() - cutoff)
 
+            if excluded_mask is not None:
+                if excluded_mask.device != self.pi.device:
+                    excluded_mask = excluded_mask.to(self.pi.device)
+                available_idx = (~excluded_mask).nonzero(as_tuple=False).flatten()
+            else:
+                available_idx = torch.arange(self.pi.numel(), device=self.pi.device)
+
+            if available_idx.numel() == 0:
+                return 0, available_idx
+
+            batch_size = min(batch_size, available_idx.numel())
+
             if strategy == "uniform":
-                idx = torch.randperm(
-                    self.pi.numel(), device=self.pi.device, generator=generator
+                idx_local = torch.randperm(
+                    available_idx.numel(), device=self.pi.device, generator=generator
                 )[:batch_size]
             elif strategy == "pi":
-                probs = self.pi / self.pi.sum()
-                idx = torch.multinomial(
+                probs = self.pi[available_idx]
+                probs = probs / probs.sum()
+                idx_local = torch.multinomial(
                     probs, batch_size, replacement=False, generator=generator
                 )
             else:
                 raise ValueError(f"Unknown strategy: {strategy}")
-            return batch_size, idx
+            return batch_size, available_idx[idx_local]
 
     def _descent_ascent_step(self, closure, groups_indexes) -> float:
         """Perform a descent-ascent optimization step."""

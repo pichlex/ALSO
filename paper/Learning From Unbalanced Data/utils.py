@@ -166,11 +166,19 @@ def train_step(
             raise AttributeError("dynamic_batch requires optimizer.select_batch")
         dataset = dataloader.dataset
         total_samples = len(dataset)
+        use_cached_batch = config.get("cached_batch", False)
+        cache_mask = torch.zeros(total_samples, dtype=torch.bool, device=device) if use_cached_batch else None
         consumed = 0
         while consumed < total_samples:
             _, batch_idx = optimizer.select_batch(
-                threshold=threshold, strategy=sampling, order=pi_order, generator=generator
+                threshold=threshold,
+                strategy=sampling,
+                order=pi_order,
+                generator=generator,
+                excluded_mask=cache_mask,
             )
+            if batch_idx.numel() == 0:
+                break
             batch = [dataset[int(i)] for i in batch_idx.tolist()]
             data_list, idx_list = zip(*batch)
             X_list, y_list = zip(*data_list)
@@ -180,6 +188,8 @@ def train_step(
             batch_size = len(batch_idx)
             if log_to_mlflow:
                 mlflow.log_metric("batch_size", batch_size, step=config["train_step"])
+            if cache_mask is not None:
+                cache_mask[batch_idx] = True
 
             def closure(w=None, scale=None):
                 """
