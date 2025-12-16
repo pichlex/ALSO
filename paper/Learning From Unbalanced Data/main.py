@@ -68,10 +68,10 @@ def run_optimization(
         pi_strategy = config.get("pi_strategy", "desc")
         pi_temperature = config.get("pi_temperature", None)
         # mlflow.set_experiment(f"{experiment_base}_seed{config['seed']}_batch_size{config['batch_size']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}")
-        mlflow.set_experiment(f"cached_tail_cutoff_seed{config['seed']}_pi_temp={pi_temperature}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}")
+        mlflow.set_experiment(f"{experiment_base}")
         run_title = (
             f"{config.get('run_name', config['optimizer'])}"
-            f"_uc{config.get('unbalance_coef', 'na')}_cached_tail_cutoff_seed{config['seed']}_pi_temp={pi_temperature}_batch_size{config['batch_size']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}"
+            f"_uc{config.get('unbalance_coef', 'na')}_{experiment_base}"
         )
         mlflow_ctx = mlflow.start_run(run_name=run_title)
 
@@ -267,7 +267,7 @@ def main(
     # Each tuple represents: (optimizer_name, use_sampler, use_static_weights, use_exp, use_init_static_weights, use_ls_dro)
     experiment_list = [
         # Main method from the paper:
-        ("also", False, False, False, True, False),  # ALSO with initialized static weights
+        ("also", False, False, False, False, False),  # ALSO with initialized static weights
         # To run other experiments, uncomment them below:
         # --- Standard approaches ---
         # ("adam", False, False, False, False, False),   # standard Adam
