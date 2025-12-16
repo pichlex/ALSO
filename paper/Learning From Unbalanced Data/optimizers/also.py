@@ -188,7 +188,7 @@ class ALSO(torch.optim.Optimizer):
         with torch.no_grad():
             sorted_pi, _ = torch.sort(self.pi, descending=(order != "asc"))
             cumsum = sorted_pi.cumsum(0)
-            cutoff = torch.searchsorted(cumsum, threshold, right=False).item() + 1
+            cutoff = torch.searchsorted(cumsum, 1 - threshold, right=False).item() + 1
             # Choose batch size as tail mass count: N - n_{1-thr}
             batch_size = max(1, self.pi.numel() - cutoff)
 
