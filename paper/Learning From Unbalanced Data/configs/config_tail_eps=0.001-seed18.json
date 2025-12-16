@@ -2,6 +2,7 @@
     "task": "UNBALANCED-CIFAR10-tail-0.001",
     "seed": 18,
     "model": "resnet18",
+     "mlflow_experiment": "pi_threshold=0.001",
 
     "n_epoches_tune": 5,
     "tune_runs": 100,
