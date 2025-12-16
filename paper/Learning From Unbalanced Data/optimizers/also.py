@@ -216,7 +216,7 @@ class ALSO(torch.optim.Optimizer):
                 probs = self.pi[available_idx]
                 probs = probs / probs.sum()
                 idx_local = torch.multinomial(
-                    probs, batch_size, replacement=False, generator=generator, de
+                    probs, batch_size, replacement=False, generator=generator
                 )
             else:
                 raise ValueError(f"Unknown strategy: {strategy}")
