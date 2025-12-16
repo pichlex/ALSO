@@ -256,6 +256,7 @@ def main(
     config["mode"] = "optimistic"
     config["optimizer_mode"] = "optimistic"
     config["use_adam"] = True
+    config.setdefault("pi_temperature", 1.0)
     if "report_to" not in config.keys():
         config["report_to"] = "mlflow"
     config.setdefault("mlflow_experiment", "Learning From Unbalanced Data")

@@ -271,6 +271,7 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
             ).to(device)
         else:
             pi_reg = None
+        pi_temperature = config.get("pi_temperature", 1.0)
 
         # Initialize ALSO optimizer
         optimizer = ALSO(
@@ -284,6 +285,7 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
             pi_lr=pi_lr,
             pi_reg=pi_reg,
             pi_init=pi_reg,
+            pi_temperature=pi_temperature,
             loss_scale=1,
             eps=1e-32,
         )

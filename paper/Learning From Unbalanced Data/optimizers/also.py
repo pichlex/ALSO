@@ -27,7 +27,8 @@ class ALSO(torch.optim.Optimizer):
         lr: float = 1e-3, 
         weight_decay: float = 1e-3,
         pi_lr: float = 1e-3, 
-        pi_decay: float = 1e-2, 
+        pi_decay: float = 1e-2,
+        pi_temperature: float = 1.0,
         eps: float = np.finfo(np.float32).eps, 
         amsgrad: bool = False,
     ):
@@ -48,6 +49,7 @@ class ALSO(torch.optim.Optimizer):
             weight_decay: Weight decay coefficient
             pi_lr: Learning rate for pi
             pi_decay: Regularization coefficient for pi
+            pi_temperature: Temperature parameter for pi softmax update
             eps: Small constant for numerical stability
             amsgrad: Whether to use the AMSGrad variant of Adam
         """
@@ -72,6 +74,7 @@ class ALSO(torch.optim.Optimizer):
         # pi related parameters
         self.pi_lr = pi_lr
         self.pi_decay = pi_decay
+        self.pi_temperature = pi_temperature
 
         # other parameters
         self.eps = eps
@@ -151,14 +154,17 @@ class ALSO(torch.optim.Optimizer):
         
         return -step_size * exp_avg / denom
 
-    def _update_pi(self, pi_grad: Tensor) -> Tensor:
+    def _update_pi(self, pi_grad: Tensor, temp: Optional[float] = None) -> Tensor:
         """Update the pi values using the current gradient."""
+
+        if temp is None:
+            temp = self.pi_temperature
 
         pi_new_log = (torch.log(self.pi + self.eps) + 
                       self.pi_decay * self.pi_lr * torch.log(self.pi_reg) - 
                       self.pi_lr * pi_grad)
         pi_new_log /= 1 + self.pi_decay * self.pi_lr
-        return torch.nn.functional.softmax(pi_new_log, dim=-1)
+        return torch.nn.functional.softmax(pi_new_log / temp, dim=-1)
 
     def select_batch(
         self,
@@ -183,7 +189,8 @@ class ALSO(torch.optim.Optimizer):
             sorted_pi, _ = torch.sort(self.pi, descending=(order != "asc"))
             cumsum = sorted_pi.cumsum(0)
             cutoff = torch.searchsorted(cumsum, threshold, right=False).item() + 1
-            batch_size = max(1, min(cutoff, self.pi.numel()))
+            # Choose batch size as tail mass count: N - n_{1-thr}
+            batch_size = max(1, self.pi.numel() - cutoff)
 
             if strategy == "uniform":
                 idx = torch.randperm(
@@ -217,7 +224,7 @@ class ALSO(torch.optim.Optimizer):
         pi_grad_compressed = -losses.clone().detach()
         pi_grad = torch.zeros_like(self.pi, requires_grad=False)
         pi_grad.index_add_(0, groups_indexes.flatten(), pi_grad_compressed.flatten())
-        self.pi = self._update_pi(pi_grad)
+        self.pi = self._update_pi(pi_grad, self.pi_temperature)
         return loss
 
     def _optimistic_intermediate_step(self):
@@ -237,7 +244,7 @@ class ALSO(torch.optim.Optimizer):
 
         # Make step over pi using previous gradient
         if self.__prev_grads_pi is not None:
-            self.__pi_intermediate = self._update_pi(self.__prev_grads_pi)
+            self.__pi_intermediate = self._update_pi(self.__prev_grads_pi, self.pi_temperature)
         else:
             self.__pi_intermediate = self.pi.clone()
 
@@ -267,7 +274,7 @@ class ALSO(torch.optim.Optimizer):
         pi_grad = torch.zeros_like(self.pi, requires_grad=False)
         pi_grad.index_add_(0, groups_indexes.flatten(), pi_grad_compressed.flatten())
         self.__prev_grads_pi = pi_grad
-        self.pi = self._update_pi(pi_grad)
+        self.pi = self._update_pi(pi_grad, self.pi_temperature)
         return loss
 
     def step(self, closure, groups_indexes) -> float:
