@@ -67,10 +67,10 @@ def run_optimization(
         pi_sampling = config.get("pi_sampling", "none")
         pi_strategy = config.get("pi_strategy", "desc")
         # mlflow.set_experiment(f"{experiment_base}_seed{config['seed']}_batch_size{config['batch_size']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}")
-        mlflow.set_experiment(f"{experiment_base}_seed{config['seed']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}_pi_strategy={pi_strategy}")
+        mlflow.set_experiment(f"{experiment_base}_tail_cutoff_seed{config['seed']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}_pi_strategy={pi_strategy}")
         run_title = (
             f"{config.get('run_name', config['optimizer'])}"
-            f"_uc{config.get('unbalance_coef', 'na')}_seed{config['seed']}_batch_size{config['batch_size']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}_pi_strategy={pi_strategy}"
+            f"_uc{config.get('unbalance_coef', 'na')}_tail_cutoff_seed{config['seed']}_batch_size{config['batch_size']}_dyn_batch={dynamic_batch}_pi_threshold={pi_threshold}_pi_sampling={pi_sampling}_pi_strategy={pi_strategy}"
         )
         mlflow_ctx = mlflow.start_run(run_name=run_title)
 
