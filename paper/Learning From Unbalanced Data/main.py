@@ -267,7 +267,7 @@ def main(
     # Each tuple represents: (optimizer_name, use_sampler, use_static_weights, use_exp, use_init_static_weights, use_ls_dro)
     experiment_list = [
         # Main method from the paper:
-        ("also", False, False, False, False, False),  # ALSO with initialized static weights
+        ("also", False, False, False, True, False),  # ALSO with initialized static weights
         # To run other experiments, uncomment them below:
         # --- Standard approaches ---
         # ("adam", False, False, False, False, False),   # standard Adam

@@ -1,0 +1,17 @@
+{
+    "task": "UNBALANCED-CIFAR10-tail-0.001",
+    "seed": 18,
+    "model": "resnet18",
+
+    "n_epoches_tune": 5,
+    "tune_runs": 100,
+
+    "n_epoches": 20,
+    "eval_runs": 1,
+
+    "batch_size": 64,
+    "dynamic_batch": true,
+    "pi_threshold": 0.001,
+    "pi_sampling": "pi",
+    "unbalance_coefs": [1, 2, 5, 10, 20, 30, 40, 50]
+}

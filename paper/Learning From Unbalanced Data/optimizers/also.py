@@ -188,6 +188,8 @@ class ALSO(torch.optim.Optimizer):
             Tuple of (batch_size, tensor of selected indexes)
         """
         with torch.no_grad():
+            if generator is not None and hasattr(generator, "device"):
+                self._move_pi_to_device(generator.device)
             sorted_pi, _ = torch.sort(self.pi, descending=(order != "asc"))
             cumsum = sorted_pi.cumsum(0)
             cutoff = torch.searchsorted(cumsum, 1 - threshold, right=False).item() + 1
@@ -214,7 +216,7 @@ class ALSO(torch.optim.Optimizer):
                 probs = self.pi[available_idx]
                 probs = probs / probs.sum()
                 idx_local = torch.multinomial(
-                    probs, batch_size, replacement=False, generator=generator
+                    probs, batch_size, replacement=False, generator=generator, de
                 )
             else:
                 raise ValueError(f"Unknown strategy: {strategy}")
