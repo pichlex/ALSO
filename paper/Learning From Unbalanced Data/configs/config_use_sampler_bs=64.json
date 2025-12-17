@@ -1,8 +1,8 @@
 {
-    "task": "UNBALANCED-CIFAR10-BS32",
+    "task": "UNBALANCED-CIFAR10-BS64",
     "seed": 18,
     "model": "resnet18",
-    "mlflow_experiment": "use_sampler_bs32",
+    "mlflow_experiment": "use_sampler_bs64",
 
     "n_epoches_tune": 5,
     "tune_runs": 100,
@@ -10,6 +10,6 @@
     "n_epoches": 20,
     "eval_runs": 1,
 
-    "batch_size": 32,
+    "batch_size": 64,
     "unbalance_coefs": [1, 2, 5, 10, 20, 30, 40, 50]
 }
