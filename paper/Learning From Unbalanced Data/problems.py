@@ -284,7 +284,7 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
             mode=config["optimizer_mode"],
             pi_lr=pi_lr,
             pi_reg=pi_reg,
-            pi_init=None,
+            pi_init=pi_reg,
             pi_temperature=pi_temperature,
             loss_scale=1,
             eps=1e-32,
