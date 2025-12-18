@@ -19,3 +19,23 @@ venv/
 env/
 ENV/
 
+# MLflow
+mlruns/
+mlartifacts/
+
+# Optuna/SQLite локальные базы
+*.sqlite
+optuna.db
+
+# Сервисные каталоги/кэши
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Прочее шумное
+*.log
+
+*.pkl
+*.npz
+*.npy
