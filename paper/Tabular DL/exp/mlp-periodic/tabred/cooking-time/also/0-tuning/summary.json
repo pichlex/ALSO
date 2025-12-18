@@ -1,0 +1,20 @@
+{
+    "function": "bin.tune.main",
+    "best": {
+        "function": "bin.model.main",
+        "gpus": [
+            "NVIDIA GeForce RTX 2080 Ti"
+        ],
+        "n_parameters": 5654033,
+        "tuning_time": "5:17:03.299970",
+        "trial_id": 99,
+        "scores": {
+            "train": -0.4501183334371752,
+            "val": -0.4630555772422221,
+            "test": -0.48022240627076307
+        },
+        "time": "0:03:55.203115"
+    },
+    "n_completed_trials": 100,
+    "time": "5:17:03.511262"
+}

@@ -1,0 +1,35 @@
+seed = 2
+batch_size = 256
+patience = 16
+n_epochs = -1
+gradient_clipping_norm = 1.0
+amp = true
+
+[data]
+cache = true
+path = "data/adult"
+num_policy = "noisy-quantile"
+cat_policy = "ordinal"
+
+[optimizer]
+type = "ALSO"
+lr = 0.0007267569185136138
+pi_lr = 0.0008463632676349309
+weight_decay = 0.0011000077332246202
+pi_decay = 0.0521239755627975
+
+[model]
+arch_type = "plain"
+
+[model.backbone]
+type = "MLP"
+n_blocks = 1
+d_block = 624
+dropout = 0.0
+
+[model.num_embeddings]
+type = "PeriodicEmbeddings"
+n_frequencies = 60
+d_embedding = 28
+frequency_init_scale = 3.4425590751354718
+lite = false

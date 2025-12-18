@@ -1,0 +1,35 @@
+seed = 6
+batch_size = 512
+patience = 16
+n_epochs = -1
+gradient_clipping_norm = 1.0
+amp = true
+
+[data]
+cache = true
+path = "data/black-friday"
+num_policy = "noisy-quantile"
+cat_policy = "ordinal"
+
+[optimizer]
+type = "ALSO"
+lr = 5.181280934517906e-05
+pi_lr = 0.0006918492181292649
+weight_decay = 0.001646651173030601
+pi_decay = 0.0026625414628597232
+
+[model]
+arch_type = "plain"
+
+[model.backbone]
+type = "MLP"
+n_blocks = 4
+d_block = 496
+dropout = 0.22705962111031722
+
+[model.num_embeddings]
+type = "PeriodicEmbeddings"
+n_frequencies = 80
+d_embedding = 28
+frequency_init_scale = 9.932870938530948
+lite = false

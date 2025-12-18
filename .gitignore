@@ -1,6 +1,8 @@
 .DS_Store
 **/data/**
 **/local/**
+**/datasets/**
+*.gz
 
 # -------------------------
 # PYTHON
@@ -40,3 +42,6 @@ optuna.db
 *.pkl
 *.npz
 *.npy
+*.pickle
+*.pt
+events.out.tfevents.*

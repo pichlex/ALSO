@@ -1,0 +1,34 @@
+seed = 10
+batch_size = 1024
+patience = 16
+n_epochs = -1
+gradient_clipping_norm = 1.0
+amp = true
+
+[data]
+cache = true
+path = "data/ecom-offers"
+num_policy = "noisy-quantile"
+
+[optimizer]
+type = "ALSO"
+lr = 8.774146421069686e-05
+pi_lr = 0.0003341985048846238
+weight_decay = 0.09504082558201746
+pi_decay = 0.010792858436401665
+
+[model]
+arch_type = "plain"
+
+[model.backbone]
+type = "MLP"
+n_blocks = 5
+d_block = 400
+dropout = 0.4705299978687645
+
+[model.num_embeddings]
+type = "PeriodicEmbeddings"
+n_frequencies = 52
+d_embedding = 20
+frequency_init_scale = 0.044316167304958805
+lite = false

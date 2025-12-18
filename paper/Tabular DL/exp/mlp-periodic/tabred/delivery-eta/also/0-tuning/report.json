@@ -1,0 +1,178 @@
+{
+    "function": "bin.tune.main",
+    "gpus": [
+        "NVIDIA GeForce RTX 2080 Ti"
+    ],
+    "config": {
+        "seed": 0,
+        "function": "bin.model.main",
+        "n_trials": 100,
+        "sampler": {
+            "n_startup_trials": 20
+        },
+        "space": {
+            "seed": 0,
+            "batch_size": 1024,
+            "patience": 16,
+            "n_epochs": -1,
+            "gradient_clipping_norm": 1.0,
+            "amp": true,
+            "data": {
+                "cache": true,
+                "path": "data/delivery-eta",
+                "cat_policy": "ordinal"
+            },
+            "optimizer": {
+                "type": "ALSO",
+                "lr": [
+                    "_tune_",
+                    "loguniform",
+                    3e-05,
+                    0.001
+                ],
+                "pi_lr": [
+                    "_tune_",
+                    "loguniform",
+                    1e-05,
+                    0.001
+                ],
+                "weight_decay": [
+                    "_tune_",
+                    "?loguniform",
+                    0.0,
+                    0.0001,
+                    0.1
+                ],
+                "pi_decay": [
+                    "_tune_",
+                    "loguniform",
+                    0.001,
+                    1
+                ]
+            },
+            "model": {
+                "arch_type": "plain",
+                "backbone": {
+                    "type": "MLP",
+                    "n_blocks": [
+                        "_tune_",
+                        "int",
+                        1,
+                        5
+                    ],
+                    "d_block": [
+                        "_tune_",
+                        "int",
+                        64,
+                        1024,
+                        16
+                    ],
+                    "dropout": [
+                        "_tune_",
+                        "?uniform",
+                        0.0,
+                        0.0,
+                        0.5
+                    ]
+                },
+                "num_embeddings": {
+                    "type": "PeriodicEmbeddings",
+                    "n_frequencies": [
+                        "_tune_",
+                        "int",
+                        16,
+                        96,
+                        4
+                    ],
+                    "d_embedding": [
+                        "_tune_",
+                        "int",
+                        16,
+                        32,
+                        4
+                    ],
+                    "frequency_init_scale": [
+                        "_tune_",
+                        "loguniform",
+                        0.01,
+                        10.0
+                    ],
+                    "lite": false
+                }
+            }
+        }
+    },
+    "best": {
+        "function": "bin.model.main",
+        "gpus": [
+            "NVIDIA GeForce RTX 2080 Ti"
+        ],
+        "config": {
+            "seed": 0,
+            "batch_size": 1024,
+            "patience": 16,
+            "n_epochs": -1,
+            "gradient_clipping_norm": 1.0,
+            "amp": true,
+            "data": {
+                "cache": true,
+                "path": "data/delivery-eta",
+                "cat_policy": "ordinal"
+            },
+            "optimizer": {
+                "type": "ALSO",
+                "lr": 0.0008038682481430351,
+                "pi_lr": 0.00014415669439733913,
+                "weight_decay": 0.0004975859118823433,
+                "pi_decay": 0.3606814237308632
+            },
+            "model": {
+                "arch_type": "plain",
+                "backbone": {
+                    "type": "MLP",
+                    "n_blocks": 2,
+                    "d_block": 64,
+                    "dropout": 0.0
+                },
+                "num_embeddings": {
+                    "type": "PeriodicEmbeddings",
+                    "n_frequencies": 28,
+                    "d_embedding": 16,
+                    "frequency_init_scale": 2.2654565837232576,
+                    "lite": false
+                }
+            }
+        },
+        "n_parameters": 432697,
+        "prediction_type": "labels",
+        "epoch_size": 273,
+        "best_step": 13104,
+        "metrics": {
+            "train": {
+                "rmse": 0.5182089074805846,
+                "mae": 0.4051142632961273,
+                "r2": 0.4966663718223572,
+                "score": -0.5182089074805846
+            },
+            "val": {
+                "rmse": 0.5556563928272589,
+                "mae": 0.4420297145843506,
+                "r2": 0.4177754521369934,
+                "score": -0.5556563928272589
+            },
+            "test": {
+                "rmse": 0.5515598178182339,
+                "mae": 0.44580718874931335,
+                "r2": 0.4331158995628357,
+                "score": -0.5515598178182339
+            }
+        },
+        "time": "0:02:53.963792",
+        "chunk_size": null,
+        "eval_batch_size": 32768,
+        "trial_id": 83,
+        "tuning_time": "4:36:15.042214"
+    },
+    "time": "5:23:50.166278",
+    "n_completed_trials": 100
+}

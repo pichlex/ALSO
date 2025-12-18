@@ -1,0 +1,13 @@
+{
+    "function": "bin.model.main",
+    "gpus": [
+        "NVIDIA GeForce RTX 2080 Ti"
+    ],
+    "n_parameters": 1703410,
+    "scores": {
+        "train": 0.5418147968963066,
+        "val": 0.6298509468374139,
+        "test": 0.5837927298691216
+    },
+    "time": "0:00:55.841280"
+}

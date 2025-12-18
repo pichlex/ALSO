@@ -1,0 +1,20 @@
+{
+    "function": "bin.tune.main",
+    "best": {
+        "function": "bin.model.main",
+        "gpus": [
+            "NVIDIA A100-PCIE-40GB"
+        ],
+        "n_parameters": 4046793,
+        "tuning_time": "4:39:38.789461",
+        "trial_id": 27,
+        "scores": {
+            "train": -0.7125526776834229,
+            "val": -0.7400198754012774,
+            "test": -0.743271808608409
+        },
+        "time": "0:30:18.607401"
+    },
+    "n_completed_trials": 34,
+    "time": "7:04:42.621156"
+}

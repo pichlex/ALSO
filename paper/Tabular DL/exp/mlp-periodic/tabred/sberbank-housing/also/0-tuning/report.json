@@ -1,0 +1,180 @@
+{
+    "function": "bin.tune.main",
+    "gpus": [
+        "NVIDIA GeForce RTX 2080 Ti"
+    ],
+    "config": {
+        "seed": 0,
+        "function": "bin.model.main",
+        "n_trials": 100,
+        "sampler": {
+            "n_startup_trials": 20
+        },
+        "space": {
+            "seed": 0,
+            "batch_size": 256,
+            "patience": 16,
+            "n_epochs": -1,
+            "gradient_clipping_norm": 1.0,
+            "amp": true,
+            "data": {
+                "cache": true,
+                "path": "data/sberbank-housing",
+                "num_policy": "noisy-quantile",
+                "cat_policy": "ordinal"
+            },
+            "optimizer": {
+                "type": "ALSO",
+                "lr": [
+                    "_tune_",
+                    "loguniform",
+                    3e-05,
+                    0.001
+                ],
+                "pi_lr": [
+                    "_tune_",
+                    "loguniform",
+                    1e-05,
+                    0.001
+                ],
+                "weight_decay": [
+                    "_tune_",
+                    "?loguniform",
+                    0.0,
+                    0.0001,
+                    0.1
+                ],
+                "pi_decay": [
+                    "_tune_",
+                    "loguniform",
+                    0.001,
+                    1
+                ]
+            },
+            "model": {
+                "arch_type": "plain",
+                "backbone": {
+                    "type": "MLP",
+                    "n_blocks": [
+                        "_tune_",
+                        "int",
+                        1,
+                        5
+                    ],
+                    "d_block": [
+                        "_tune_",
+                        "int",
+                        64,
+                        1024,
+                        16
+                    ],
+                    "dropout": [
+                        "_tune_",
+                        "?uniform",
+                        0.0,
+                        0.0,
+                        0.5
+                    ]
+                },
+                "num_embeddings": {
+                    "type": "PeriodicEmbeddings",
+                    "n_frequencies": [
+                        "_tune_",
+                        "int",
+                        16,
+                        96,
+                        4
+                    ],
+                    "d_embedding": [
+                        "_tune_",
+                        "int",
+                        16,
+                        32,
+                        4
+                    ],
+                    "frequency_init_scale": [
+                        "_tune_",
+                        "loguniform",
+                        0.01,
+                        10.0
+                    ],
+                    "lite": false
+                }
+            }
+        }
+    },
+    "best": {
+        "function": "bin.model.main",
+        "gpus": [
+            "NVIDIA GeForce RTX 2080 Ti"
+        ],
+        "config": {
+            "seed": 0,
+            "batch_size": 256,
+            "patience": 16,
+            "n_epochs": -1,
+            "gradient_clipping_norm": 1.0,
+            "amp": true,
+            "data": {
+                "cache": true,
+                "path": "data/sberbank-housing",
+                "num_policy": "noisy-quantile",
+                "cat_policy": "ordinal"
+            },
+            "optimizer": {
+                "type": "ALSO",
+                "lr": 0.0008394928175478214,
+                "pi_lr": 5.301463807946679e-05,
+                "weight_decay": 0.0007711733934345647,
+                "pi_decay": 0.0030855731840662396
+            },
+            "model": {
+                "arch_type": "plain",
+                "backbone": {
+                    "type": "MLP",
+                    "n_blocks": 1,
+                    "d_block": 224,
+                    "dropout": 0.0
+                },
+                "num_embeddings": {
+                    "type": "PeriodicEmbeddings",
+                    "n_frequencies": 48,
+                    "d_embedding": 20,
+                    "frequency_init_scale": 0.22102681630785403,
+                    "lite": false
+                }
+            }
+        },
+        "n_parameters": 2404949,
+        "prediction_type": "labels",
+        "epoch_size": 74,
+        "best_step": 666,
+        "metrics": {
+            "train": {
+                "rmse": 0.24635130408131378,
+                "mae": 0.12495750188827515,
+                "r2": 0.612275242805481,
+                "score": -0.24635130408131378
+            },
+            "val": {
+                "rmse": 0.23730559800212736,
+                "mae": 0.13408163189888,
+                "r2": 0.6238446235656738,
+                "score": -0.23730559800212736
+            },
+            "test": {
+                "rmse": 0.24649379397863191,
+                "mae": 0.16600804030895233,
+                "r2": 0.5848054885864258,
+                "score": -0.24649379397863191
+            }
+        },
+        "time": "0:00:28.215433",
+        "chunk_size": null,
+        "eval_batch_size": 32768,
+        "trial_id": 94,
+        "tuning_time": "1:38:30.676719"
+    },
+    "time": "1:41:03.941414",
+    "n_completed_trials": 100
+}

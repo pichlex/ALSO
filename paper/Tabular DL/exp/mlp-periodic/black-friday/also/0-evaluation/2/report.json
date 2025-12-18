@@ -1,0 +1,70 @@
+{
+    "function": "bin.model.main",
+    "gpus": [
+        "NVIDIA GeForce RTX 2080 Ti"
+    ],
+    "config": {
+        "seed": 2,
+        "batch_size": 512,
+        "patience": 16,
+        "n_epochs": -1,
+        "gradient_clipping_norm": 1.0,
+        "amp": true,
+        "data": {
+            "cache": true,
+            "path": "data/black-friday",
+            "num_policy": "noisy-quantile",
+            "cat_policy": "ordinal"
+        },
+        "optimizer": {
+            "type": "ALSO",
+            "lr": 5.181280934517906e-05,
+            "pi_lr": 0.0006918492181292649,
+            "weight_decay": 0.001646651173030601,
+            "pi_decay": 0.0026625414628597232
+        },
+        "model": {
+            "arch_type": "plain",
+            "backbone": {
+                "type": "MLP",
+                "n_blocks": 4,
+                "d_block": 496,
+                "dropout": 0.22705962111031722
+            },
+            "num_embeddings": {
+                "type": "PeriodicEmbeddings",
+                "n_frequencies": 80,
+                "d_embedding": 28,
+                "frequency_init_scale": 9.932870938530948,
+                "lite": false
+            }
+        }
+    },
+    "n_parameters": 823857,
+    "prediction_type": "labels",
+    "epoch_size": 209,
+    "best_step": 30096,
+    "metrics": {
+        "train": {
+            "rmse": 0.6533931355168048,
+            "mae": 0.5063356161117554,
+            "r2": 0.5723536014556885,
+            "score": -0.6533931355168048
+        },
+        "val": {
+            "rmse": 0.6831457359328864,
+            "mae": 0.5275053977966309,
+            "r2": 0.5319832563400269,
+            "score": -0.6831457359328864
+        },
+        "test": {
+            "rmse": 0.6844244133516172,
+            "mae": 0.5292444825172424,
+            "r2": 0.5351002216339111,
+            "score": -0.6844244133516172
+        }
+    },
+    "time": "0:08:11.665367",
+    "chunk_size": null,
+    "eval_batch_size": 32768
+}

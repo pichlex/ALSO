@@ -1,0 +1,70 @@
+{
+    "function": "bin.model.main",
+    "gpus": [
+        "NVIDIA GeForce RTX 2080 Ti"
+    ],
+    "config": {
+        "seed": 7,
+        "batch_size": 256,
+        "patience": 16,
+        "n_epochs": -1,
+        "gradient_clipping_norm": 1.0,
+        "amp": true,
+        "data": {
+            "cache": true,
+            "path": "data/sberbank-housing",
+            "num_policy": "noisy-quantile",
+            "cat_policy": "ordinal"
+        },
+        "optimizer": {
+            "type": "ALSO",
+            "lr": 0.0008394928175478214,
+            "pi_lr": 5.301463807946679e-05,
+            "weight_decay": 0.0007711733934345647,
+            "pi_decay": 0.0030855731840662396
+        },
+        "model": {
+            "arch_type": "plain",
+            "backbone": {
+                "type": "MLP",
+                "n_blocks": 1,
+                "d_block": 224,
+                "dropout": 0.0
+            },
+            "num_embeddings": {
+                "type": "PeriodicEmbeddings",
+                "n_frequencies": 48,
+                "d_embedding": 20,
+                "frequency_init_scale": 0.22102681630785403,
+                "lite": false
+            }
+        }
+    },
+    "n_parameters": 2404949,
+    "prediction_type": "labels",
+    "epoch_size": 74,
+    "best_step": 1184,
+    "metrics": {
+        "train": {
+            "rmse": 0.23397558670225135,
+            "mae": 0.12407246977090836,
+            "r2": 0.6502522826194763,
+            "score": -0.23397558670225135
+        },
+        "val": {
+            "rmse": 0.23939150753322921,
+            "mae": 0.1385166496038437,
+            "r2": 0.6172028183937073,
+            "score": -0.23939150753322921
+        },
+        "test": {
+            "rmse": 0.24865361596371488,
+            "mae": 0.16947467625141144,
+            "r2": 0.5774976015090942,
+            "score": -0.24865361596371488
+        }
+    },
+    "time": "0:00:37.203856",
+    "chunk_size": null,
+    "eval_batch_size": 4096
+}
