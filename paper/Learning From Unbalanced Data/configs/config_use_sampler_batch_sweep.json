@@ -11,7 +11,7 @@
     "eval_runs": 1,
 
     "batch_size": 64,
-    "unbalance_coefs": [1, 2, 5, 10, 20, 30, 40, 50, 60, 70],
+    "unbalance_coefs": [1, 2, 5, 10, 20, 30, 40, 50],
 
     "log_pi": false
 }
