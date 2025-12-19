@@ -1,0 +1,34 @@
+seed = 11
+batch_size = 1024
+patience = 16
+n_epochs = -1
+gradient_clipping_norm = 1.0
+amp = true
+
+[data]
+cache = true
+path = "data/weather"
+num_policy = "noisy-quantile"
+
+[optimizer]
+type = "ALSO"
+lr = 0.000177147066133809
+pi_lr = 1.8507286715422343e-05
+weight_decay = 0.0005290499787647738
+pi_decay = 0.6233018269300894
+
+[model]
+arch_type = "plain"
+
+[model.backbone]
+type = "MLP"
+n_blocks = 1
+d_block = 864
+dropout = 0.4301611075714038
+
+[model.num_embeddings]
+type = "PeriodicEmbeddings"
+n_frequencies = 68
+d_embedding = 28
+frequency_init_scale = 1.2130658467367015
+lite = false
