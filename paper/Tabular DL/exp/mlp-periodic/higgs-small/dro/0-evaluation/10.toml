@@ -1,0 +1,36 @@
+seed = 10
+batch_size = 512
+patience = 16
+n_epochs = -1
+gradient_clipping_norm = 1.0
+amp = true
+
+[data]
+cache = true
+path = "data/higgs-small"
+num_policy = "noisy-quantile"
+
+[optimizer]
+type = "AdamW"
+lr = 3.229915317963771e-05
+weight_decay = 0.015687326792610205
+loss = "dro"
+loss_penalty = "kl"
+loss_shift_cost = 0.0010913506260180246
+loss_ndraws = 8.443267081875986
+
+[model]
+arch_type = "plain"
+
+[model.backbone]
+type = "MLP"
+n_blocks = 2
+d_block = 832
+dropout = 0.4886492619819097
+
+[model.num_embeddings]
+type = "PeriodicEmbeddings"
+n_frequencies = 64
+d_embedding = 28
+frequency_init_scale = 0.030702995613389076
+lite = false

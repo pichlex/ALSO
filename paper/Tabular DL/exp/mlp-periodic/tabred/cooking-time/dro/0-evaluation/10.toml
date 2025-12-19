@@ -1,0 +1,36 @@
+seed = 10
+batch_size = 1024
+patience = 16
+n_epochs = -1
+gradient_clipping_norm = 1.0
+amp = true
+
+[data]
+cache = true
+path = "data/cooking-time"
+cat_policy = "ordinal"
+
+[optimizer]
+type = "AdamW"
+lr = 4.2662652067949636e-05
+weight_decay = 0.0025479264445118794
+loss = "dro"
+loss_penalty = "kl"
+loss_shift_cost = 0.029185035650444714
+loss_ndraws = 0.0044988655122003614
+
+[model]
+arch_type = "plain"
+
+[model.backbone]
+type = "MLP"
+n_blocks = 1
+d_block = 688
+dropout = 0.4554373814738169
+
+[model.num_embeddings]
+type = "PeriodicEmbeddings"
+n_frequencies = 96
+d_embedding = 24
+frequency_init_scale = 0.10803360643821372
+lite = false

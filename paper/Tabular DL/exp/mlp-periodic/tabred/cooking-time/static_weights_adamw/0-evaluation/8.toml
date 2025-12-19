@@ -1,0 +1,33 @@
+seed = 8
+batch_size = 1024
+patience = 16
+n_epochs = -1
+gradient_clipping_norm = 1.0
+amp = true
+
+[data]
+cache = true
+path = "data/cooking-time"
+cat_policy = "ordinal"
+
+[optimizer]
+type = "AdamW"
+lr = 5.658041092720088e-05
+weight_decay = 0.00025331824833290143
+loss = "static_weights"
+
+[model]
+arch_type = "plain"
+
+[model.backbone]
+type = "MLP"
+n_blocks = 1
+d_block = 432
+dropout = 0.2985441700497074
+
+[model.num_embeddings]
+type = "PeriodicEmbeddings"
+n_frequencies = 84
+d_embedding = 28
+frequency_init_scale = 0.06928961808816579
+lite = false

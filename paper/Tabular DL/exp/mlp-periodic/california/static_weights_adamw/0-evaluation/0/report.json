@@ -1,0 +1,68 @@
+{
+    "function": "bin.model.main",
+    "gpus": [
+        "NVIDIA H200"
+    ],
+    "config": {
+        "seed": 0,
+        "batch_size": 256,
+        "patience": 16,
+        "n_epochs": -1,
+        "gradient_clipping_norm": 1.0,
+        "amp": true,
+        "data": {
+            "cache": true,
+            "path": "data/california",
+            "num_policy": "noisy-quantile"
+        },
+        "optimizer": {
+            "type": "AdamW",
+            "lr": 0.00028874477904207793,
+            "weight_decay": 0.0,
+            "loss": "static_weights"
+        },
+        "model": {
+            "arch_type": "plain",
+            "backbone": {
+                "type": "MLP",
+                "n_blocks": 5,
+                "d_block": 512,
+                "dropout": 0.40316326751509574
+            },
+            "num_embeddings": {
+                "type": "PeriodicEmbeddings",
+                "n_frequencies": 60,
+                "d_embedding": 28,
+                "frequency_init_scale": 0.7863713858204002,
+                "lite": false
+            }
+        }
+    },
+    "n_parameters": 1193921,
+    "prediction_type": "labels",
+    "epoch_size": 52,
+    "best_step": 1196,
+    "metrics": {
+        "train": {
+            "rmse": 0.2940678261974851,
+            "mae": 0.21605482697486877,
+            "r2": 0.9357997179031372,
+            "score": -0.2940678261974851
+        },
+        "val": {
+            "rmse": 0.46307729828046984,
+            "mae": 0.30573341250419617,
+            "r2": 0.8355352878570557,
+            "score": -0.46307729828046984
+        },
+        "test": {
+            "rmse": 0.4695058609481875,
+            "mae": 0.3106696605682373,
+            "r2": 0.8309483528137207,
+            "score": -0.4695058609481875
+        }
+    },
+    "time": "0:00:05.466617",
+    "chunk_size": null,
+    "eval_batch_size": 32768
+}

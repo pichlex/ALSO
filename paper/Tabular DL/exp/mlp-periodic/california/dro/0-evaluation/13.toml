@@ -1,0 +1,36 @@
+seed = 13
+batch_size = 256
+patience = 16
+n_epochs = -1
+gradient_clipping_norm = 1.0
+amp = true
+
+[data]
+cache = true
+path = "data/california"
+num_policy = "noisy-quantile"
+
+[optimizer]
+type = "AdamW"
+lr = 0.0008747319362627258
+weight_decay = 0.003556848426332992
+loss = "dro"
+loss_penalty = "kl"
+loss_shift_cost = 0.38987213128186265
+loss_ndraws = 0.08369299713593342
+
+[model]
+arch_type = "plain"
+
+[model.backbone]
+type = "MLP"
+n_blocks = 3
+d_block = 752
+dropout = 0.42420450371237073
+
+[model.num_embeddings]
+type = "PeriodicEmbeddings"
+n_frequencies = 92
+d_embedding = 20
+frequency_init_scale = 1.2840800928898433
+lite = false

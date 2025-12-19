@@ -1,0 +1,71 @@
+{
+    "function": "bin.model.main",
+    "gpus": [
+        "NVIDIA H200"
+    ],
+    "config": {
+        "seed": 13,
+        "batch_size": 1024,
+        "patience": 16,
+        "n_epochs": -1,
+        "gradient_clipping_norm": 1.0,
+        "amp": true,
+        "data": {
+            "cache": true,
+            "path": "data/microsoft",
+            "num_policy": "noisy-quantile"
+        },
+        "optimizer": {
+            "type": "AdamW",
+            "lr": 5.1446283124264676e-05,
+            "weight_decay": 0.0,
+            "loss": "dro",
+            "loss_penalty": "kl",
+            "loss_shift_cost": 0.19406441746979106,
+            "loss_ndraws": 0.0017786927271515826
+        },
+        "model": {
+            "arch_type": "plain",
+            "backbone": {
+                "type": "MLP",
+                "n_blocks": 1,
+                "d_block": 512,
+                "dropout": 0.46164253185310017
+            },
+            "num_embeddings": {
+                "type": "PeriodicEmbeddings",
+                "n_frequencies": 60,
+                "d_embedding": 20,
+                "frequency_init_scale": 0.02016955754970435,
+                "lite": false
+            }
+        }
+    },
+    "n_parameters": 1672465,
+    "prediction_type": "labels",
+    "epoch_size": 707,
+    "best_step": 57267,
+    "metrics": {
+        "train": {
+            "rmse": 0.7084949159513815,
+            "mae": 0.5572519302368164,
+            "r2": 0.25733011960983276,
+            "score": -0.7084949159513815
+        },
+        "val": {
+            "rmse": 0.7410029143277412,
+            "mae": 0.5817182064056396,
+            "r2": 0.20301318168640137,
+            "score": -0.7410029143277412
+        },
+        "test": {
+            "rmse": 0.7439408722552456,
+            "mae": 0.5821058750152588,
+            "r2": 0.20187759399414062,
+            "score": -0.7439408722552456
+        }
+    },
+    "time": "0:06:16.804942",
+    "chunk_size": null,
+    "eval_batch_size": 32768
+}

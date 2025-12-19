@@ -1,0 +1,8 @@
+{
+    "function": "bin.ensemble.main",
+    "scores": {
+        "train": 0.87890625,
+        "val": 0.87,
+        "test": 0.862
+    }
+}

@@ -1,0 +1,71 @@
+{
+    "function": "bin.model.main",
+    "gpus": [
+        "NVIDIA H200"
+    ],
+    "config": {
+        "seed": 6,
+        "batch_size": 1024,
+        "patience": 16,
+        "n_epochs": -1,
+        "gradient_clipping_norm": 1.0,
+        "amp": true,
+        "data": {
+            "cache": true,
+            "path": "data/microsoft",
+            "num_policy": "noisy-quantile"
+        },
+        "optimizer": {
+            "type": "AdamW",
+            "lr": 5.1446283124264676e-05,
+            "weight_decay": 0.0,
+            "loss": "dro",
+            "loss_penalty": "kl",
+            "loss_shift_cost": 0.19406441746979106,
+            "loss_ndraws": 0.0017786927271515826
+        },
+        "model": {
+            "arch_type": "plain",
+            "backbone": {
+                "type": "MLP",
+                "n_blocks": 1,
+                "d_block": 512,
+                "dropout": 0.46164253185310017
+            },
+            "num_embeddings": {
+                "type": "PeriodicEmbeddings",
+                "n_frequencies": 60,
+                "d_embedding": 20,
+                "frequency_init_scale": 0.02016955754970435,
+                "lite": false
+            }
+        }
+    },
+    "n_parameters": 1672465,
+    "prediction_type": "labels",
+    "epoch_size": 707,
+    "best_step": 50904,
+    "metrics": {
+        "train": {
+            "rmse": 0.7134987523523127,
+            "mae": 0.5591555833816528,
+            "r2": 0.24680262804031372,
+            "score": -0.7134987523523127
+        },
+        "val": {
+            "rmse": 0.7408229933432989,
+            "mae": 0.579767644405365,
+            "r2": 0.20340007543563843,
+            "score": -0.7408229933432989
+        },
+        "test": {
+            "rmse": 0.7442431842285561,
+            "mae": 0.5807898640632629,
+            "r2": 0.20122873783111572,
+            "score": -0.7442431842285561
+        }
+    },
+    "time": "0:05:37.008111",
+    "chunk_size": null,
+    "eval_batch_size": 32768
+}

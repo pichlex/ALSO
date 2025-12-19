@@ -1,0 +1,20 @@
+{
+    "function": "bin.tune.main",
+    "best": {
+        "function": "bin.model.main",
+        "gpus": [
+            "NVIDIA H200"
+        ],
+        "n_parameters": 5271121,
+        "tuning_time": "1:29:19.402580",
+        "trial_id": 90,
+        "scores": {
+            "train": -0.5222348588599351,
+            "val": -0.5582706610772165,
+            "test": -0.5566811797778042
+        },
+        "time": "0:01:37.599736"
+    },
+    "n_completed_trials": 100,
+    "time": "1:43:46.248295"
+}

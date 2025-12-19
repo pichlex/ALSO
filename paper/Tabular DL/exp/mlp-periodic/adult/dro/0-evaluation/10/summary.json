@@ -1,0 +1,13 @@
+{
+    "function": "bin.model.main",
+    "gpus": [
+        "NVIDIA H200"
+    ],
+    "n_parameters": 140522,
+    "scores": {
+        "train": 0.875460687960688,
+        "val": 0.8673422385997236,
+        "test": 0.867821386892697
+    },
+    "time": "0:00:13.245908"
+}
