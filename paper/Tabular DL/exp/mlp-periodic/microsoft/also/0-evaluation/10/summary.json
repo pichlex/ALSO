@@ -1,0 +1,13 @@
+{
+    "function": "bin.model.main",
+    "gpus": [
+        "NVIDIA A100-PCIE-40GB"
+    ],
+    "n_parameters": 3987913,
+    "scores": {
+        "train": -0.7095797642341612,
+        "val": -0.740334576993731,
+        "test": -0.7432185189425172
+    },
+    "time": "0:27:50.822221"
+}
