@@ -10,6 +10,7 @@ argument parsing.
 """
 
 import json
+import os
 import os.path
 import time
 from collections import defaultdict
@@ -165,7 +166,10 @@ def tune_params(
     if base_name.endswith(uc_suffix):
         base_name = base_name[: -len(uc_suffix)]
 
-    f_name = f'tuned_params/{base_name}_{config["unbalance_coef"]}.json'
+    dataset_name = config.get("dataset", "cifar10").lower()
+    tuned_dir = os.path.join("tuned_params", dataset_name)
+    os.makedirs(tuned_dir, exist_ok=True)
+    f_name = os.path.join(tuned_dir, f'{base_name}_{config["unbalance_coef"]}.json')
     if os.path.exists(f_name) and use_old_tune_params:
         try:
             with open(f_name) as f:
@@ -267,7 +271,7 @@ def main(
     # Each tuple represents: (optimizer_name, use_sampler, use_static_weights, use_exp, use_init_static_weights, use_ls_dro)
     experiment_list = [
         # Main method from the paper:
-        ("also", True, False, False, True, False),  # ALSO with initialized static weights
+        ("also", False, False, False, True, False),  # ALSO with initialized static weights
         # To run other experiments, uncomment them below:
         # --- Standard approaches ---
         # ("adam", False, False, False, False, False),   # standard Adam

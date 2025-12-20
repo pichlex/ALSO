@@ -67,11 +67,11 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
     Optional[Callable],
 ]:
     """
-    Configures the unbalanced CIFAR10 classification problem based on provided configuration.
+    Configures the unbalanced binary classification problem based on provided configuration.
 
     This function:
     1. Sets up reproducible randomness
-    2. Prepares datasets (train/validation/test) with specified imbalance
+    2. Prepares datasets (train/validation/test) with specified imbalance for CIFAR10 or SVHN
     3. Creates the model architecture
     4. Configures the optimizer based on specified strategy
     5. Returns all components needed for training
@@ -96,6 +96,18 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
         device = "cpu"
     else:
         device = f"cuda" if torch.cuda.is_available() else "cpu"
+
+    dataset_name = config.get("dataset", "cifar10").lower()
+    if dataset_name == "cifar10":
+        mean = (0.4914, 0.4822, 0.4465)
+        std = (0.2023, 0.1994, 0.2010)
+    elif dataset_name == "svhn":
+        mean = (x / 255.0 for x in[109.9, 109.7, 113.8])
+        std= (x / 255.0 for x in [50.1, 50.6, 50.8])
+        #reference: https://github.com/uoguelph-mlrg/Cutout/blob/master/train.py
+    else:
+        raise ValueError(f"Unsupported dataset {dataset_name}")
+
     # Define data transformations
     transform_base = transforms.Compose(
         [
@@ -103,12 +115,12 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
         ]
     )
 
-    # Standard normalization for CIFAR10 with proper mean/std values
+    # Standard normalization for dataset with proper mean/std values
     transform_test = transforms.Compose(
         [
             transforms.ToPILImage(),
             transforms.ToTensor(),
-            transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+            transforms.Normalize(mean, std),
         ]
     )
 
@@ -120,24 +132,38 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
                 transforms.RandomCrop(32, padding=4),  # Random crops with padding
                 transforms.RandomHorizontalFlip(),  # Random horizontal flips
                 transforms.ToTensor(),
-                transforms.Normalize(
-                    (0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)
-                ),
+                transforms.Normalize(mean, std),
             ]
         )
     else:
         transform_train = transform_test
     gen = torch.Generator().manual_seed(config["seed"])
-    # Load CIFAR10 dataset
-    ds = torchvision.datasets.CIFAR10(
-        "../datasets", train=True, transform=transform_base, download=True,
-    )
+
+    # Load dataset
+    if dataset_name == "cifar10":
+        ds = torchvision.datasets.CIFAR10(
+            "../datasets", train=True, transform=transform_base, download=True
+        )
+        test_base = torchvision.datasets.CIFAR10(
+            "../datasets", train=False, transform=transform_base, download=True
+        )
+        targets = ds.targets
+    elif dataset_name == "svhn":
+        ds = torchvision.datasets.SVHN(
+            "../datasets", split="train", transform=transform_base, download=True
+        )
+        test_base = torchvision.datasets.SVHN(
+            "../datasets", split="test", transform=transform_base, download=True
+        )
+        targets = ds.labels
+    else:
+        raise ValueError(f"Unsupported dataset {dataset_name}")
 
     # Split into training and validation sets with stratification
     train_idx, val_idx = train_test_split(
         np.arange(len(ds)),
         test_size=0.2,
-        stratify=ds.targets,
+        stratify=targets,
         random_state=config["seed"],
     )
 
@@ -160,9 +186,7 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
         # Balanced test set (k=1 means no imbalance)
         ds_test = IndexedDataset(
             UnbalancedDataset(
-                torchvision.datasets.CIFAR10(
-                    "../datasets", train=False, transform=transform_base, download=True
-                ),
+                test_base,
                 seed=config["seed"],
                 k=1,  # No imbalance
             ),
@@ -172,9 +196,7 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
         # Test set with same imbalance as training
         ds_test = IndexedDataset(
             UnbalancedDataset(
-                torchvision.datasets.CIFAR10(
-                    "../datasets", train=False, transform=transform_base
-                ),
+                test_base,
                 seed=config["seed"],
                 k=config["unbalance_coef"],
             ),

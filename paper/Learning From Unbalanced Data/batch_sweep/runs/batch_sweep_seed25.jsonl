@@ -1,1 +1,0 @@
-{"seed": 25, "batch_size": 30, "unbalance_coef": 1, "run_name": "also_upsampling_init_sw", "metrics": {"f1": {"mean": 0.8605885190545104, "std": 0.0}, "precision": {"mean": 0.8313140726933831, "std": 0.0}, "recall": {"mean": 0.892, "std": 0.0}, "time": {"mean": 1699.352252800949, "std": 0.0}}}
