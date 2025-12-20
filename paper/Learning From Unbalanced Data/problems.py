@@ -102,8 +102,8 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
         mean = (0.4914, 0.4822, 0.4465)
         std = (0.2023, 0.1994, 0.2010)
     elif dataset_name == "svhn":
-        mean = (x / 255.0 for x in[109.9, 109.7, 113.8])
-        std= (x / 255.0 for x in [50.1, 50.6, 50.8])
+        mean = tuple(x / 255.0 for x in[109.9, 109.7, 113.8])
+        std= tuple(x / 255.0 for x in [50.1, 50.6, 50.8])
         #reference: https://github.com/uoguelph-mlrg/Cutout/blob/master/train.py
     else:
         raise ValueError(f"Unsupported dataset {dataset_name}")
