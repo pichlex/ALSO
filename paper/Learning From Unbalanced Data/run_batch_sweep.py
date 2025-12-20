@@ -77,6 +77,7 @@ def run_batch_sweep(
 ):
     base_config = _build_base_config(config_path, seed, device, balanced_test, augment)
     unbalance_coef_list = base_config["unbalance_coefs"]
+    dataset_name = base_config.get("dataset", "cifar10").lower()
     experiment_list = _experiment_list()
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -121,6 +122,7 @@ def run_batch_sweep(
                         "batch_size": batch_size,
                         "unbalance_coef": unbalance_coef,
                         "run_name": run_name,
+                        "dataset": dataset_name,
                         "metrics": aggregated,
                     }
                     f_out.write(json.dumps(record) + "\n")
@@ -183,9 +185,18 @@ def parse_args() -> argparse.Namespace:
 
 if __name__ == "__main__":
     args = parse_args()
+    script_dir = Path(__file__).resolve().parent
     output = args.output
     if output is None:
-        output = Path("paper/Learning From Unbalanced Data/runs") / f"batch_sweep_seed{args.seed}.jsonl"
+        default_runs = script_dir / "batch_sweep" / "runs"
+        # Determine dataset from config to separate outputs
+        try:
+            with args.config_path.open() as f:
+                cfg = json.load(f)
+                dataset_name = cfg.get("dataset", "cifar10").lower()
+        except Exception:
+            dataset_name = "cifar10"
+        output = default_runs / dataset_name / f"batch_sweep_seed{args.seed}.jsonl"
     run_batch_sweep(
         config_path=args.config_path,
         seed=args.seed,
