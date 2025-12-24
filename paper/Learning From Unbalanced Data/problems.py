@@ -310,10 +310,8 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
 
         # Optionally initialize with class-balanced weights
         if config["use_init_static_weights"]:
-            class_counts = [
-                sum(ds_train._dataset._y == 0),
-                sum(ds_train._dataset._y == 1),
-            ]
+            n_classes = ds_train._dataset.n_classes
+            class_counts = [sum(ds_train._dataset._y == c) for c in range(n_classes)]
             weights = [1 / float(class_counts[i]) for i in range(len(class_counts))]
             pi_reg = torch.tensor(
                 [weights[int(t)] for t in ds_train._dataset._y], dtype=torch.float32
