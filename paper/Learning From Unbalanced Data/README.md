@@ -36,12 +36,23 @@ For configuration you can use `config.json` file with the following structure:
 
 The main configuration parameters are:
 - `model`: Model architecture to use (currently only "resnet18" is supported)
-- `unbalance_coefs`: List of imbalance coefficients to test (higher means more imbalance)
+- `unbalance_coefs`: List of imbalance coefficients to test (higher means more imbalance). You can also pass a list of ratios for multiclass grouping, e.g. `[[10, 50, 1]]`.
 - `batch_size`: Training batch size
 - `n_epoches`: Number of training epochs for evaluation runs
 - `n_epoches_tune`: Number of training epochs for hyperparameter tuning
 - `eval_runs`: Number of evaluation runs with different random seeds
 - `tune_runs`: Number of hyperparameter tuning trials
+
+### Multiclass ratios
+
+To run grouped multiclass experiments without oversampling, add:
+```json
+{
+    "class_groups": [[0,2,4,6,8], [1,3,5,7], [9]],
+    "unbalance_coefs": [[10, 50, 1]]
+}
+```
+`class_groups` defines how original labels are merged; `unbalance_coefs` (as a list of ratios) sets target proportions via downsampling only. Balanced test can still be enabled with `--balanced-test`.
 
 ## Running Experiments
 

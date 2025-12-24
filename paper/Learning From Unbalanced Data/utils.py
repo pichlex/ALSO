@@ -18,20 +18,30 @@ from collections import defaultdict
 
 class UnbalancedDataset(torch.utils.data.Dataset):
     """
-    Creates an unbalanced dataset from a balanced dataset by reducing one class.
+    Creates an unbalanced dataset from a balanced dataset by grouping classes.
 
-    This class converts a multi-class dataset to a binary classification problem
-    by grouping classes with even/odd labels and then reduces the minority class
-    according to the provided imbalance factor.
+    By default, it groups classes by even/odd labels (binary) and downsamples
+    the minority class by factor ``k``. For multiclass mode, custom
+    ``class_groups`` and ``class_ratios`` can be provided to control target
+    proportions without oversampling.
 
     Args:
         balanced_dataset: Original balanced dataset that provides (data, target) tuples
         seed: Random seed for reproducibility
-        k: Imbalance factor - larger values create more imbalance (default: 2)
+        k: Imbalance factor for binary mode (default: 2)
+        class_groups: Optional list of lists defining groups of original labels
+        class_ratios: Optional list/tuple with desired ratios per group. If
+            provided, it overrides ``k`` and enforces ratios via downsampling
+            only (no oversampling).
     """
 
     def __init__(
-        self, balanced_dataset: torch.utils.data.Dataset, seed: int, k: int = 2
+        self,
+        balanced_dataset: torch.utils.data.Dataset,
+        seed: int,
+        k: int = 2,
+        class_groups: Optional[List[List[int]]] = None,
+        class_ratios: Optional[List[int]] = None,
     ):
         X, y = [], []
         for el_x, el_y in balanced_dataset:
@@ -39,29 +49,61 @@ class UnbalancedDataset(torch.utils.data.Dataset):
             y.append(el_y)
         X = torch.stack(X)
         y = torch.tensor(y)
-        # Convert to binary classification (even/odd classes)
-        new_targets = y % 2
-        X_first_class = X[new_targets == 1]
-        X_zero_class = X[new_targets == 0]
-        if k == 1:
-            # No imbalance when k=1
-            compressed_indexes = np.arange(X_first_class.shape[0])
-        else:
-            # Reduce class 1 by factor k (keeping only 1/k of samples)
-            _, compressed_indexes = train_test_split(
-                np.arange(X_first_class.shape[0]),
-                test_size=1.0 / k,
-                stratify=y[new_targets == 1],
-                random_state=seed,
+        unique_labels = sorted(set(y.tolist()))
+        default_groups = [
+            [label for label in unique_labels if label % 2 == 0],
+            [label for label in unique_labels if label % 2 == 1],
+        ]
+        groups = class_groups or default_groups
+        label_to_group = {}
+        for group_idx, labels in enumerate(groups):
+            for label in labels:
+                if label in label_to_group:
+                    raise ValueError(f"Label {label} is assigned to multiple groups")
+                label_to_group[int(label)] = group_idx
+        missing_labels = [label for label in unique_labels if label not in label_to_group]
+        if missing_labels:
+            raise ValueError(
+                f"Labels {missing_labels} are not assigned to any class_group"
             )
-        X_first_class = X_first_class[compressed_indexes]
-        self._X = torch.cat([X_zero_class, X_first_class])
-        self._y = torch.cat(
-            [
-                torch.zeros(X_zero_class.shape[0], dtype=y.dtype),
-                torch.ones(X_first_class.shape[0], dtype=y.dtype),
-            ]
-        )
+
+        new_targets = torch.tensor([label_to_group[int(label)] for label in y.tolist()])
+        group_indices = [np.where(new_targets.numpy() == i)[0] for i in range(len(groups))]
+        if any(len(idxs) == 0 for idxs in group_indices):
+            empty = [i for i, idxs in enumerate(group_indices) if len(idxs) == 0]
+            raise ValueError(f"Groups {empty} have no samples in the dataset")
+
+        ratios: Optional[List[int]] = None
+        if class_ratios is not None:
+            ratios = [int(r) for r in class_ratios]
+            if len(ratios) != len(groups):
+                raise ValueError("class_ratios length must match class_groups length")
+            if any(r <= 0 for r in ratios):
+                raise ValueError("class_ratios must contain positive values only")
+        elif k is not None and len(groups) == 2:
+            # Maintain original binary behavior via ratios [k, 1]
+            ratios = [k, 1]
+
+        rng = np.random.default_rng(seed)
+        selected_indexes: List[np.ndarray] = []
+
+        if ratios is None:
+            selected_indexes = group_indices
+        else:
+            anchor_idx = int(np.argmax(ratios))
+            anchor_size = len(group_indices[anchor_idx])
+            t = anchor_size / ratios[anchor_idx]
+            for idxs, ratio in zip(group_indices, ratios):
+                target = int(np.floor(t * ratio))
+                target = min(target, len(idxs))
+                target = max(1, target)
+                chosen = rng.choice(idxs, size=target, replace=False)
+                selected_indexes.append(chosen)
+
+        selected = np.concatenate(selected_indexes)
+        self._X = X[selected]
+        self._y = new_targets[selected]
+        self.n_classes = len(groups)
 
     def __len__(self) -> int:
         """Returns the total number of samples in the dataset."""
@@ -436,6 +478,8 @@ def train(
             pi_history.append(pi_snapshot.cpu().tolist())
             if log_to_mlflow:
                 uc = config.get("unbalance_coef", "na")
+                if isinstance(uc, (list, tuple)):
+                    uc = "-".join(str(x) for x in uc)
                 mlflow.log_dict(
                     {"epoch": int(e), "pi": pi_snapshot.cpu().tolist()},
                     f"pi/uc_{uc}/epoch_{int(e)}.json",

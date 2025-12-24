@@ -159,11 +159,26 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
     else:
         raise ValueError(f"Unsupported dataset {dataset_name}")
 
-    # Split into training and validation sets with stratification
+    # Prepare grouping/ratios configuration
+    uc = config["unbalance_coef"]
+    class_ratios = uc if isinstance(uc, (list, tuple)) else None
+    class_groups = config.get("class_groups")
+
+    # Split into training and validation sets with stratification on grouped labels
+    base_targets = np.array(targets)
+    if class_groups:
+        label_to_group = {}
+        for idx, labels in enumerate(class_groups):
+            for label in labels:
+                label_to_group[label] = idx
+        grouped_targets = np.array([label_to_group[t] for t in base_targets])
+    else:
+        grouped_targets = base_targets % 2
+
     train_idx, val_idx = train_test_split(
         np.arange(len(ds)),
         test_size=0.2,
-        stratify=targets,
+        stratify=grouped_targets,
         random_state=config["seed"],
     )
 
@@ -172,14 +187,22 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
     ds_val = Subset(ds, val_idx)
 
     # Create unbalanced datasets with specified imbalance factor
-    ds_train = IndexedDataset(
-        UnbalancedDataset(ds_train, seed=config["seed"], k=config["unbalance_coef"]),
-        transform=transform_train,
+    ds_train_raw = UnbalancedDataset(
+        ds_train,
+        seed=config["seed"],
+        k=config["unbalance_coef"] if class_ratios is None else None,
+        class_groups=class_groups,
+        class_ratios=class_ratios,
     )
-    ds_val = IndexedDataset(
-        UnbalancedDataset(ds_val, seed=config["seed"], k=config["unbalance_coef"]),
-        transform=transform_test,
+    ds_val_raw = UnbalancedDataset(
+        ds_val,
+        seed=config["seed"],
+        k=config["unbalance_coef"] if class_ratios is None else None,
+        class_groups=class_groups,
+        class_ratios=class_ratios,
     )
+    ds_train = IndexedDataset(ds_train_raw, transform=transform_train)
+    ds_val = IndexedDataset(ds_val_raw, transform=transform_test)
 
     # Create test dataset (either balanced when k=1 or with the same imbalance as training)
     if config["balanced_test"]:
@@ -189,6 +212,8 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
                 test_base,
                 seed=config["seed"],
                 k=1,  # No imbalance
+                class_groups=class_groups,
+                class_ratios=None,
             ),
             transform=transform_test,
         )
@@ -198,14 +223,16 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
             UnbalancedDataset(
                 test_base,
                 seed=config["seed"],
-                k=config["unbalance_coef"],
+                k=config["unbalance_coef"] if class_ratios is None else None,
+                class_groups=class_groups,
+                class_ratios=class_ratios,
             ),
             transform=transform_test,
         )
     # Configure class weighting strategies
     if config["use_sampler"]:
         # Create a weighted sampler to handle class imbalance during batch sampling
-        class_counts = [sum(ds_train._dataset._y == 0), sum(ds_train._dataset._y == 1)]
+        class_counts = [sum(ds_train._dataset._y == c) for c in range(ds_train._dataset.n_classes)]
         weights = [1 / float(class_counts[i]) for i in range(len(class_counts))]
         samples_weights_train = np.array(
             [weights[int(t)] for t in ds_train._dataset._y]
@@ -217,7 +244,7 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
 
     if config["use_static_weights"]:
         # Calculate static class weights for loss weighting
-        class_counts = [sum(ds_train._dataset._y == 0), sum(ds_train._dataset._y == 1)]
+        class_counts = [sum(ds_train._dataset._y == c) for c in range(ds_train._dataset.n_classes)]
         weights = [1 / float(class_counts[i]) for i in range(len(class_counts))]
         weights_train = torch.tensor(
             [weights[int(t)] for t in ds_train._dataset._y], dtype=torch.float32
@@ -226,7 +253,7 @@ def get_problem(config: Dict[str, Any]) -> Tuple[
     else:
         config["weights"] = None
     # Configure model output size and loss function
-    d_out = 2  # Binary classification
+    d_out = ds_train._dataset.n_classes
     metric_fn = f1_score
     loss_fn = nn.CrossEntropyLoss(reduction="none")  # Per-sample losses for weighting
 

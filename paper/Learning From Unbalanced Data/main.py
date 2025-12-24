@@ -28,6 +28,13 @@ from problems import get_problem
 from utils import ImportanceLoss, train
 
 
+def stringify_uc(uc: Any) -> str:
+    """Convert unbalance_coef (scalar or sequence) to a filename-safe string."""
+    if isinstance(uc, (list, tuple)):
+        return "-".join(str(x) for x in uc)
+    return str(uc)
+
+
 def run_optimization(
     config: Dict[str, Any],
     metrics: Optional[Dict[str, List[float]]] = None,
@@ -72,7 +79,7 @@ def run_optimization(
         mlflow.set_experiment(f"{experiment_base}")
         run_title = (
             f"{config.get('run_name', config['optimizer'])}"
-            f"_uc{config.get('unbalance_coef', 'na')}_{experiment_base}"
+            f"_uc{stringify_uc(config.get('unbalance_coef', 'na'))}_{experiment_base}"
         )
         mlflow_ctx = mlflow.start_run(run_name=run_title)
 
@@ -88,7 +95,7 @@ def run_optimization(
             mlflow.set_tags(
                 {
                     "optimizer": config.get("optimizer"),
-                    "unbalance_coef": config.get("unbalance_coef"),
+                    "unbalance_coef": stringify_uc(config.get("unbalance_coef")),
                     "seed": config.get("seed"),
                 }
             )
@@ -162,14 +169,15 @@ def tune_params(
         Updated config dictionary with tuned hyperparameters
     """
     base_name = name or "study"
-    uc_suffix = f"_uc{config['unbalance_coef']}"
+    uc_str = stringify_uc(config["unbalance_coef"])
+    uc_suffix = f"_uc{uc_str}"
     if base_name.endswith(uc_suffix):
         base_name = base_name[: -len(uc_suffix)]
 
     dataset_name = config.get("dataset", "cifar10").lower()
     tuned_dir = os.path.join("tuned_params", dataset_name)
     os.makedirs(tuned_dir, exist_ok=True)
-    f_name = os.path.join(tuned_dir, f'{base_name}_{config["unbalance_coef"]}.json')
+    f_name = os.path.join(tuned_dir, f"{base_name}_{uc_str}.json")
     if os.path.exists(f_name) and use_old_tune_params:
         try:
             with open(f_name) as f:
@@ -181,7 +189,7 @@ def tune_params(
             pass
 
     study = optuna.create_study(
-        direction="maximize", study_name=f"{base_name}_{config['unbalance_coef']}"
+        direction="maximize", study_name=f"{base_name}_{uc_str}"
     )
 
     def tune_function(trial):
@@ -288,12 +296,12 @@ def main(
     for unbalance_coef in unbalance_coef_list:
         config["unbalance_coef"] = unbalance_coef
         # Optional scaling of batch size by current unbalance coefficient when pi_strategy == "uc"
-        if config.get("pi_strategy") == "uc" and base_batch_size is not None:
+        if config.get("pi_strategy") == "uc" and base_batch_size is not None and isinstance(unbalance_coef, (int, float)):
             config["batch_size"] = int(base_batch_size * unbalance_coef)
         else:
             config["batch_size"] = base_batch_size
         print(
-            f"===================== unbalance_coefficient: {unbalance_coef} ======================="
+            f"===================== unbalance_coefficient: {stringify_uc(unbalance_coef)} ======================="
         )
         metrics = {}
 
