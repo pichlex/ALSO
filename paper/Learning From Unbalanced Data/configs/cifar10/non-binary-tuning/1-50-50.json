@@ -1,0 +1,25 @@
+{
+    "task": "UNBALANCED-CIFAR10-MULTI",
+    "seed": 18,
+    "model": "resnet18",
+    "mlflow_experiment": "non-binary-tuning-cifar",
+    "dataset": "cifar10", 
+
+    "n_epoches_tune": 5,
+    "tune_runs": 100,
+
+    "n_epoches": 20,
+    "eval_runs": 1,
+
+    "batch_size": 64,
+    "class_groups": [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8, 9]
+    ],
+    "unbalance_coefs": [
+    [1, 50, 50]
+    ],
+
+    "log_pi": false
+}
