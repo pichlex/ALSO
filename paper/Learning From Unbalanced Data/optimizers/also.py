@@ -186,7 +186,7 @@ class ALSO(torch.optim.Optimizer):
                 self._move_pi_to_device(generator.device)
             probs = self.pi / self.pi.sum()
             idx_local = torch.multinomial(
-                probs, batch_size, replacement=True, generator=generator
+                probs, batch_size, replacement=False
             )
             return batch_size, idx_local
 
