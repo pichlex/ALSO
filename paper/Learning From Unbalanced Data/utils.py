@@ -583,14 +583,7 @@ def train(
             if pi_template is None:
                 raise AttributeError("Adaptive batching requires optimizer with `pi` attribute.")
             hat_hist_len = len(adaptive_state["hat_history"])
-            if hat_hist_len == 0:
-                hat_ref = None
-            elif hat_hist_len == 1:
-                # For epoch 1, compare to hat_F from epoch 0
-                hat_ref = adaptive_state["hat_history"][-1]
-            else:
-                # For epoch >=2, compare to hat_F from two epochs back
-                hat_ref = adaptive_state["hat_history"][-2]
+            hat_ref = adaptive_state["hat_history"][-1] if hat_hist_len >= 1 else None
             adaptive_tracker = AdaptiveBatchTracker(
                 pi_template=pi_template.detach(),
                 hat_reference=hat_ref,
