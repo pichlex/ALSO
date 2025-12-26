@@ -545,6 +545,7 @@ def train(
     batch_size_min = int(config.get("adaptive_batch_min", 10))
     batch_size_max = int(config.get("adaptive_batch_max", 512))
     init_batch_size = int(config.get("batch_size", 1))
+    epoch_start_ab = int(config.get("epoch_start_ab", 2))
     train_dataset = train_dataloader.dataset
     prev_hat_grad: Optional[List[Optional[torch.Tensor]]] = None
     prev_hat_loss: Optional[float] = None
@@ -602,7 +603,8 @@ def train(
     )
 
     for e in e_list:
-        if adaptive_enabled:
+        adaptive_active = adaptive_enabled and e >= epoch_start_ab
+        if adaptive_active:
             var_used = var_history[e - 1] if (e > 0 and len(var_history) >= e) else None
             denom_used = hat_norm_history[e - 2] if (e > 1 and len(hat_norm_history) >= e - 1) else None
             if e >= 2 and var_used is not None and denom_used is not None and denom_used > 0:
