@@ -180,53 +180,20 @@ class AdaptiveBatchTracker:
     """
     Tracks hat{F} and variance terms for adaptive batch size computation.
 
-    We only store running sums to avoid extra memory, and we keep gradients on
-    the model device to stay inexpensive on a single GPU.
+    Uses Welford updates to get mean and sum of squared deviations in one pass:
+    var_sum = sum ||F_i - F_hat||_*^2 with ||·||_*^2 = 2||·||_2^2 + 2||·||_∞^2.
     """
 
     def __init__(self, device: str):
         self.device = device
-        self.reset(None, None)
+        self.reset()
 
-    def reset(
-        self,
-        hat_ref_grad: Optional[List[Optional[torch.Tensor]]],
-        hat_ref_loss: Optional[float],
-    ) -> None:
-        self.hat_ref_grad = hat_ref_grad
-        self.hat_ref_loss = hat_ref_loss
-        self.grad_sums: Optional[List[Optional[torch.Tensor]]] = None
-        self.loss_max_sum: float = 0.0
-        self.var_sum: float = 0.0
+    def reset(self) -> None:
+        self.mean_grad: Optional[List[Optional[torch.Tensor]]] = None
+        self.m2_grad: Optional[List[Optional[torch.Tensor]]] = None
+        self.mean_loss: float = 0.0
+        self.m2_loss: float = 0.0
         self.steps: int = 0
-
-    def _accumulate_grads(self, grads: List[Optional[torch.Tensor]]) -> None:
-        if self.grad_sums is None:
-            self.grad_sums = [
-                g.detach().clone() if g is not None else None for g in grads
-            ]
-            return
-        for idx, g in enumerate(grads):
-            if g is None:
-                continue
-            if self.grad_sums[idx] is None:
-                self.grad_sums[idx] = g.detach().clone()
-            else:
-                self.grad_sums[idx].add_(g.detach())
-
-    def _accumulate_variance(
-        self, grads: List[Optional[torch.Tensor]], losses_raw: torch.Tensor
-    ) -> None:
-        if self.hat_ref_grad is None or self.hat_ref_loss is None:
-            return
-        grad_diff_sq = 0.0
-        for g, h in zip(grads, self.hat_ref_grad):
-            if g is None or h is None:
-                continue
-            grad_diff = g.detach() - h
-            grad_diff_sq += torch.sum(grad_diff * grad_diff).item()
-        loss_diff = torch.max(torch.abs(losses_raw - self.hat_ref_loss))
-        self.var_sum += 2.0 * grad_diff_sq + 2.0 * float(loss_diff.item() ** 2)
 
     def update(
         self, grads: List[Optional[torch.Tensor]], losses_raw: Optional[torch.Tensor]
@@ -235,30 +202,70 @@ class AdaptiveBatchTracker:
             return
         loss_tensor = losses_raw.detach()
         loss_max = loss_tensor.max()
-        self._accumulate_grads(grads)
-        self._accumulate_variance(grads, loss_tensor)
-        self.loss_max_sum += loss_max.item()
+
+        # Initialize means/M2 on first step to match shapes
+        if self.mean_grad is None:
+            self.mean_grad = [
+                g.detach().clone() if g is not None else None for g in grads
+            ]
+            self.m2_grad = [
+                torch.zeros_like(g) if g is not None else None for g in grads
+            ]
+            self.mean_loss = float(loss_max.item())
+            self.m2_loss = 0.0
+            self.steps = 1
+            return
+
         self.steps += 1
+        count = float(self.steps)
+
+        for idx, g in enumerate(grads):
+            if g is None:
+                continue
+            g_det = g.detach()
+            mean_g = self.mean_grad[idx]
+            m2_g = self.m2_grad[idx]
+            if mean_g is None or m2_g is None:
+                self.mean_grad[idx] = g_det.clone()
+                self.m2_grad[idx] = torch.zeros_like(g_det)
+                continue
+            delta = g_det - mean_g
+            mean_g.add_(delta / count)
+            delta2 = g_det - mean_g
+            m2_g.add_(delta * delta2)
+
+        delta_loss = loss_max.item() - self.mean_loss
+        self.mean_loss += delta_loss / count
+        delta2_loss = loss_max.item() - self.mean_loss
+        self.m2_loss += delta_loss * delta2_loss
 
     def finalize(
         self,
     ) -> Tuple[
         Optional[List[Optional[torch.Tensor]]], Optional[float], float, float
     ]:
-        if self.steps == 0 or self.grad_sums is None:
-            return None, None, 0.0, self.var_sum
+        if self.steps == 0 or self.mean_grad is None or self.m2_grad is None:
+            return None, None, 0.0, 0.0
+
         hat_grad: List[Optional[torch.Tensor]] = []
         hat_grad_norm_sq = 0.0
-        for g_sum in self.grad_sums:
-            if g_sum is None:
+        for mean_g in self.mean_grad:
+            if mean_g is None:
                 hat_grad.append(None)
                 continue
-            g_hat = g_sum / float(self.steps)
-            hat_grad.append(g_hat)
-            hat_grad_norm_sq += torch.sum(g_hat * g_hat).item()
-        hat_loss = self.loss_max_sum / float(self.steps)
+            hat_grad.append(mean_g)
+            hat_grad_norm_sq += torch.sum(mean_g * mean_g).item()
+
+        hat_loss = self.mean_loss
         hat_norm_sq = 2.0 * hat_grad_norm_sq + 2.0 * (hat_loss ** 2)
-        return hat_grad, hat_loss, hat_norm_sq, self.var_sum
+
+        var_grad_sum = 0.0
+        for m2_g in self.m2_grad:
+            if m2_g is None:
+                continue
+            var_grad_sum += torch.sum(m2_g).item()
+        var_sum = 2.0 * var_grad_sum + 2.0 * self.m2_loss
+        return hat_grad, hat_loss, hat_norm_sq, var_sum
 
 
 def train_step(
@@ -575,10 +582,10 @@ def train(
             ).tolist()
         return torch.randperm(total, generator=g).tolist()
 
-    if adaptive_enabled:
-        if config.get("dynamic_batch", False):
-            # The adaptive batch schedule controls batch sizes; disable competing mode.
-            config["dynamic_batch"] = False
+        if adaptive_enabled:
+            if config.get("dynamic_batch", False):
+                # The adaptive batch schedule controls batch sizes; disable competing mode.
+                config["dynamic_batch"] = False
         fixed_indices = _build_fixed_order_indices()
 
         def _make_adaptive_loader(batch_size: int) -> torch.utils.data.DataLoader:
@@ -606,8 +613,8 @@ def train(
         adaptive_active = adaptive_enabled and e >= epoch_start_ab
         if adaptive_active:
             var_used = var_history[e - 1] if (e > 0 and len(var_history) >= e) else None
-            denom_used = hat_norm_history[e - 2] if (e > 1 and len(hat_norm_history) >= e - 1) else None
-            if e >= 2 and var_used is not None and denom_used is not None and denom_used > 0:
+            denom_used = hat_norm_history[e - 1] if (e > 0 and len(hat_norm_history) >= e) else None
+            if e >= 1 and var_used is not None and denom_used is not None and denom_used > 0:
                 batch_size_epoch = math.floor(var_used / denom_used)  # floor as requested
             else:
                 batch_size_epoch = init_batch_size
@@ -628,7 +635,7 @@ def train(
 
         tracker = AdaptiveBatchTracker(device) if adaptive_enabled else None
         if tracker is not None:
-            tracker.reset(prev_hat_grad, prev_hat_loss)
+            tracker.reset()
         # Train for one epoch
         train_loss, n_batches = train_step(
             model,
