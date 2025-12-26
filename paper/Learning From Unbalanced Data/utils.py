@@ -341,7 +341,12 @@ def train_step(
                 if weights is None and compute_weights_fn is not None:
                     weights = compute_weights_fn(losses)
                     scale = 1.0
-                if weights is not None and scale is not None:
+                use_weights = (
+                    weights is not None
+                    and scale is not None
+                    and config.get("optimizer") == "dro_loss"
+                )
+                if use_weights:
                     losses = losses * scale
                     loss = (weights * losses).sum()
                 else:
@@ -401,7 +406,12 @@ def train_step(
                 if weights is None and compute_weights_fn is not None:
                     weights = compute_weights_fn(losses)
                     scale = 1.0
-                if weights is not None and scale is not None:
+                use_weights = (
+                    weights is not None
+                    and scale is not None
+                    and config.get("optimizer") == "dro_loss"
+                )
+                if use_weights:
                     losses = losses * scale
                     loss = (weights * losses).sum()
                 else:
