@@ -630,7 +630,7 @@ def train(
             prev_batch_size = batch_size_epoch
             current_train_loader = _make_adaptive_loader(batch_size_epoch)
             if hasattr(optimizer, "loss_scale"):
-                optimizer.loss_scale = len(train_dataset) / float(batch_size_epoch)
+                optimizer.loss_scale = 1.0 / float(batch_size_epoch)
             if log_to_mlflow:
                 mlflow.log_metric("adaptive_batch/batch_size", batch_size_epoch, step=e)
                 if var_used is not None and denom_used is not None:
