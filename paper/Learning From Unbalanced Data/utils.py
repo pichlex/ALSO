@@ -582,10 +582,10 @@ def train(
             ).tolist()
         return torch.randperm(total, generator=g).tolist()
 
-        if adaptive_enabled:
-            if config.get("dynamic_batch", False):
-                # The adaptive batch schedule controls batch sizes; disable competing mode.
-                config["dynamic_batch"] = False
+    if adaptive_enabled:
+        if config.get("dynamic_batch", False):
+            # The adaptive batch schedule controls batch sizes; disable competing mode.
+            config["dynamic_batch"] = False
         fixed_indices = _build_fixed_order_indices()
 
         def _make_adaptive_loader(batch_size: int) -> torch.utils.data.DataLoader:
