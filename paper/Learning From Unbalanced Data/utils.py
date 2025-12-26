@@ -5,6 +5,7 @@ This module provides helper classes and functions for working with unbalanced da
 specifically for the CIFAR-10 dataset with binary classification setup.
 """
 
+import math
 import torch
 import numpy as np
 import mlflow
@@ -161,6 +162,105 @@ class IndexedDataset(torch.utils.data.Dataset):
         return (X, y), i
 
 
+class FixedOrderSampler(torch.utils.data.Sampler[int]):
+    """Simple sampler that yields a fixed, precomputed order of indexes."""
+
+    def __init__(self, indices: List[int]):
+        super().__init__(None)
+        self._indices = [int(i) for i in indices]
+
+    def __iter__(self):
+        return iter(self._indices)
+
+    def __len__(self) -> int:
+        return len(self._indices)
+
+
+class AdaptiveBatchTracker:
+    """
+    Tracks hat{F} and variance terms for adaptive batch size computation.
+
+    We only store running sums to avoid extra memory, and we keep gradients on
+    the model device to stay inexpensive on a single GPU.
+    """
+
+    def __init__(self, device: str):
+        self.device = device
+        self.reset(None, None)
+
+    def reset(
+        self,
+        hat_ref_grad: Optional[List[Optional[torch.Tensor]]],
+        hat_ref_loss: Optional[float],
+    ) -> None:
+        self.hat_ref_grad = hat_ref_grad
+        self.hat_ref_loss = hat_ref_loss
+        self.grad_sums: Optional[List[Optional[torch.Tensor]]] = None
+        self.loss_max_sum: float = 0.0
+        self.var_sum: float = 0.0
+        self.steps: int = 0
+
+    def _accumulate_grads(self, grads: List[Optional[torch.Tensor]]) -> None:
+        if self.grad_sums is None:
+            self.grad_sums = [
+                g.detach().clone() if g is not None else None for g in grads
+            ]
+            return
+        for idx, g in enumerate(grads):
+            if g is None:
+                continue
+            if self.grad_sums[idx] is None:
+                self.grad_sums[idx] = g.detach().clone()
+            else:
+                self.grad_sums[idx].add_(g.detach())
+
+    def _accumulate_variance(
+        self, grads: List[Optional[torch.Tensor]], losses_raw: torch.Tensor
+    ) -> None:
+        if self.hat_ref_grad is None or self.hat_ref_loss is None:
+            return
+        grad_diff_sq = 0.0
+        for g, h in zip(grads, self.hat_ref_grad):
+            if g is None or h is None:
+                continue
+            grad_diff = g.detach() - h
+            grad_diff_sq += torch.sum(grad_diff * grad_diff).item()
+        loss_diff = torch.max(torch.abs(losses_raw - self.hat_ref_loss))
+        self.var_sum += 2.0 * grad_diff_sq + 2.0 * float(loss_diff.item() ** 2)
+
+    def update(
+        self, grads: List[Optional[torch.Tensor]], losses_raw: Optional[torch.Tensor]
+    ) -> None:
+        if losses_raw is None:
+            return
+        loss_tensor = losses_raw.detach()
+        loss_max = loss_tensor.max()
+        self._accumulate_grads(grads)
+        self._accumulate_variance(grads, loss_tensor)
+        self.loss_max_sum += loss_max.item()
+        self.steps += 1
+
+    def finalize(
+        self,
+    ) -> Tuple[
+        Optional[List[Optional[torch.Tensor]]], Optional[float], float, float
+    ]:
+        if self.steps == 0 or self.grad_sums is None:
+            return None, None, 0.0, self.var_sum
+        hat_grad: List[Optional[torch.Tensor]] = []
+        hat_grad_norm_sq = 0.0
+        for g_sum in self.grad_sums:
+            if g_sum is None:
+                hat_grad.append(None)
+                continue
+            g_hat = g_sum / float(self.steps)
+            hat_grad.append(g_hat)
+            hat_grad_norm_sq += torch.sum(g_hat * g_hat).item()
+        hat_loss = self.loss_max_sum / float(self.steps)
+        hat_norm_sq = 2.0 * hat_grad_norm_sq + 2.0 * (hat_loss ** 2)
+        return hat_grad, hat_loss, hat_norm_sq, self.var_sum
+
+
 def train_step(
     model: torch.nn.Module,
     optimizer: torch.optim.Optimizer,
@@ -170,6 +270,7 @@ def train_step(
     config: Dict[str, Any],
     compute_weights_fn: Optional[Callable] = None,
     tuning: bool = False,
+    adaptive_tracker: Optional[AdaptiveBatchTracker] = None,
 ) -> Tuple[float, int]:
     """
     Performs a single training step (one epoch) for the model.
@@ -186,6 +287,7 @@ def train_step(
         config: Dictionary containing configuration parameters
         compute_weights_fn: Optional function to compute sample weights
         tuning: Whether the model is being tuned (controls logging behavior)
+        adaptive_tracker: Optional tracker for adaptive batching statistics
 
     Returns:
         Tuple of (average loss value for the epoch, number of batches processed)
@@ -198,6 +300,7 @@ def train_step(
     if "seed" in config:
         generator.manual_seed(config["seed"])
     log_to_mlflow = config.get("report_to") == "mlflow" and not tuning
+    param_list = [p for group in optimizer.param_groups for p in group["params"]]
 
     model.train()
     total_loss = 0.0
@@ -212,6 +315,7 @@ def train_step(
         cache_mask = torch.zeros(total_samples, dtype=torch.bool, device=device) if use_cached_batch else None
         consumed = 0
         while consumed < total_samples:
+            batch_info: Dict[str, Any] = {}
             _, batch_idx = optimizer.select_batch(
                 threshold=threshold,
                 strategy=sampling,
@@ -249,6 +353,8 @@ def train_step(
                 optimizer.zero_grad()
                 preds = model(X)
                 losses = loss_fn(preds, y)
+                if adaptive_tracker is not None:
+                    batch_info["losses_raw"] = losses.detach()
                 if w is None and compute_weights_fn is not None:
                     w = compute_weights_fn(losses)
                     scale = 1
@@ -272,8 +378,12 @@ def train_step(
             steps += 1
             if log_to_mlflow:
                 config["train_step"] += 1
+            if adaptive_tracker is not None:
+                grads_now = [p.grad for p in param_list]
+                adaptive_tracker.update(grads_now, batch_info.get("losses_raw"))
     else:
         for steps, ((X, y), indexes) in enumerate(dataloader, start=1):
+            batch_info: Dict[str, Any] = {}
             X, y = X.to(device), y.to(device)
             batch_size = y.size(0)
             if log_to_mlflow:
@@ -295,6 +405,8 @@ def train_step(
                 optimizer.zero_grad()
                 preds = model(X)
                 losses = loss_fn(preds, y)
+                if adaptive_tracker is not None:
+                    batch_info["losses_raw"] = losses.detach()
                 if w is None and compute_weights_fn is not None:
                     w = compute_weights_fn(losses)
                     scale = 1
@@ -324,6 +436,9 @@ def train_step(
                 total_loss += loss_val
             if log_to_mlflow:
                 config["train_step"] += 1
+            if adaptive_tracker is not None:
+                grads_now = [p.grad for p in param_list]
+                adaptive_tracker.update(grads_now, batch_info.get("losses_raw"))
 
     return total_loss / max(1, steps), steps
 
@@ -426,23 +541,109 @@ def train(
     if "n_epoches_tune" not in config:
         config["n_epoches_tune"] = config["n_epoches"]
 
+    adaptive_enabled = config.get("adaptive_batch", False)
+    batch_size_min = int(config.get("adaptive_batch_min", 10))
+    batch_size_max = int(config.get("adaptive_batch_max", 512))
+    init_batch_size = int(config.get("batch_size", 1))
+    train_dataset = train_dataloader.dataset
+    prev_hat_grad: Optional[List[Optional[torch.Tensor]]] = None
+    prev_hat_loss: Optional[float] = None
+    hat_norm_history: List[float] = []
+    var_history: List[float] = []
+
+    def _build_fixed_order_indices() -> List[int]:
+        g = torch.Generator()
+        g.manual_seed(config.get("seed", 0))
+        total = len(train_dataset)
+        if config.get("use_sampler", False):
+            base_ds = getattr(train_dataset, "_dataset", train_dataset)
+            labels = getattr(base_ds, "_y", None)
+            n_classes = getattr(base_ds, "n_classes", None)
+            if labels is None or n_classes is None:
+                raise ValueError(
+                    "Adaptive batching with sampler requires dataset labels."
+                )
+            labels = labels.to(torch.long)
+            class_counts = torch.stack(
+                [(labels == c).sum() for c in range(int(n_classes))]
+            ).float()
+            weights = (1.0 / class_counts)[labels]
+            weights = weights / weights.sum()
+            return torch.multinomial(
+                weights, total, replacement=True, generator=g
+            ).tolist()
+        return torch.randperm(total, generator=g).tolist()
+
+    if adaptive_enabled:
+        if config.get("dynamic_batch", False):
+            # The adaptive batch schedule controls batch sizes; disable competing mode.
+            config["dynamic_batch"] = False
+        fixed_indices = _build_fixed_order_indices()
+
+        def _make_adaptive_loader(batch_size: int) -> torch.utils.data.DataLoader:
+            sampler = FixedOrderSampler(fixed_indices)
+            batch_sampler = torch.utils.data.BatchSampler(
+                sampler, batch_size, drop_last=False
+            )
+            return torch.utils.data.DataLoader(
+                train_dataset,
+                batch_sampler=batch_sampler,
+                num_workers=train_dataloader.num_workers,
+                worker_init_fn=train_dataloader.worker_init_fn,
+                pin_memory=getattr(train_dataloader, "pin_memory", False),
+                collate_fn=train_dataloader.collate_fn,
+            )
+    else:
+        fixed_indices = None
+
     # Use tqdm progress bar during regular training but not when tuning
     e_list = (
         range(config["n_epoches_tune"]) if tuning else tqdm(range(config["n_epoches"]))
     )
 
     for e in e_list:
+        if adaptive_enabled:
+            var_used = var_history[e - 1] if len(var_history) > e - 1 else None
+            denom_used = hat_norm_history[e - 2] if len(hat_norm_history) > e - 2 else None
+            if e >= 2 and denom_used is not None and denom_used > 0:
+                batch_size_epoch = math.floor(var_used / denom_used)  # floor as requested
+            else:
+                batch_size_epoch = init_batch_size
+            batch_size_epoch = int(max(batch_size_min, min(batch_size_max, batch_size_epoch)))
+            batch_size_epoch = max(1, min(batch_size_epoch, len(train_dataset)))
+            current_train_loader = _make_adaptive_loader(batch_size_epoch)
+            if hasattr(optimizer, "loss_scale"):
+                optimizer.loss_scale = len(train_dataset) / float(batch_size_epoch)
+            if log_to_mlflow:
+                mlflow.log_metric("adaptive_batch/batch_size", batch_size_epoch, step=e)
+                if var_used is not None and denom_used is not None:
+                    mlflow.log_metric("adaptive_batch/var_sum", var_used, step=e)
+                    mlflow.log_metric("adaptive_batch/F_hat_norm_sq", denom_used, step=e)
+        else:
+            current_train_loader = train_dataloader
+            var_used = None
+            denom_used = None
+
+        tracker = AdaptiveBatchTracker(device) if adaptive_enabled else None
+        if tracker is not None:
+            tracker.reset(prev_hat_grad, prev_hat_loss)
         # Train for one epoch
         train_loss, n_batches = train_step(
             model,
             optimizer,
-            train_dataloader,
+            current_train_loader,
             loss_fn,
             device,
             config,
             tuning=tuning,
             compute_weights_fn=compute_weights_fn,
+            adaptive_tracker=tracker,
         )
+        if tracker is not None:
+            hat_grad, hat_loss, hat_norm_sq, var_sum = tracker.finalize()
+            prev_hat_grad, prev_hat_loss = hat_grad, hat_loss
+            hat_norm_history.append(hat_norm_sq)
+            var_history.append(var_sum)
         if log_to_mlflow:
             mlflow.log_metric("batches_per_epoch", n_batches, step=e)
 
