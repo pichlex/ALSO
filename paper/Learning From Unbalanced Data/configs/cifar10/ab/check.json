@@ -11,7 +11,7 @@
     "eval_runs": 1,
 
     "adaptive_batch": true,
-    "adaptive_batch_beta": 0.25,
+    "adaptive_batch_beta": 0.0,
     "epoch_start_ab": 4,
     "batch_size": 64,
     "adaptive_batch_min": 10,

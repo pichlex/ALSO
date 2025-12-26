@@ -590,7 +590,7 @@ def train(
         def _make_adaptive_loader(batch_size: int) -> torch.utils.data.DataLoader:
             sampler = FixedOrderSampler(fixed_indices)
             batch_sampler = torch.utils.data.BatchSampler(
-                sampler, batch_size, drop_last=False
+                sampler, batch_size, drop_last=True  # drop incomplete batches to avoid BN issues
             )
             return torch.utils.data.DataLoader(
                 train_dataset,
