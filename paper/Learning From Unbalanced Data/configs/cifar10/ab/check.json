@@ -2,7 +2,7 @@
     "task": "UNBALANCED-CIFAR10-2SAB",
     "seed": 18,
     "model": "resnet18",
-    "mlflow_experiment": "2sab-check",
+    "mlflow_experiment": "2sab-check-higher",
 
     "n_epoches_tune": 5,
     "tune_runs": 100,
@@ -12,9 +12,9 @@
 
     "adaptive_batch": true,
     "epoch_start_ab": 4,
-    "batch_size": 128,
+    "batch_size": 64,
     "adaptive_batch_min": 10,
-    "adaptive_batch_max": 512,
+    "adaptive_batch_max": 65536,
     "unbalance_coefs": [1, 10, 30, 50],
 
     "log_pi": false

@@ -647,17 +647,18 @@ def train(
             hat_norm_history.append(hat_norm_sq)
             var_history.append(var_sum)
         if log_to_mlflow:
+            mlflow.log_metric("train_loss", train_loss, step=e)
             mlflow.log_metric("batches_per_epoch", n_batches, step=e)
 
         # Evaluate on validation set
-        _, val_results = eval_step(
+        val_loss, val_results = eval_step(
             model, val_dataloader, loss_fn, device, config, tuning=tuning
         )
         for key in val_results:
             val_metrics[key].append(val_results[key])
 
         # Evaluate on test set
-        _, test_results = eval_step(
+        test_loss, test_results = eval_step(
             model,
             test_dataloader,
             loss_fn,
@@ -671,6 +672,8 @@ def train(
 
         # Log metrics and pi snapshots to MLflow when requested
         if log_to_mlflow:
+            mlflow.log_metric("val_loss", val_loss, step=e)
+            mlflow.log_metric("test_loss", test_loss, step=e)
             for key, value in val_results.items():
                 mlflow.log_metric(f"val_{key}", value, step=e)
             for key, value in test_results.items():
