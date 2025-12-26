@@ -232,15 +232,12 @@ class AdaptiveBatchTracker:
         # Variance accumulation: ||F_i - hat_F||_*^2 with hat_F from previous epoch
         diff_theta = theta_vec - self.hat_reference.theta
         theta_l2_sq = torch.dot(diff_theta, diff_theta)
-        theta_linf = diff_theta.abs().max()
 
         diff_pi = -self.hat_reference.pi.clone()
         diff_pi.index_add_(0, batch_idx, contrib)
-        pi_l2_sq = torch.dot(diff_pi, diff_pi)
         pi_linf = diff_pi.abs().max()
 
-        linf_sq = torch.maximum(theta_linf, pi_linf) ** 2
-        self.var_sum += float(2 * (theta_l2_sq + pi_l2_sq) + 2 * linf_sq)
+        self.var_sum += float(2 * theta_l2_sq + 2 * (pi_linf ** 2))
 
     def finalize(self) -> Tuple[Optional[AdaptiveHat], Optional[float]]:
         if self.count == 0 or self.theta_mean is None:
@@ -248,13 +245,11 @@ class AdaptiveBatchTracker:
 
         pi_mean = self.pi_sum / float(self.count)
         theta_l2_sq = torch.dot(self.theta_mean, self.theta_mean)
-        theta_linf = self.theta_mean.abs().max()
 
         pi_l2_sq = torch.dot(pi_mean, pi_mean)
         pi_linf = pi_mean.abs().max()
 
-        linf_sq = torch.maximum(theta_linf, pi_linf) ** 2
-        norm_sq = float(2 * (theta_l2_sq + pi_l2_sq) + 2 * linf_sq)
+        norm_sq = float(2 * theta_l2_sq + 2 * (pi_linf ** 2))
 
         hat = AdaptiveHat(theta=self.theta_mean, pi=pi_mean, norm_sq=norm_sq)
         return hat, self.var_sum

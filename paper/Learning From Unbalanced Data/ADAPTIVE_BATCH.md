@@ -10,7 +10,8 @@ This notes the stochastic operator view, the norm we use, and how the adaptive b
 
 ## Norm (dual to the Bregman divergence we use)
 - Bregman divergence: `V(z1, z2) = 0.5 * ||θ1-θ2||_2^2 + KL[pi1 || pi2]`.
-- Corresponding dual norm squared (used in variance): `||x||_*^2 = 2||x||_2^2 + 2||x||_∞^2` applied to the concatenated `(θ-block, pi-block)`.
+- Corresponding dual norm squared for the operator block `[∑ π_i ∇f_i, -f_1, …, -f_n]`:  
+  `||F||_*^2 = 2 * ||∑ π_i ∇f_i||_2^2 + 2 * max_i |f_i|^2` (only L2 for θ-block, only L∞ for the π-block).
 
 ## Epoch schedule
 1) **Epoch 0 and 1**: fixed batch size `init_batch_size`.
