@@ -603,9 +603,9 @@ def train(
 
     for e in e_list:
         if adaptive_enabled:
-            var_used = var_history[e - 1] if len(var_history) > e - 1 else None
-            denom_used = hat_norm_history[e - 2] if len(hat_norm_history) > e - 2 else None
-            if e >= 2 and denom_used is not None and denom_used > 0:
+            var_used = var_history[e - 1] if (e > 0 and len(var_history) >= e) else None
+            denom_used = hat_norm_history[e - 2] if (e > 1 and len(hat_norm_history) >= e - 1) else None
+            if e >= 2 and var_used is not None and denom_used is not None and denom_used > 0:
                 batch_size_epoch = math.floor(var_used / denom_used)  # floor as requested
             else:
                 batch_size_epoch = init_batch_size
