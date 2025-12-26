@@ -337,18 +337,17 @@ def train_step(
                 optimizer.zero_grad()
                 preds = model(X)
                 losses = loss_fn(preds, y)
-                if w is None and compute_weights_fn is not None:
-                    w = compute_weights_fn(losses)
-                    scale = 1
-                if w is not None and scale is not None:
+                weights = w
+                if weights is None and compute_weights_fn is not None:
+                    weights = compute_weights_fn(losses)
+                    scale = 1.0
+                if weights is not None and scale is not None:
                     losses = losses * scale
-                    loss = (w * losses).sum()
-                    loss.backward()
-                    loss_log = losses.mean().item()
+                    loss = (weights * losses).sum()
                 else:
                     loss = losses.mean()
-                    loss.backward()
-                    loss_log = loss.item()
+                loss.backward()
+                loss_log = losses.mean().item()
                 return losses, loss_log
 
             closure.device = device
@@ -398,18 +397,17 @@ def train_step(
                 optimizer.zero_grad()
                 preds = model(X)
                 losses = loss_fn(preds, y)
-                if w is None and compute_weights_fn is not None:
-                    w = compute_weights_fn(losses)
-                    scale = 1
-                if w is not None and scale is not None:
+                weights = w
+                if weights is None and compute_weights_fn is not None:
+                    weights = compute_weights_fn(losses)
+                    scale = 1.0
+                if weights is not None and scale is not None:
                     losses = losses * scale
-                    loss = (w * losses).sum()
-                    loss.backward()
-                    loss_log = losses.mean().item()
+                    loss = (weights * losses).sum()
                 else:
                     loss = losses.mean()
-                    loss.backward()
-                    loss_log = loss.item()
+                loss.backward()
+                loss_log = losses.mean().item()
                 return losses, loss_log
 
             closure.device = device

@@ -194,7 +194,7 @@ class ALSO(torch.optim.Optimizer):
         """Perform a descent-ascent optimization step."""
 
         pi_selected = self.pi[groups_indexes]
-        losses, _ = closure()
+        losses, _ = closure(pi_selected, 1.0 / len(groups_indexes))
         loss = losses.mean().item()
 
         # Update parameters
@@ -236,7 +236,7 @@ class ALSO(torch.optim.Optimizer):
         """Perform the main step in optimistic mode."""
 
         pi_selected = self.__pi_intermediate[groups_indexes]
-        losses, _ = closure()
+        losses, _ = closure(pi_selected, 1.0 / len(groups_indexes))
         loss = losses.mean().item()
 
         # Save gradients and update parameters
