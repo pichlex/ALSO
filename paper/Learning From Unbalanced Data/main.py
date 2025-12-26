@@ -55,6 +55,14 @@ def run_optimization(
         If tuning is True, returns the maximum validation F1 score.
         Otherwise, returns the updated metrics dictionary.
     """
+    config.setdefault("adaptive_batching", False)
+    config.setdefault("init_batch_size", config.get("batch_size"))
+    config.setdefault("min_batch_size", 10)
+    config.setdefault("max_batch_size", 512)
+    if config.get("adaptive_batching", False):
+        config["dynamic_batch"] = True
+        config["batch_size"] = config["init_batch_size"]
+
     (
         model,
         optimizer,

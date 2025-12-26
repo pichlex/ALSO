@@ -5,6 +5,7 @@ This module provides helper classes and functions for working with unbalanced da
 specifically for the CIFAR-10 dataset with binary classification setup.
 """
 
+import math
 import torch
 import numpy as np
 import mlflow
@@ -14,6 +15,7 @@ from typing import Dict, List, Tuple, Optional, Callable, Any
 
 from sklearn.model_selection import train_test_split
 from collections import defaultdict
+from dataclasses import dataclass
 
 
 class UnbalancedDataset(torch.utils.data.Dataset):
@@ -161,6 +163,103 @@ class IndexedDataset(torch.utils.data.Dataset):
         return (X, y), i
 
 
+def flatten_gradients(model: torch.nn.Module) -> torch.Tensor:
+    """
+    Flatten all parameter gradients into a single vector.
+
+    Returns an empty tensor if no gradients are present.
+    """
+    grads = []
+    device = None
+    for p in model.parameters():
+        if p.grad is None:
+            continue
+        if device is None:
+            device = p.grad.device
+        grads.append(p.grad.view(-1))
+    if not grads:
+        device = device or next(model.parameters()).device
+        return torch.empty(0, device=device)
+    return torch.cat(grads)
+
+
+@dataclass
+class AdaptiveHat:
+    theta: torch.Tensor
+    pi: torch.Tensor
+    norm_sq: float
+
+
+class AdaptiveBatchTracker:
+    """
+    Tracks \\hat{F} and variance terms for adaptive batching across one epoch.
+    """
+
+    def __init__(
+        self,
+        pi_template: torch.Tensor,
+        hat_reference: Optional[AdaptiveHat],
+        eps: float,
+    ):
+        self.count = 0
+        self.theta_mean: Optional[torch.Tensor] = None
+        self.pi_sum = torch.zeros_like(pi_template)
+        self.var_sum = 0.0
+        self.hat_reference = hat_reference
+        self.eps = eps
+
+    def update(
+        self,
+        theta_vec: torch.Tensor,
+        losses: torch.Tensor,
+        pi_selected: torch.Tensor,
+        batch_idx: torch.Tensor,
+        batch_size: int,
+    ) -> None:
+        self.count += 1
+        if self.theta_mean is None:
+            self.theta_mean = theta_vec.detach().clone()
+        else:
+            # Running mean update to avoid large intermediate buffers
+            self.theta_mean.add_(theta_vec - self.theta_mean, alpha=1 / float(self.count))
+
+        contrib = (-losses.detach() / (pi_selected.detach() + self.eps)) / float(batch_size)
+        self.pi_sum.index_add_(0, batch_idx, contrib)
+
+        if self.hat_reference is None:
+            return
+
+        # Variance accumulation: ||F_i - hat_F||_*^2 with hat_F from previous epoch
+        diff_theta = theta_vec - self.hat_reference.theta
+        theta_l2_sq = torch.dot(diff_theta, diff_theta)
+        theta_linf = diff_theta.abs().max()
+
+        diff_pi = -self.hat_reference.pi.clone()
+        diff_pi.index_add_(0, batch_idx, contrib)
+        pi_l2_sq = torch.dot(diff_pi, diff_pi)
+        pi_linf = diff_pi.abs().max()
+
+        linf_sq = torch.maximum(theta_linf, pi_linf) ** 2
+        self.var_sum += float(2 * (theta_l2_sq + pi_l2_sq) + 2 * linf_sq)
+
+    def finalize(self) -> Tuple[Optional[AdaptiveHat], Optional[float]]:
+        if self.count == 0 or self.theta_mean is None:
+            return None, None
+
+        pi_mean = self.pi_sum / float(self.count)
+        theta_l2_sq = torch.dot(self.theta_mean, self.theta_mean)
+        theta_linf = self.theta_mean.abs().max()
+
+        pi_l2_sq = torch.dot(pi_mean, pi_mean)
+        pi_linf = pi_mean.abs().max()
+
+        linf_sq = torch.maximum(theta_linf, pi_linf) ** 2
+        norm_sq = float(2 * (theta_l2_sq + pi_l2_sq) + 2 * linf_sq)
+
+        hat = AdaptiveHat(theta=self.theta_mean, pi=pi_mean, norm_sq=norm_sq)
+        return hat, self.var_sum
+
+
 def train_step(
     model: torch.nn.Module,
     optimizer: torch.optim.Optimizer,
@@ -170,6 +269,7 @@ def train_step(
     config: Dict[str, Any],
     compute_weights_fn: Optional[Callable] = None,
     tuning: bool = False,
+    adaptive_tracker: Optional[AdaptiveBatchTracker] = None,
 ) -> Tuple[float, int]:
     """
     Performs a single training step (one epoch) for the model.
@@ -191,10 +291,9 @@ def train_step(
         Tuple of (average loss value for the epoch, number of batches processed)
     """
     use_dynamic = config.get("dynamic_batch", False)
-    threshold = float(config.get("pi_threshold", 0.9))
-    sampling = config.get("pi_sampling", "pi")
-    pi_order = config.get("pi_strategy", "desc")
     generator = torch.Generator(device=device)
+    if "seed" in config and config["seed"] is not None:
+        generator.manual_seed(int(config["seed"]))
     if "seed" in config:
         generator.manual_seed(config["seed"])
     log_to_mlflow = config.get("report_to") == "mlflow" and not tuning
@@ -208,30 +307,24 @@ def train_step(
             raise AttributeError("dynamic_batch requires optimizer.select_batch")
         dataset = dataloader.dataset
         total_samples = len(dataset)
-        use_cached_batch = config.get("cached_batch", False)
-        cache_mask = torch.zeros(total_samples, dtype=torch.bool, device=device) if use_cached_batch else None
-        consumed = 0
-        while consumed < total_samples:
+        batch_size = int(config.get("current_batch_size", config.get("batch_size", 1)))
+        num_batches = max(1, math.ceil(total_samples / batch_size))
+
+        for _ in range(num_batches):
             _, batch_idx = optimizer.select_batch(
-                threshold=threshold,
-                strategy=sampling,
-                order=pi_order,
+                batch_size=batch_size,
                 generator=generator,
-                excluded_mask=cache_mask,
             )
             if batch_idx.numel() == 0:
-                break
+                continue
             batch = [dataset[int(i)] for i in batch_idx.tolist()]
             data_list, idx_list = zip(*batch)
             X_list, y_list = zip(*data_list)
             X = torch.stack(X_list).to(device)
             y = torch.tensor(y_list, device=device)
             indexes = torch.tensor(idx_list, device=device)
-            batch_size = len(batch_idx)
             if log_to_mlflow:
                 mlflow.log_metric("batch_size", batch_size, step=config["train_step"])
-            if cache_mask is not None:
-                cache_mask[batch_idx] = True
 
             def closure(w=None, scale=None):
                 """
@@ -266,10 +359,25 @@ def train_step(
             closure.device = device
 
             loss_val = optimizer.step(closure=closure, groups_indexes=indexes)
+            raw_losses: Optional[torch.Tensor] = None
+            pi_selected: Optional[torch.Tensor] = None
+            if isinstance(loss_val, tuple):
+                loss_val, raw_losses, pi_selected = loss_val
+
             if loss_val is not None:
                 total_loss += loss_val
-            consumed += batch_size
             steps += 1
+            if adaptive_tracker is not None:
+                if raw_losses is None or pi_selected is None:
+                    raise RuntimeError("Adaptive batching requires optimizer to return losses and pi_selected.")
+                theta_vec = flatten_gradients(model)
+                adaptive_tracker.update(
+                    theta_vec=theta_vec,
+                    losses=raw_losses,
+                    pi_selected=pi_selected,
+                    batch_idx=indexes,
+                    batch_size=batch_size,
+                )
             if log_to_mlflow:
                 config["train_step"] += 1
     else:
@@ -320,8 +428,21 @@ def train_step(
                 except TypeError:
                     # Fall back for standard optimizers (Adam, SGD, etc.)
                     loss_val = optimizer.step(closure=closure)
+            raw_losses: Optional[torch.Tensor] = None
+            pi_selected: Optional[torch.Tensor] = None
+            if isinstance(loss_val, tuple):
+                loss_val, raw_losses, pi_selected = loss_val
             if loss_val is not None:
                 total_loss += loss_val
+            if adaptive_tracker is not None and raw_losses is not None and pi_selected is not None:
+                theta_vec = flatten_gradients(model)
+                adaptive_tracker.update(
+                    theta_vec=theta_vec,
+                    losses=raw_losses,
+                    pi_selected=pi_selected,
+                    batch_idx=indexes.to(device),
+                    batch_size=batch_size,
+                )
             if log_to_mlflow:
                 config["train_step"] += 1
 
@@ -421,6 +542,15 @@ def train(
     config["train_step"], config["val_step"], config["test_step"] = 0, 0, 0
     log_to_mlflow = config.get("report_to") == "mlflow" and not tuning
     log_pi_snapshots = config.get("log_pi", True)
+    adaptive_enabled = config.get("adaptive_batching", False)
+    init_batch_size = config.get("init_batch_size", config.get("batch_size"))
+    min_batch_size = config.get("min_batch_size", 10)
+    max_batch_size = config.get("max_batch_size", 512)
+    adaptive_state: Dict[str, Any] = {
+        "hat_history": [],
+        "hat_norm_history": [],
+        "var_history": [],
+    }
 
     # Use different number of epochs for tuning if specified
     if "n_epoches_tune" not in config:
@@ -432,6 +562,40 @@ def train(
     )
 
     for e in e_list:
+        # Determine batch size for this epoch under adaptive batching
+        if adaptive_enabled:
+            if e < 2:
+                current_batch_size = init_batch_size
+            elif len(adaptive_state["var_history"]) >= 1 and len(adaptive_state["hat_norm_history"]) >= 2:
+                numerator = adaptive_state["var_history"][-1]
+                denom = adaptive_state["hat_norm_history"][-2]
+                if denom <= 0:
+                    current_batch_size = max_batch_size
+                else:
+                    current_batch_size = max(
+                        min_batch_size,
+                        min(max_batch_size, int(math.floor(numerator / denom))),
+                    )
+            else:
+                current_batch_size = init_batch_size
+            config["current_batch_size"] = current_batch_size
+            config["batch_size"] = current_batch_size
+            if log_to_mlflow:
+                mlflow.log_metric("adaptive_batch_size", current_batch_size, step=e)
+
+        adaptive_tracker: Optional[AdaptiveBatchTracker] = None
+        if adaptive_enabled:
+            pi_template = getattr(optimizer, "pi", None)
+            eps_val = getattr(optimizer, "eps", 1e-12)
+            if pi_template is None:
+                raise AttributeError("Adaptive batching requires optimizer with `pi` attribute.")
+            hat_ref = adaptive_state["hat_history"][-2] if len(adaptive_state["hat_history"]) >= 2 else None
+            adaptive_tracker = AdaptiveBatchTracker(
+                pi_template=pi_template.detach(),
+                hat_reference=hat_ref,
+                eps=eps_val,
+            )
+
         # Train for one epoch
         train_loss, n_batches = train_step(
             model,
@@ -442,9 +606,28 @@ def train(
             config,
             tuning=tuning,
             compute_weights_fn=compute_weights_fn,
+            adaptive_tracker=adaptive_tracker,
         )
         if log_to_mlflow:
             mlflow.log_metric("batches_per_epoch", n_batches, step=e)
+        hat_info, var_sum = (None, None)
+        if adaptive_tracker is not None:
+            hat_info, var_sum = adaptive_tracker.finalize()
+            if hat_info is not None:
+                adaptive_state["hat_history"].append(hat_info)
+                adaptive_state["hat_norm_history"].append(hat_info.norm_sq)
+                if log_to_mlflow:
+                    mlflow.log_metric("hat_norm_sq", hat_info.norm_sq, step=e)
+            elif adaptive_enabled:
+                adaptive_state["hat_norm_history"].append(0.0)
+            if var_sum is not None:
+                adaptive_state["var_history"].append(var_sum)
+                if log_to_mlflow:
+                    mlflow.log_metric("var_sum_sq", var_sum, step=e)
+        elif adaptive_enabled:
+            adaptive_state["var_history"].append(None)
+            if adaptive_state["hat_prev"] is not None:
+                adaptive_state["hat_norm_history"].append(adaptive_state["hat_prev"].norm_sq)
 
         # Evaluate on validation set
         _, val_results = eval_step(

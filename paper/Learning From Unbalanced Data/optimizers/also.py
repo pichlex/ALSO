@@ -168,21 +168,15 @@ class ALSO(torch.optim.Optimizer):
 
     def select_batch(
         self,
-        threshold: float,
-        strategy: str = "pi",
-        order: str = "desc",
+        batch_size: int,
         generator: Optional[torch.Generator] = None,
-        excluded_mask: Optional[Tensor] = None,
     ) -> Tuple[int, torch.Tensor]:
         """
-        Choose batch size and indexes based on current pi mass and sampling strategy.
+        Sample batch indexes i.i.d. according to current pi.
 
         Args:
-            threshold: cumulative mass threshold (e.g., 0.9) for determining batch size
-            strategy: "pi" to sample proportionally to pi, "uniform" for uniform sampling
-            order: "desc" to accumulate mass from largest pi (default), "asc" from smallest
+            batch_size: number of samples to draw (with replacement)
             generator: optional torch.Generator for reproducibility
-            excluded_mask: optional boolean mask marking indexes to exclude from selection
 
         Returns:
             Tuple of (batch_size, tensor of selected indexes)
@@ -190,44 +184,17 @@ class ALSO(torch.optim.Optimizer):
         with torch.no_grad():
             if generator is not None and hasattr(generator, "device"):
                 self._move_pi_to_device(generator.device)
-            sorted_pi, _ = torch.sort(self.pi, descending=(order != "asc"))
-            cumsum = sorted_pi.cumsum(0)
-            cutoff = torch.searchsorted(cumsum, 1 - threshold, right=False).item() + 1
-            # Choose batch size as tail mass count: N - n_{1-thr}
-            batch_size = max(1, self.pi.numel() - cutoff)
-
-            if excluded_mask is not None:
-                if excluded_mask.device != self.pi.device:
-                    excluded_mask = excluded_mask.to(self.pi.device)
-                available_idx = (~excluded_mask).nonzero(as_tuple=False).flatten()
-            else:
-                available_idx = torch.arange(self.pi.numel(), device=self.pi.device)
-
-            if available_idx.numel() == 0:
-                return 0, available_idx
-
-            batch_size = min(batch_size, available_idx.numel())
-
-            if strategy == "uniform":
-                idx_local = torch.randperm(
-                    available_idx.numel(), device=self.pi.device, generator=generator
-                )[:batch_size]
-            elif strategy == "pi":
-                probs = self.pi[available_idx]
-                probs = probs / probs.sum()
-                idx_local = torch.multinomial(
-                    probs, batch_size, replacement=False, generator=generator
-                )
-            else:
-                raise ValueError(f"Unknown strategy: {strategy}")
-            return batch_size, available_idx[idx_local]
+            probs = self.pi / self.pi.sum()
+            idx_local = torch.multinomial(
+                probs, batch_size, replacement=True, generator=generator
+            )
+            return batch_size, idx_local
 
     def _descent_ascent_step(self, closure, groups_indexes) -> float:
         """Perform a descent-ascent optimization step."""
 
-        # Compute gradients using pi
         pi_selected = self.pi[groups_indexes]
-        losses, _ = closure(pi_selected, self.loss_scale)
+        losses, _ = closure()
         loss = losses.mean().item()
 
         # Update parameters
@@ -238,11 +205,11 @@ class ALSO(torch.optim.Optimizer):
                 p.data.add_(self._compute_adam_step(p, group))
 
         # Update pi
-        pi_grad_compressed = -losses.clone().detach()
+        pi_grad_compressed = -(losses.clone().detach() / (pi_selected + self.eps))
         pi_grad = torch.zeros_like(self.pi, requires_grad=False)
         pi_grad.index_add_(0, groups_indexes.flatten(), pi_grad_compressed.flatten())
         self.pi = self._update_pi(pi_grad, self.pi_temperature)
-        return loss
+        return loss, losses.detach(), pi_selected.detach()
 
     def _optimistic_intermediate_step(self):
         """Perform the intermediate step in optimistic mode."""
@@ -268,9 +235,8 @@ class ALSO(torch.optim.Optimizer):
     def _optimistic_main_step(self, closure, groups_indexes) -> float:
         """Perform the main step in optimistic mode."""
 
-        # Compute gradients using intermediate pi
         pi_selected = self.__pi_intermediate[groups_indexes]
-        losses, _ = closure(pi_selected, self.loss_scale)
+        losses, _ = closure()
         loss = losses.mean().item()
 
         # Save gradients and update parameters
@@ -287,12 +253,12 @@ class ALSO(torch.optim.Optimizer):
                 param_idx += 1
 
         # Update pi
-        pi_grad_compressed = -losses.clone().detach()
+        pi_grad_compressed = -(losses.clone().detach() / (pi_selected + self.eps))
         pi_grad = torch.zeros_like(self.pi, requires_grad=False)
         pi_grad.index_add_(0, groups_indexes.flatten(), pi_grad_compressed.flatten())
         self.__prev_grads_pi = pi_grad
         self.pi = self._update_pi(pi_grad, self.pi_temperature)
-        return loss
+        return loss, losses.detach(), pi_selected.detach()
 
     def step(self, closure, groups_indexes) -> float:
         """
