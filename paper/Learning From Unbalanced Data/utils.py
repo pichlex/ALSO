@@ -546,11 +546,15 @@ def train(
     batch_size_max = int(config.get("adaptive_batch_max", 512))
     init_batch_size = int(config.get("batch_size", 1))
     epoch_start_ab = int(config.get("epoch_start_ab", 2))
+    adaptive_beta = config.get("adaptive_batch_beta", None)
+    if adaptive_beta is not None:
+        adaptive_beta = float(adaptive_beta)
     train_dataset = train_dataloader.dataset
     prev_hat_grad: Optional[List[Optional[torch.Tensor]]] = None
     prev_hat_loss: Optional[float] = None
     hat_norm_history: List[float] = []
     var_history: List[float] = []
+    prev_ratio_smooth: Optional[float] = None
 
     def _build_fixed_order_indices() -> List[int]:
         g = torch.Generator()
@@ -608,7 +612,15 @@ def train(
             var_used = var_history[e - 1] if (e > 0 and len(var_history) >= e) else None
             denom_used = hat_norm_history[e - 2] if (e > 1 and len(hat_norm_history) >= e - 1) else None
             if e >= 2 and var_used is not None and denom_used is not None and denom_used > 0:
-                batch_size_epoch = math.floor(var_used / denom_used)  # floor as requested
+                ratio_raw = var_used / denom_used
+                ratio_for_batch = ratio_raw
+                if adaptive_beta is not None:
+                    if prev_ratio_smooth is None:
+                        ratio_for_batch = ratio_raw
+                    else:
+                        ratio_for_batch = adaptive_beta * prev_ratio_smooth + (1 - adaptive_beta) * ratio_raw
+                    prev_ratio_smooth = ratio_for_batch
+                batch_size_epoch = math.floor(ratio_for_batch)  # floor as requested
             else:
                 batch_size_epoch = init_batch_size
             batch_size_epoch = int(max(batch_size_min, min(batch_size_max, batch_size_epoch)))
@@ -621,6 +633,9 @@ def train(
                 if var_used is not None and denom_used is not None:
                     mlflow.log_metric("adaptive_batch/var_sum", var_used, step=e)
                     mlflow.log_metric("adaptive_batch/F_hat_norm_sq", denom_used, step=e)
+                    mlflow.log_metric("adaptive_batch/ratio_raw", ratio_raw, step=e)
+                    if adaptive_beta is not None and prev_ratio_smooth is not None:
+                        mlflow.log_metric("adaptive_batch/ratio_ema", prev_ratio_smooth, step=e)
         else:
             current_train_loader = train_dataloader
             var_used = None
