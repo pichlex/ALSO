@@ -6,6 +6,7 @@ import optuna
 
 from data import get_dataloaders
 from train import train_model
+import copy
 
 
 def _optimizer_signature(config: Dict[str, Any]) -> str:
@@ -50,22 +51,22 @@ def run_tuning(base_config: Dict[str, Any]) -> Dict[str, Any]:
         return cfg
 
     def objective(trial: optuna.trial.Trial) -> float:
-        config = base_config.copy()
+        config = copy.deepcopy(base_config)
         config["adaptive_batch"] = False
-        config["epochs"] = int(config.get("n_epoches_tune", 5))
+        config["epochs"] = int(config.get("n_epoches_tune", 10))
         config["report_to"] = None
         config["optimizer"] = config.get("optimizer", "sgd").lower()
         if config["optimizer"] == "sgd":
-            config["lr"] = trial.suggest_float("lr", 1e-4, 1e-1, log=True)
-            config["weight_decay"] = trial.suggest_float("weight_decay", 1e-6, 1e-2, log=True)
-            config["momentum"] = trial.suggest_float("momentum", 0.5, 0.99)
+            config["lr"] = trial.suggest_float("lr", 1e-3, 0.3, log=True)
+            config["weight_decay"] = trial.suggest_float("weight_decay", 1e-5, 1e-3, log=True)
+            config["momentum"] = trial.suggest_float("momentum", 0.85, 0.95)
             config["nesterov"] = trial.suggest_categorical("nesterov", [True, False])
         elif config["optimizer"] == "adamw":
-            config["lr"] = trial.suggest_float("lr", 1e-4, 1e-2, log=True)
+            config["lr"] = trial.suggest_float("lr", 1e-4, 3e-3, log=True)
             config["weight_decay"] = trial.suggest_float("weight_decay", 1e-6, 1e-2, log=True)
         train_loader, val_loader, test_loader = get_dataloaders(config)
         result = train_model(config, train_loader, val_loader, test_loader)
-        return result["best_val_f1"]
+        return result["best_val_acc"]
 
     study = optuna.create_study(direction="maximize", study_name=tune_name)
     study.optimize(objective, n_trials=int(base_config.get("tune_runs", 100)))
