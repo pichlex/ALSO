@@ -2,7 +2,7 @@
   "dataset": "cifar10",
   "model": "resnet18",
   "seed": 18,
-  "augment": false,
+  "augment": true,
   "batch_size": 64,
   "epochs": 20,
   "optimizer": "sgd",

@@ -6,6 +6,7 @@ from typing import Dict, Any
 from data import get_dataloaders
 from train import train_model
 from tune import run_tuning, load_tuned_params
+from tune import _optimizer_signature
 
 
 def load_config(path: str) -> Dict[str, Any]:
@@ -29,7 +30,7 @@ def apply_defaults(cfg: Dict[str, Any]) -> Dict[str, Any]:
         "adaptive_batch_min": 10,
         "adaptive_batch_max": 1024,
         "epoch_start_ab": 2,
-        "augment": False,
+        "augment": True,
         "num_workers": 2,
         "seed": 42,
         "mlflow_experiment": "Achieving Linear Rate",
@@ -64,7 +65,10 @@ def main():
         return
 
     if args.use_tuned:
-        tuned = load_tuned_params(config.get("dataset", "cifar10"), config.get("tune_name", "study"))
+        signature = _optimizer_signature(config)
+        tuned = load_tuned_params(
+            config.get("dataset", "cifar10"), config.get("tune_name", "study"), signature
+        )
         if tuned is not None:
             config.update(tuned)
 

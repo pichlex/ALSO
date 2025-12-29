@@ -6,6 +6,7 @@ import numpy as np
 import torch
 import torchvision
 from sklearn.metrics import f1_score, precision_score, recall_score
+from tqdm.auto import tqdm
 from torch.utils.data import DataLoader, BatchSampler
 
 from adaptive_batch import AdaptiveBatchTracker
@@ -193,7 +194,12 @@ def train_model(
         steps = 0
         param_list = _get_param_list(optimizer)
 
-        for (X, y), _ in current_loader:
+        batch_iter = tqdm(
+            current_loader,
+            desc=f"Epoch {epoch + 1}/{epochs}",
+            leave=False,
+        )
+        for (X, y), _ in batch_iter:
             X = X.to(device)
             y = y.to(device)
             optimizer.zero_grad()
