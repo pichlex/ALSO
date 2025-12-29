@@ -14,7 +14,7 @@
   "mlflow_experiment": "Achieving Linear - SGD baseline",
   "report_to": "mlflow",
   "tune_runs": 200,
-  "n_epoches_tune": 30,
+  "n_epoches_tune": 120,
   "tune_name": "cifar10_sgd",
   "use_old_tune_params": true
 }
