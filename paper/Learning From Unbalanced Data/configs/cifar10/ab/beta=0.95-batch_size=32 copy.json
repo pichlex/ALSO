@@ -2,7 +2,7 @@
     "task": "UNBALANCED-CIFAR10-2SAB",
     "seed": 18,
     "model": "resnet18",
-    "mlflow_experiment": "2sab-check-higher",
+    "mlflow_experiment": "beta=0.95-batch_size=32",
 
     "n_epoches_tune": 5,
     "tune_runs": 100,

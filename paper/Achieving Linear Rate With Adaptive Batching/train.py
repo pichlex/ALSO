@@ -1,0 +1,253 @@
+import math
+from typing import Dict, Any, List, Optional, Tuple
+
+import mlflow
+import numpy as np
+import torch
+import torchvision
+from sklearn.metrics import f1_score, precision_score, recall_score
+from torch.utils.data import DataLoader, BatchSampler
+
+from adaptive_batch import AdaptiveBatchTracker
+from data import get_device, set_seed, IndexedDataset
+from optimizers import build_optimizer
+
+
+class FixedOrderSampler(torch.utils.data.Sampler[int]):
+    """Yields a predefined list of indices in order."""
+
+    def __init__(self, indices: List[int]):
+        super().__init__(None)
+        self.indices = [int(i) for i in indices]
+
+    def __iter__(self):
+        return iter(self.indices)
+
+    def __len__(self) -> int:
+        return len(self.indices)
+
+
+def _get_param_list(optimizer: torch.optim.Optimizer):
+    return [p for group in optimizer.param_groups for p in group["params"]]
+
+
+def _evaluate(
+    model: torch.nn.Module,
+    dataloader: DataLoader,
+    loss_fn: torch.nn.Module,
+    device: str,
+) -> Tuple[float, Dict[str, float]]:
+    model.eval()
+    total_loss = 0.0
+    total_true = []
+    total_pred = []
+    with torch.no_grad():
+        for Xy, _ in dataloader:
+            X, y = Xy
+            X = X.to(device)
+            y = y.to(device)
+            logits = model(X)
+            losses = loss_fn(logits, y)
+            loss = losses.mean()
+            total_loss += loss.item()
+            preds = logits.argmax(dim=-1)
+            total_true.append(y.detach().cpu().numpy())
+            total_pred.append(preds.detach().cpu().numpy())
+    total_true_np = np.concatenate(total_true)
+    total_pred_np = np.concatenate(total_pred)
+    average = "weighted" if len(np.unique(total_true_np)) > 2 else "binary"
+    metrics = {
+        "f1": f1_score(total_true_np, total_pred_np, average=average),
+        "precision": precision_score(
+            total_true_np, total_pred_np, average=average, zero_division=0.0
+        ),
+        "recall": recall_score(total_true_np, total_pred_np, average=average),
+    }
+    return total_loss / max(1, len(dataloader)), metrics
+
+
+def _make_adaptive_loader(
+    train_dataset: IndexedDataset,
+    batch_size: int,
+    fixed_indices: List[int],
+    num_workers: int,
+    seed_worker,
+    generator: torch.Generator,
+) -> DataLoader:
+    sampler = FixedOrderSampler(fixed_indices)
+    batch_sampler = BatchSampler(sampler, batch_size=batch_size, drop_last=True)
+    return DataLoader(
+        train_dataset,
+        batch_sampler=batch_sampler,
+        num_workers=num_workers,
+        worker_init_fn=seed_worker,
+        generator=generator,
+        pin_memory=True,
+    )
+
+
+def train_model(
+    config: Dict[str, Any],
+    train_loader: DataLoader,
+    val_loader: DataLoader,
+    test_loader: DataLoader,
+) -> Dict[str, Any]:
+    preferred_device = config.get("device")
+    auto_device = get_device()
+    device = preferred_device or auto_device
+    if preferred_device and preferred_device.startswith("cuda") and not torch.cuda.is_available():
+        # Fall back gracefully if CUDA requested but unavailable.
+        device = "cpu"
+    model_name = config.get("model", "resnet18").lower()
+    if model_name == "resnet18":
+        model = torchvision.models.resnet18(weights=torchvision.models.ResNet18_Weights.IMAGENET1K_V1)
+        model.fc = torch.nn.Linear(model.fc.in_features, 10)
+    else:
+        raise ValueError(f"Unsupported model: {model_name}")
+    model.to(device)
+
+    loss_fn = torch.nn.CrossEntropyLoss(reduction="none")
+    optimizer = build_optimizer(model, config)
+
+    adaptive_enabled = bool(config.get("adaptive_batch", False))
+    batch_size_min = int(config.get("adaptive_batch_min", 10))
+    batch_size_max = int(config.get("adaptive_batch_max", 1024))
+    batch_size_init = int(config.get("batch_size", 64))
+    adaptive_beta = float(config.get("adaptive_batch_beta", 0.0))
+    epoch_start_ab = int(config.get("epoch_start_ab", 2))
+    epochs = int(config.get("epochs", 20))
+
+    log_to_mlflow = config.get("report_to") == "mlflow"
+    if log_to_mlflow:
+        experiment_name = config.get("mlflow_experiment", "Achieving Linear Rate")
+        mlflow.set_experiment(experiment_name)
+        mlflow.start_run(run_name=config.get("run_name"))
+        params_to_log = {
+            k: v
+            for k, v in config.items()
+            if isinstance(v, (int, float, str, bool))
+        }
+        mlflow.log_params(params_to_log)
+
+    g, seed_worker = set_seed(int(config.get("seed", 42)))
+    train_dataset: IndexedDataset = train_loader.dataset
+    fixed_indices = torch.randperm(len(train_dataset), generator=g).tolist()
+
+    hat_norm_history: List[float] = []
+    var_history: List[float] = []
+    prev_hat_grad: Optional[List[Optional[torch.Tensor]]] = None
+    prev_batch_size: Optional[float] = batch_size_init
+    prev_ratio_ema: Optional[float] = None
+
+    best_val_f1 = -1.0
+    best_test = {}
+    train_step = 0
+
+    for epoch in range(epochs):
+        if adaptive_enabled and epoch >= epoch_start_ab:
+            var_used = var_history[epoch - 1] if (epoch - 1) < len(var_history) else None
+            denom_used = (
+                hat_norm_history[epoch - 2] if (epoch - 2) < len(hat_norm_history) else None
+            )
+            ratio_raw = None
+            ratio_smoothed = None
+            if var_used is not None and denom_used is not None and denom_used > 0:
+                ratio_raw = var_used / denom_used
+                ratio_for_batch = ratio_raw
+                if adaptive_beta > 0 and prev_batch_size is not None:
+                    ratio_for_batch = adaptive_beta * prev_batch_size + (1 - adaptive_beta) * ratio_raw
+                    ratio_smoothed = ratio_for_batch
+                batch_size_epoch = int(math.floor(ratio_for_batch))
+            else:
+                batch_size_epoch = batch_size_init
+            batch_size_epoch = max(batch_size_min, min(batch_size_max, batch_size_epoch))
+            batch_size_epoch = max(1, min(batch_size_epoch, len(train_dataset)))
+            prev_batch_size = batch_size_epoch
+            current_loader = _make_adaptive_loader(
+                train_dataset,
+                batch_size_epoch,
+                fixed_indices,
+                int(config.get("num_workers", 2)),
+                seed_worker,
+                g,
+            )
+            if log_to_mlflow:
+                mlflow.log_metric("adaptive_batch/batch_size", batch_size_epoch, step=epoch)
+                if var_used is not None and denom_used is not None:
+                    mlflow.log_metric("adaptive_batch/var_sum", var_used, step=epoch)
+                    mlflow.log_metric("adaptive_batch/F_hat_norm_sq", denom_used, step=epoch)
+                if ratio_raw is not None:
+                    mlflow.log_metric("adaptive_batch/ratio_raw", ratio_raw, step=epoch)
+                if ratio_smoothed is not None:
+                    mlflow.log_metric("adaptive_batch/ratio_ema", ratio_smoothed, step=epoch)
+        else:
+            current_loader = train_loader
+            prev_batch_size = batch_size_init
+
+        tracker = AdaptiveBatchTracker(device) if adaptive_enabled else None
+        if tracker is not None:
+            tracker.reset(prev_hat_grad)
+
+        model.train()
+        total_loss = 0.0
+        steps = 0
+        param_list = _get_param_list(optimizer)
+
+        for (X, y), _ in current_loader:
+            X = X.to(device)
+            y = y.to(device)
+            optimizer.zero_grad()
+            logits = model(X)
+            losses = loss_fn(logits, y)
+            loss = losses.mean()
+            loss.backward()
+            optimizer.step()
+
+            total_loss += loss.item()
+            steps += 1
+            train_step += 1
+
+            if tracker is not None:
+                grads_now = [p.grad for p in param_list]
+                tracker.update(grads_now)
+
+        if tracker is not None:
+            hat_grad, hat_norm_sq, var_sum = tracker.finalize()
+            prev_hat_grad = hat_grad
+            hat_norm_history.append(hat_norm_sq)
+            var_history.append(var_sum)
+
+        train_loss_epoch = total_loss / max(1, steps)
+        val_loss, val_metrics = _evaluate(model, val_loader, loss_fn, device)
+        test_loss, test_metrics = _evaluate(model, test_loader, loss_fn, device)
+
+        if log_to_mlflow:
+            mlflow.log_metric("train_loss", train_loss_epoch, step=epoch)
+            mlflow.log_metric("val_loss", val_loss, step=epoch)
+            mlflow.log_metric("test_loss", test_loss, step=epoch)
+            for k, v in val_metrics.items():
+                mlflow.log_metric(f"val_{k}", v, step=epoch)
+            for k, v in test_metrics.items():
+                mlflow.log_metric(f"test_{k}", v, step=epoch)
+
+        if val_metrics["f1"] > best_val_f1:
+            best_val_f1 = val_metrics["f1"]
+            best_test = {
+                "test_loss": test_loss,
+                **test_metrics,
+                "epoch": epoch,
+            }
+
+    if log_to_mlflow:
+        mlflow.log_metric("best_val_f1", best_val_f1)
+        if best_test:
+            mlflow.log_metrics({f"best_{k}": v for k, v in best_test.items() if k != "epoch"})
+            mlflow.log_metric("best_epoch", best_test.get("epoch", -1))
+        mlflow.end_run()
+
+    return {
+        "best_val_f1": best_val_f1,
+        "best_test": best_test,
+        "hat_norm_history": hat_norm_history,
+        "var_history": var_history,
+    }
