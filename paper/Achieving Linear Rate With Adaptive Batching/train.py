@@ -63,6 +63,7 @@ def _evaluate(
             total_true_np, total_pred_np, average=average, zero_division=0.0
         ),
         "recall": recall_score(total_true_np, total_pred_np, average=average),
+        "accuracy": float(np.mean(total_true_np == total_pred_np)),
     }
     return total_loss / max(1, len(dataloader)), metrics
 
@@ -141,7 +142,9 @@ def train_model(
     prev_ratio_ema: Optional[float] = None
 
     best_val_f1 = -1.0
+    best_val_acc = -1.0
     best_test = {}
+    best_test_acc = {}
     train_step = 0
 
     for epoch in range(epochs):
@@ -243,17 +246,32 @@ def train_model(
                 **test_metrics,
                 "epoch": epoch,
             }
+        if val_metrics.get("accuracy", -1.0) > best_val_acc:
+            best_val_acc = val_metrics["accuracy"]
+            best_test_acc = {
+                "test_loss": test_loss,
+                **test_metrics,
+                "epoch": epoch,
+            }
 
     if log_to_mlflow:
         mlflow.log_metric("best_val_f1", best_val_f1)
+        mlflow.log_metric("best_val_acc", best_val_acc)
         if best_test:
             mlflow.log_metrics({f"best_{k}": v for k, v in best_test.items() if k != "epoch"})
             mlflow.log_metric("best_epoch", best_test.get("epoch", -1))
+        if best_test_acc:
+            mlflow.log_metrics(
+                {f"best_acc_{k}": v for k, v in best_test_acc.items() if k != "epoch"}
+            )
+            mlflow.log_metric("best_acc_epoch", best_test_acc.get("epoch", -1))
         mlflow.end_run()
 
     return {
         "best_val_f1": best_val_f1,
+        "best_val_acc": best_val_acc,
         "best_test": best_test,
+        "best_test_acc": best_test_acc,
         "hat_norm_history": hat_norm_history,
         "var_history": var_history,
     }
