@@ -15,7 +15,7 @@
   "adaptive_batch_min": 10,
   "adaptive_batch_max": 1024,
   "epoch_start_ab": 2,
-  "mlflow_experiment": "Achieving Linear Rate",
+  "mlflow_experiment": "Achieving Linear - SGD adaptive",
   "report_to": "mlflow",
   "tune_runs": 100,
   "n_epoches_tune": 5,

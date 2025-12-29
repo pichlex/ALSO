@@ -11,7 +11,7 @@
   "nesterov": true,
   "weight_decay": 0.0005,
   "adaptive_batch": false,
-  "mlflow_experiment": "Achieving Linear Rate",
+  "mlflow_experiment": "Achieving Linear - SGD baseline",
   "report_to": "mlflow",
   "tune_runs": 100,
   "n_epoches_tune": 5,

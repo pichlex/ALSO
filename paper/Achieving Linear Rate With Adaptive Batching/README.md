@@ -12,10 +12,10 @@ Experiments on CIFAR10 and SVHN with two modes:
 - MLflow logging (default experiment `Achieving Linear Rate`): batch size, numerator/denominator, train/val/test loss, precision/recall/f1.
 - Hyperparameter tuning (fixed batch only) with Optuna: 5 epochs, 100 trials by default; tuned params saved under `tuned_params/{dataset}/{tune_name}.json` and can be reused.
 
-## Usage
+## Usage Example
 ```bash
-python main.py --config configs/cifar10_adaptive.json          # train with config
-python main.py --config configs/cifar10_adaptive.json --tune   # run tuning only
+python main.py --config configs/cifar10_baseline.json          # train with config
+python main.py --config configs/cifar10_baseline.json --tune   # run tuning only
 python main.py --config configs/cifar10_adaptive.json --use-tuned  # load tuned params before training
 ```
 
