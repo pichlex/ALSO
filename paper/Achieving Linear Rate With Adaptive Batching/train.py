@@ -225,6 +225,12 @@ def train_model(
             prev_hat_grad = hat_grad
             hat_norm_history.append(hat_norm_sq)
             var_history.append(var_sum)
+            if log_to_mlflow:
+                mlflow.log_metric("adaptive_batch/F_hat_norm_sq", hat_norm_sq, step=epoch)
+                mlflow.log_metric("adaptive_batch/var_sum", var_sum, step=epoch)
+                if hat_norm_sq > 0:
+                    ratio_now = var_sum / hat_norm_sq
+                    mlflow.log_metric("adaptive_batch/ratio_raw", ratio_now, step=epoch)
 
         train_loss_epoch = total_loss / max(1, steps)
         val_loss, val_metrics = _evaluate(model, val_loader, loss_fn, device)
