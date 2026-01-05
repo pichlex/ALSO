@@ -4,7 +4,7 @@
   "seed": 18,
   "augment": true,
   "batch_size": 64,
-  "epochs": 20,
+  "epochs": 25,
   "optimizer": "adamw",
   "lr": 0.001,
   "weight_decay": 0.01,
