@@ -63,7 +63,7 @@ def run_tuning(base_config: Dict[str, Any]) -> Dict[str, Any]:
             config["nesterov"] = trial.suggest_categorical("nesterov", [True, False])
         elif config["optimizer"] == "adamw":
             config["lr"] = trial.suggest_float("lr", 1e-4, 3e-3, log=True)
-            config["weight_decay"] = trial.suggest_float("weight_decay", 1e-6, 1e-2, log=True)
+            config["weight_decay"] = trial.suggest_float("weight_decay", 1e-3, 1e-1, log=True)
         train_loader, val_loader, test_loader = get_dataloaders(config)
         result = train_model(config, train_loader, val_loader, test_loader)
         return result["best_val_acc"]
