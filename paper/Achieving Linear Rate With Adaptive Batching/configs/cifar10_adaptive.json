@@ -11,7 +11,7 @@
   "nesterov": true,
   "weight_decay": 0.0005,
   "adaptive_batch": true,
-  "adaptive_batch_beta": 0.999,
+  "adaptive_batch_beta": 0,
   "adaptive_batch_min": 10,
   "adaptive_batch_max": 65536,
   "epoch_start_ab": 2,
