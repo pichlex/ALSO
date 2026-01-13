@@ -7,7 +7,7 @@ Experiments on CIFAR10 and SVHN with two modes:
 
 ## Key details
 - `hat_norm_sq = ||hat_grad||^2`, `var_sum = ||g_t - hat_grad||^2` (no loss terms).
-- Adaptive batching kicks in from epoch `epoch_start_ab` (default 2): epoch 1 collects grads, epoch 2 accumulates variance, epoch 3+ uses `floor(var_sum / hat_norm_sq)` clamped to `[adaptive_batch_min, adaptive_batch_max]`, with optional EMA smoothing `adaptive_batch_beta`.
+- Adaptive batching kicks in from epoch `epoch_start_ab` (default 2): epoch 1 collects grads, epoch 2 accumulates variance, epoch 3+ uses `floor(batch_size_multiplier * sqrt(var_sum / hat_norm_sq))` clamped to `[adaptive_batch_min, adaptive_batch_max]`, with optional EMA smoothing `adaptive_batch_beta`.
 - CIFAR10/SVHN, 10 classes, no imbalance or class aggregation. Augmentation optional via `augment` flag (default on).
 - MLflow logging (default experiment `Achieving Linear Rate`): batch size, numerator/denominator, train/val/test loss, precision/recall/f1/accuracy.
 - Hyperparameter tuning (fixed batch only) with Optuna: 5 epochs, 100 trials by default; tuned params saved under `tuned_params/{dataset}/{tune_name}.json` and can be reused.
@@ -29,7 +29,7 @@ Common:
 - `mlflow_experiment`, `report_to`
 
 Adaptive:
-- `adaptive_batch` (bool), `adaptive_batch_beta` (default 0.0), `adaptive_batch_min` (10), `adaptive_batch_max` (1024), `epoch_start_ab` (2)
+- `adaptive_batch` (bool), `adaptive_batch_beta` (default 0.0), `batch_size_multiplier` (1.0), `adaptive_batch_min` (10), `adaptive_batch_max` (1024), `epoch_start_ab` (2)
 
 Tuning:
 - `tune_runs` (100), `n_epoches_tune` (5), `tune_name`, `use_old_tune_params` (reuse saved), `use_tuned_params` (when loading)

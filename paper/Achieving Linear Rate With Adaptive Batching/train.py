@@ -116,6 +116,7 @@ def train_model(
     batch_size_max = int(config.get("adaptive_batch_max", 1024))
     batch_size_init = int(config.get("batch_size", 64))
     adaptive_beta = float(config.get("adaptive_batch_beta", 0.0))
+    batch_size_multiplier = float(config.get("batch_size_multiplier", 1.0))
     epoch_start_ab = int(config.get("epoch_start_ab", 2))
     epochs = int(config.get("epochs", 20))
 
@@ -156,11 +157,12 @@ def train_model(
             ratio_raw = None
             ratio_smoothed = None
             if var_used is not None and denom_used is not None and denom_used > 0:
-                ratio_raw = var_used / denom_used
+                ratio_raw = math.sqrt(var_used / denom_used)
                 ratio_for_batch = ratio_raw
                 if adaptive_beta > 0 and prev_batch_size is not None:
                     ratio_for_batch = adaptive_beta * prev_batch_size + (1 - adaptive_beta) * ratio_raw
                     ratio_smoothed = ratio_for_batch
+                ratio_for_batch *= batch_size_multiplier
                 batch_size_epoch = int(math.floor(ratio_for_batch))
             else:
                 batch_size_epoch = batch_size_init

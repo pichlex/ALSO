@@ -27,6 +27,7 @@ def apply_defaults(cfg: Dict[str, Any]) -> Dict[str, Any]:
         "weight_decay": 5e-4,
         "adaptive_batch": False,
         "adaptive_batch_beta": 0.0,
+        "batch_size_multiplier": 1.0,
         "adaptive_batch_min": 10,
         "adaptive_batch_max": 1024,
         "epoch_start_ab": 2,
