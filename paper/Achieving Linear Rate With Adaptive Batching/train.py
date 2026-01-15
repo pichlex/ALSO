@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader, BatchSampler
 
 from adaptive_batch import AdaptiveBatchTracker
 from data import get_device, set_seed, IndexedDataset
-from optimizers import build_optimizer
+from optimizers import build_optimizer, build_scheduler
 
 
 class FixedOrderSampler(torch.utils.data.Sampler[int]):
@@ -110,6 +110,7 @@ def train_model(
 
     loss_fn = torch.nn.CrossEntropyLoss(reduction="none")
     optimizer = build_optimizer(model, config)
+    scheduler = build_scheduler(optimizer, config)
 
     adaptive_enabled = bool(config.get("adaptive_batch", False))
     batch_size_min = int(config.get("adaptive_batch_min", 10))
@@ -149,6 +150,10 @@ def train_model(
     train_step = 0
 
     for epoch in range(epochs):
+        current_lr = optimizer.param_groups[0]["lr"]
+        if log_to_mlflow:
+            mlflow.log_metric("lr", current_lr, step=epoch)
+
         if adaptive_enabled and epoch >= epoch_start_ab:
             var_used = var_history[epoch - 1] if (epoch - 1) < len(var_history) else None
             denom_used = (
@@ -261,6 +266,9 @@ def train_model(
                 **test_metrics,
                 "epoch": epoch,
             }
+
+        if scheduler is not None:
+            scheduler.step()
 
     if log_to_mlflow:
         mlflow.log_metric("best_val_f1", best_val_f1)

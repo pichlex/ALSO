@@ -40,6 +40,9 @@ def apply_defaults(cfg: Dict[str, Any]) -> Dict[str, Any]:
         "n_epoches_tune": 5,
         "tune_name": "study",
         "use_old_tune_params": True,
+        "scheduler": None,
+        "scheduler_milestones": [30, 60],
+        "scheduler_gamma": 0.1,
     }
     merged = defaults.copy()
     merged.update(cfg)

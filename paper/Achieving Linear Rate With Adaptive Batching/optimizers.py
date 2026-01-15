@@ -1,7 +1,8 @@
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 import torch
 from torch.optim import Optimizer
+from torch.optim.lr_scheduler import MultiStepLR, _LRScheduler
 
 
 def build_optimizer(model: torch.nn.Module, config: Dict[str, Any]) -> Optimizer:
@@ -28,3 +29,18 @@ def build_optimizer(model: torch.nn.Module, config: Dict[str, Any]) -> Optimizer
             betas=betas,
         )
     raise ValueError(f"Unsupported optimizer: {name}")
+
+
+def build_scheduler(optimizer: Optimizer, config: Dict[str, Any]) -> Optional[_LRScheduler]:
+    """Create LR scheduler if configured; returns None when not requested."""
+    name = config.get("scheduler")
+    if name is None:
+        return None
+
+    name = str(name).lower()
+    if name == "multistep":
+        milestones = config.get("scheduler_milestones", [30, 60])
+        gamma = float(config.get("scheduler_gamma", 0.1))
+        return MultiStepLR(optimizer, milestones=milestones, gamma=gamma)
+
+    raise ValueError(f"Unsupported scheduler: {name}")
