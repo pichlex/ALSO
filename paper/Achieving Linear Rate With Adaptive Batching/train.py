@@ -88,6 +88,11 @@ def _make_adaptive_loader(
     )
 
 
+def _clone_model_params(model: torch.nn.Module) -> List[torch.Tensor]:
+    # Snapshot parameters to CPU to measure cross-epoch movement without holding extra GPU memory.
+    return [p.detach().clone().cpu() for p in model.parameters()]
+
+
 def train_model(
     config: Dict[str, Any],
     train_loader: DataLoader,
@@ -142,6 +147,8 @@ def train_model(
     prev_hat_grad: Optional[List[Optional[torch.Tensor]]] = None
     prev_batch_size: Optional[float] = batch_size_init
     prev_ratio_ema: Optional[float] = None
+    prev_params: Optional[List[torch.Tensor]] = None
+    prev_prev_params: Optional[List[torch.Tensor]] = None
 
     best_val_f1 = -1.0
     best_val_acc = -1.0
@@ -156,13 +163,16 @@ def train_model(
 
         if adaptive_enabled and epoch >= epoch_start_ab:
             var_used = var_history[epoch - 1] if (epoch - 1) < len(var_history) else None
-            denom_used = (
-                hat_norm_history[epoch - 2] if (epoch - 2) < len(hat_norm_history) else None
-            )
+            theta_diff_norm_sq = None
+            if prev_params is not None and prev_prev_params is not None:
+                theta_diff_norm_sq = 0.0
+                for p1, p0 in zip(prev_params, prev_prev_params):
+                    diff = p1 - p0
+                    theta_diff_norm_sq += torch.sum(diff * diff).item()
             ratio_raw = None
             ratio_smoothed = None
-            if var_used is not None and denom_used is not None and denom_used > 0:
-                ratio_raw = math.sqrt(var_used / denom_used)
+            if var_used is not None and theta_diff_norm_sq is not None and theta_diff_norm_sq > 0:
+                ratio_raw = math.sqrt(var_used / theta_diff_norm_sq)
                 ratio_for_batch = ratio_raw
                 if adaptive_beta > 0 and prev_batch_size is not None:
                     ratio_for_batch = adaptive_beta * prev_batch_size + (1 - adaptive_beta) * ratio_raw
@@ -184,9 +194,11 @@ def train_model(
             )
             if log_to_mlflow:
                 mlflow.log_metric("adaptive_batch/batch_size", batch_size_epoch, step=epoch)
-                if var_used is not None and denom_used is not None:
+                if var_used is not None and theta_diff_norm_sq is not None:
                     mlflow.log_metric("adaptive_batch/var_sum", var_used, step=epoch)
-                    mlflow.log_metric("adaptive_batch/F_hat_norm_sq", denom_used, step=epoch)
+                    mlflow.log_metric(
+                        "adaptive_batch/theta_diff_norm_sq", theta_diff_norm_sq, step=epoch
+                    )
                 if ratio_raw is not None:
                     mlflow.log_metric("adaptive_batch/ratio_raw", ratio_raw, step=epoch)
                 if ratio_smoothed is not None:
@@ -238,6 +250,10 @@ def train_model(
                 if hat_norm_sq > 0:
                     ratio_now = var_sum / hat_norm_sq
                     mlflow.log_metric("adaptive_batch/ratio_raw", ratio_now, step=epoch)
+
+        # Snapshot model parameters at the end of the epoch to measure movement between epochs.
+        prev_prev_params = prev_params
+        prev_params = _clone_model_params(model)
 
         train_loss_epoch = total_loss / max(1, steps)
         val_loss, val_metrics = _evaluate(model, val_loader, loss_fn, device)
