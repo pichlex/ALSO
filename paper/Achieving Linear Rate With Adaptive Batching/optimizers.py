@@ -2,7 +2,7 @@ from typing import Dict, Any, Optional
 
 import torch
 from torch.optim import Optimizer
-from torch.optim.lr_scheduler import MultiStepLR, _LRScheduler
+from torch.optim.lr_scheduler import CosineAnnealingLR, MultiStepLR, _LRScheduler
 
 
 def build_optimizer(model: torch.nn.Module, config: Dict[str, Any]) -> Optimizer:
@@ -42,5 +42,10 @@ def build_scheduler(optimizer: Optimizer, config: Dict[str, Any]) -> Optional[_L
         milestones = config.get("scheduler_milestones", [30, 60])
         gamma = float(config.get("scheduler_gamma", 0.1))
         return MultiStepLR(optimizer, milestones=milestones, gamma=gamma)
+    if name == "cosine":
+        # Default T_max to total epochs if not provided.
+        T_max = int(config.get("scheduler_T_max", config.get("epochs", 20)))
+        eta_min = float(config.get("scheduler_eta_min", 0.0))
+        return CosineAnnealingLR(optimizer, T_max=T_max, eta_min=eta_min)
 
     raise ValueError(f"Unsupported scheduler: {name}")
