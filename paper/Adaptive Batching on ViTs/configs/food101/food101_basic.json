@@ -1,0 +1,27 @@
+{
+  "dataset": "food101",
+  "batch_size": 16,
+  "epochs": 25,
+  "optimizer": "sgd",
+  "lr": 0.0003,
+  "weight_decay": 0.05,
+  "scheduler": "cosine",
+  "scheduler_T_max": 25,
+  "scheduler_eta_min": 1e-06,
+  "augment": true,
+  "image_size": 224,
+  "adaptive_batch": false,
+  "adaptive_batch_beta": 0.2,
+  "adaptive_batch_min": 8,
+  "adaptive_batch_max": 256,
+  "batch_size_multiplier": 1.0,
+  "epoch_start_ab": 1,
+  "lora_r": 8,
+  "lora_alpha": 16,
+  "lora_dropout": 0.1,
+  "lora_target_modules": [
+    "qkv"
+  ],
+  "mlflow_experiment": "ViT LoRA Food101 Basic",
+  "report_to": "mlflow"
+}
