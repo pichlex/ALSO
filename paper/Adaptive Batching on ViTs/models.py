@@ -1,4 +1,5 @@
 import argparse
+from pathlib import Path
 from typing import Any, Dict, Iterable
 
 import torch
@@ -15,7 +16,14 @@ def build_lora_vit(num_classes: int, config: Dict[str, Any]) -> torch.nn.Module:
 
     model_name = config.get("model_name", "faster_vit_0_224")
     pretrained = bool(config.get("pretrained", True))
-    model_path = config.get("model_path")
+    default_ckpt = Path(__file__).parent / "models" / "faster_vit_0.pth.tar"
+    model_path = config.get("model_path") or default_ckpt
+    ckpt_path = Path(model_path).expanduser()
+    if pretrained and not ckpt_path.is_file():
+        raise FileNotFoundError(
+            f"FasterViT checkpoint not found at {ckpt_path}. "
+            "Download the pretrained weight and place it there, or set `pretrained=False`."
+        )
     lora_r = int(config.get("lora_r", 8))
     lora_alpha = int(config.get("lora_alpha", 16))
     lora_dropout = float(config.get("lora_dropout", 0.1))
@@ -25,7 +33,7 @@ def build_lora_vit(num_classes: int, config: Dict[str, Any]) -> torch.nn.Module:
     model = fastervit.create_model(
         model_name,
         pretrained=pretrained,
-        model_path=model_path,
+        model_path=str(ckpt_path) if pretrained else None,
     )
 
     if isinstance(lora_targets, str):

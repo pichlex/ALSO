@@ -1,5 +1,6 @@
 import argparse
 import json
+from pathlib import Path
 from typing import Dict, Any
 
 from data import get_dataloaders
@@ -15,6 +16,8 @@ def apply_defaults(cfg: Dict[str, Any]) -> Dict[str, Any]:
     defaults = {
         "dataset": "food101",
         "model_name": "faster_vit_0_224",
+        "pretrained": True,
+        "model_path": str(Path(__file__).parent / "models" / "faster_vit_0.pth.tar"),
         "batch_size": 32,
         "epochs": 20,
         "optimizer": "adamw",

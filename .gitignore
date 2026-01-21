@@ -44,4 +44,5 @@ optuna.db
 *.npy
 *.pickle
 *.pt
+paper/Adaptive Batching on ViTs/models/*.pth*
 events.out.tfevents.*
