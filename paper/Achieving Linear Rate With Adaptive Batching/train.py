@@ -264,8 +264,12 @@ def train_model(
                 y = y.to(device)
 
                 if epoch >= epoch_start_ab and adaptive_sampler is not None:
+                    prev_mode = model.training
+                    model.eval()
                     with torch.no_grad():
                         grads_per_sample = per_sample_cross_entropy_grads(model, X, y)
+                    if prev_mode:
+                        model.train()
                     new_batch_size = calculate_batch_size(
                         adabatchgrad_k,
                         adaptive_sampler.state,
