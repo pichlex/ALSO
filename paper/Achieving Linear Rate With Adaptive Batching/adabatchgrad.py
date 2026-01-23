@@ -71,7 +71,7 @@ def inner_ortho_test_nn(
     theta: float = 0.9,
     prob_new: Optional[float] = None,
     nu: float = 5.84,
-) -> torch.Tensor:
+) -> tuple[torch.Tensor, torch.Tensor]:
     device = next(iter(param_grad_per_sample.values())).device
     len_S = next(iter(param_grad_per_sample.values())).shape[0]
 
@@ -109,7 +109,7 @@ def inner_ortho_test_nn(
         ortho_numerator / ((len_S - 1) * nu**2 * (total_norm_sq + 1e-12))
     )
 
-    return torch.max(new_Sk_size_inner, new_Sk_size_ortho)
+    return new_Sk_size_inner, new_Sk_size_ortho
 
 
 def choose_batch_test_func(batch_test_name: Optional[str]):
