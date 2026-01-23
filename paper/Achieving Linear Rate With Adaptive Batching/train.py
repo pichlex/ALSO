@@ -253,6 +253,11 @@ def train_model(
         param_list = _get_param_list(optimizer)
 
         if use_adabatchgrad_strategy:
+            pbar = tqdm(
+                total=len(current_loader),
+                desc=f"Epoch {epoch + 1}/{epochs}",
+                leave=False,
+            )
             batch_iter = iter(current_loader)
             while True:
                 try:
@@ -292,9 +297,8 @@ def train_model(
                         X = X.to(device)
                         y = y.to(device)
                     if log_to_mlflow:
-                        mlflow.log_metric(
-                            "adaptive_batch/batch_size", adaptive_sampler.batch_size, step=train_step
-                        )
+                        mlflow.log_metric("adaptive_batch/batch_size_candidate", new_batch_size, step=train_step)
+                        mlflow.log_metric("adaptive_batch/batch_size", adaptive_sampler.batch_size, step=train_step)
                         inner_bs = adaptive_sampler.state.get("inner_batch_size")
                         ortho_bs = adaptive_sampler.state.get("ortho_batch_size")
                         if inner_bs is not None:
@@ -316,6 +320,8 @@ def train_model(
                 total_loss += loss.item()
                 steps += 1
                 train_step += 1
+                pbar.update(1)
+            pbar.close()
         else:
             batch_iter = tqdm(
                 current_loader,
