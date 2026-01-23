@@ -176,6 +176,10 @@ def calculate_batch_size(
 
 def _ce_loss(params: Dict[str, torch.Tensor], buffers: Dict[str, torch.Tensor], model, X, y):
     params_and_buffers = {**params, **buffers}
+    if X.dim() == 3:
+        X = X.unsqueeze(0)
+    if y.dim() == 0:
+        y = y.unsqueeze(0)
     logits = functional_call(model, params_and_buffers, (X,))
     return F.cross_entropy(logits, y)
 
