@@ -9,6 +9,11 @@ from sklearn.metrics import f1_score, precision_score, recall_score
 from tqdm.auto import tqdm
 from torch.utils.data import DataLoader, BatchSampler
 
+from adabatchgrad import (
+    DynamicBatchSampler,
+    calculate_batch_size,
+    per_sample_cross_entropy_grads,
+)
 from adaptive_batch import AdaptiveBatchTracker
 from data import get_device, set_seed, IndexedDataset
 from optimizers import build_optimizer, build_scheduler
@@ -124,6 +129,12 @@ def train_model(
     adaptive_beta = float(config.get("adaptive_batch_beta", 0.0))
     batch_size_multiplier = float(config.get("batch_size_multiplier", 1.0))
     epoch_start_ab = int(config.get("epoch_start_ab", 2))
+    adaptive_strategy = str(config.get("adaptive_batch_strategy", "variance_ratio")).lower()
+    adabatchgrad_batch_test = config.get("adabatchgrad_batch_test", "random_increase")
+    adabatchgrad_theta = float(config.get("adabatchgrad_theta", 0.1))
+    adabatchgrad_nu = float(config.get("adabatchgrad_nu", 0.1))
+    adabatchgrad_prob_new = float(config.get("adabatchgrad_prob_new", 0.005))
+    adabatchgrad_k = int(config.get("adabatchgrad_k", 5))
     epochs = int(config.get("epochs", 20))
 
     log_to_mlflow = config.get("report_to") == "mlflow"
@@ -140,7 +151,28 @@ def train_model(
 
     g, seed_worker = set_seed(int(config.get("seed", 42)))
     train_dataset: IndexedDataset = train_loader.dataset
-    fixed_indices = torch.randperm(len(train_dataset), generator=g).tolist()
+    use_adabatchgrad_strategy = adaptive_enabled and adaptive_strategy == "adabatchgrad"
+    use_variance_strategy = adaptive_enabled and adaptive_strategy != "adabatchgrad"
+
+    adaptive_sampler: Optional[DynamicBatchSampler] = None
+    if use_adabatchgrad_strategy:
+        adaptive_sampler = DynamicBatchSampler(
+            train_dataset,
+            batch_size_init,
+            generator=g,
+        )
+        train_loader = DataLoader(
+            train_dataset,
+            batch_sampler=adaptive_sampler,
+            num_workers=int(config.get("num_workers", 2)),
+            worker_init_fn=seed_worker,
+            generator=g,
+            pin_memory=True,
+        )
+
+    fixed_indices = (
+        torch.randperm(len(train_dataset), generator=g).tolist() if use_variance_strategy else []
+    )
 
     hat_norm_history: List[float] = []
     var_history: List[float] = []
@@ -161,7 +193,11 @@ def train_model(
         if log_to_mlflow:
             mlflow.log_metric("lr", current_lr, step=epoch)
 
-        if adaptive_enabled and epoch >= epoch_start_ab:
+        if use_adabatchgrad_strategy:
+            if adaptive_sampler is not None:
+                adaptive_sampler.reset_epoch_state()
+            current_loader = train_loader
+        elif use_variance_strategy and epoch >= epoch_start_ab:
             var_used = var_history[epoch - 1] if (epoch - 1) < len(var_history) else None
             theta_diff_norm_sq = None
             if prev_params is not None and prev_prev_params is not None:
@@ -200,14 +236,14 @@ def train_model(
                         "adaptive_batch/theta_diff_norm_sq", theta_diff_norm_sq, step=epoch
                     )
                 if ratio_raw is not None:
-                    mlflow.log_metric("adaptive_batch/ratio_raw", ratio_raw, step=epoch)
+                        mlflow.log_metric("adaptive_batch/ratio_raw", ratio_raw, step=epoch)
                 if ratio_smoothed is not None:
                     mlflow.log_metric("adaptive_batch/ratio_ema", ratio_smoothed, step=epoch)
         else:
             current_loader = train_loader
             prev_batch_size = batch_size_init
 
-        tracker = AdaptiveBatchTracker(device) if adaptive_enabled else None
+        tracker = AdaptiveBatchTracker(device) if use_variance_strategy else None
         if tracker is not None:
             tracker.reset(prev_hat_grad)
 
@@ -216,44 +252,105 @@ def train_model(
         steps = 0
         param_list = _get_param_list(optimizer)
 
-        batch_iter = tqdm(
-            current_loader,
-            desc=f"Epoch {epoch + 1}/{epochs}",
-            leave=False,
-        )
-        for (X, y), _ in batch_iter:
-            X = X.to(device)
-            y = y.to(device)
-            optimizer.zero_grad()
-            logits = model(X)
-            losses = loss_fn(logits, y)
-            loss = losses.mean()
-            loss.backward()
-            optimizer.step()
+        if use_adabatchgrad_strategy:
+            batch_iter = iter(current_loader)
+            while True:
+                try:
+                    (X, y), _ = next(batch_iter)
+                except StopIteration:
+                    break
 
-            total_loss += loss.item()
-            steps += 1
-            train_step += 1
+                X = X.to(device)
+                y = y.to(device)
+
+                if epoch >= epoch_start_ab and adaptive_sampler is not None:
+                    with torch.no_grad():
+                        grads_per_sample = per_sample_cross_entropy_grads(model, X, y)
+                    new_batch_size = calculate_batch_size(
+                        adabatchgrad_k,
+                        adaptive_sampler.state,
+                        grads_per_sample,
+                        len(train_dataset),
+                        adabatchgrad_batch_test,
+                        None,
+                        adabatchgrad_theta,
+                        adabatchgrad_prob_new,
+                        adabatchgrad_nu,
+                    )
+                    new_batch_size = max(batch_size_min, min(batch_size_max, new_batch_size))
+                    new_batch_size = max(1, min(new_batch_size, len(train_dataset)))
+                    if new_batch_size > adaptive_sampler.batch_size:
+                        adaptive_sampler.update_batch_size(new_batch_size)
+                        try:
+                            (X, y), _ = next(batch_iter)
+                        except StopIteration:
+                            break
+                        X = X.to(device)
+                        y = y.to(device)
+                    if log_to_mlflow:
+                        mlflow.log_metric(
+                            "adaptive_batch/batch_size", adaptive_sampler.batch_size, step=train_step
+                        )
+                        inner_bs = adaptive_sampler.state.get("inner_batch_size")
+                        ortho_bs = adaptive_sampler.state.get("ortho_batch_size")
+                        if inner_bs is not None:
+                            mlflow.log_metric(
+                                "adaptive_batch/inner_batch_size", inner_bs, step=train_step
+                            )
+                        if ortho_bs is not None:
+                            mlflow.log_metric(
+                                "adaptive_batch/ortho_batch_size", ortho_bs, step=train_step
+                            )
+
+                optimizer.zero_grad()
+                logits = model(X)
+                losses = loss_fn(logits, y)
+                loss = losses.mean()
+                loss.backward()
+                optimizer.step()
+
+                total_loss += loss.item()
+                steps += 1
+                train_step += 1
+        else:
+            batch_iter = tqdm(
+                current_loader,
+                desc=f"Epoch {epoch + 1}/{epochs}",
+                leave=False,
+            )
+            for (X, y), _ in batch_iter:
+                X = X.to(device)
+                y = y.to(device)
+                optimizer.zero_grad()
+                logits = model(X)
+                losses = loss_fn(logits, y)
+                loss = losses.mean()
+                loss.backward()
+                optimizer.step()
+
+                total_loss += loss.item()
+                steps += 1
+                train_step += 1
+
+                if tracker is not None:
+                    grads_now = [p.grad for p in param_list]
+                    tracker.update(grads_now)
 
             if tracker is not None:
-                grads_now = [p.grad for p in param_list]
-                tracker.update(grads_now)
+                hat_grad, hat_norm_sq, var_sum = tracker.finalize()
+                prev_hat_grad = hat_grad
+                hat_norm_history.append(hat_norm_sq)
+                var_history.append(var_sum)
+                if log_to_mlflow:
+                    mlflow.log_metric("adaptive_batch/F_hat_norm_sq", hat_norm_sq, step=epoch)
+                    mlflow.log_metric("adaptive_batch/var_sum", var_sum, step=epoch)
+                    if hat_norm_sq > 0:
+                        ratio_now = var_sum / hat_norm_sq
+                        mlflow.log_metric("adaptive_batch/ratio_raw", ratio_now, step=epoch)
 
-        if tracker is not None:
-            hat_grad, hat_norm_sq, var_sum = tracker.finalize()
-            prev_hat_grad = hat_grad
-            hat_norm_history.append(hat_norm_sq)
-            var_history.append(var_sum)
-            if log_to_mlflow:
-                mlflow.log_metric("adaptive_batch/F_hat_norm_sq", hat_norm_sq, step=epoch)
-                mlflow.log_metric("adaptive_batch/var_sum", var_sum, step=epoch)
-                if hat_norm_sq > 0:
-                    ratio_now = var_sum / hat_norm_sq
-                    mlflow.log_metric("adaptive_batch/ratio_raw", ratio_now, step=epoch)
-
-        # Snapshot model parameters at the end of the epoch to measure movement between epochs.
-        prev_prev_params = prev_params
-        prev_params = _clone_model_params(model)
+            # Snapshot model parameters at the end of the epoch to measure movement between epochs.
+            prev_prev_params = prev_params
+            prev_params = _clone_model_params(model)
 
         train_loss_epoch = total_loss / max(1, steps)
         val_loss, val_metrics = _evaluate(model, val_loader, loss_fn, device)

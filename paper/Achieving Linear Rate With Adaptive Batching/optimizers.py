@@ -3,6 +3,7 @@ from typing import Dict, Any, Optional
 import torch
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import CosineAnnealingLR, MultiStepLR, _LRScheduler
+from adabatchgrad import AdaBatchGrad
 
 
 def build_optimizer(model: torch.nn.Module, config: Dict[str, Any]) -> Optimizer:
@@ -20,6 +21,14 @@ def build_optimizer(model: torch.nn.Module, config: Dict[str, Any]) -> Optimizer
             nesterov=nesterov,
             weight_decay=weight_decay,
         )
+    if name == "adam":
+        betas = config.get("betas", (0.9, 0.999))
+        return torch.optim.Adam(
+            model.parameters(),
+            lr=lr,
+            weight_decay=weight_decay,
+            betas=betas,
+        )
     if name == "adamw":
         betas = config.get("betas", (0.9, 0.999))
         return torch.optim.AdamW(
@@ -27,6 +36,17 @@ def build_optimizer(model: torch.nn.Module, config: Dict[str, Any]) -> Optimizer
             lr=lr,
             weight_decay=weight_decay,
             betas=betas,
+        )
+    if name == "adabatchgrad":
+        alpha = float(config.get("adabatchgrad_alpha", 1.0))
+        beta = float(config.get("adabatchgrad_beta", 1.0))
+        power_eps = float(config.get("adabatchgrad_power_eps", 0.0))
+        return AdaBatchGrad(
+            model.parameters(),
+            alpha=alpha,
+            beta=beta,
+            power_eps=power_eps,
+            weight_decay=weight_decay,
         )
     raise ValueError(f"Unsupported optimizer: {name}")
 
