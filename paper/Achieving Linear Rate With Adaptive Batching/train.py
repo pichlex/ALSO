@@ -110,22 +110,6 @@ def train_model(
     if preferred_device and preferred_device.startswith("cuda") and not torch.cuda.is_available():
         # Fall back gracefully if CUDA requested but unavailable.
         device = "cpu"
-    model_name = config.get("model", "resnet18").lower()
-    if model_name == "resnet18":
-        model = torchvision.models.resnet18(weights=torchvision.models.ResNet18_Weights.IMAGENET1K_V1)
-        model.fc = torch.nn.Linear(model.fc.in_features, 10)
-    else:
-        raise ValueError(f"Unsupported model: {model_name}")
-
-    if use_divebatch_strategy:
-        model = extend(model)
-    model.to(device)
-
-    loss_fn = torch.nn.CrossEntropyLoss(reduction="none")
-    if use_divebatch_strategy:
-        loss_fn = extend(loss_fn)
-    optimizer = build_optimizer(model, config)
-    scheduler = build_scheduler(optimizer, config)
 
     adaptive_enabled = bool(config.get("adaptive_batch", False))
     batch_size_min = int(config.get("adaptive_batch_min", 10))
@@ -145,6 +129,36 @@ def train_model(
     dive_lr_rescale = bool(config.get("divebatch_lr_rescale", False))
     dive_eps = float(config.get("divebatch_eps", 1e-12))
     epochs = int(config.get("epochs", 20))
+
+    use_adabatchgrad_strategy = adaptive_enabled and adaptive_strategy == "adabatchgrad"
+    use_divebatch_strategy = adaptive_enabled and adaptive_strategy == "divebatch"
+    use_variance_strategy = adaptive_enabled and adaptive_strategy == "variance_ratio"
+
+    if use_divebatch_strategy:
+        try:
+            from backpack import backpack, extend
+            from backpack.extensions import BatchGrad
+        except ImportError as exc:
+            raise ImportError(
+                "backpack-for-pytorch is required for the divebatch strategy. "
+                "Install it with `pip install backpack-for-pytorch`."
+            ) from exc
+    model_name = config.get("model", "resnet18").lower()
+    if model_name == "resnet18":
+        model = torchvision.models.resnet18(weights=torchvision.models.ResNet18_Weights.IMAGENET1K_V1)
+        model.fc = torch.nn.Linear(model.fc.in_features, 10)
+    else:
+        raise ValueError(f"Unsupported model: {model_name}")
+
+    if use_divebatch_strategy:
+        model = extend(model)
+    model.to(device)
+
+    loss_fn = torch.nn.CrossEntropyLoss(reduction="none")
+    if use_divebatch_strategy:
+        loss_fn = extend(loss_fn)
+    optimizer = build_optimizer(model, config)
+    scheduler = build_scheduler(optimizer, config)
 
     log_to_mlflow = config.get("report_to") == "mlflow"
     if log_to_mlflow:
