@@ -44,6 +44,7 @@ def apply_defaults(cfg: Dict[str, Any]) -> Dict[str, Any]:
         "divebatch_max_batch": 2048,
         "divebatch_lr_rescale": False,
         "divebatch_eps": 1e-12,
+        "divebatch_microbatch": 8,
         "augment": True,
         "num_workers": 2,
         "seed": 42,

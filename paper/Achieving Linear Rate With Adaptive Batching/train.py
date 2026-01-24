@@ -130,6 +130,7 @@ def train_model(
     dive_max_batch = int(config.get("divebatch_max_batch", batch_size_max))
     dive_lr_rescale = bool(config.get("divebatch_lr_rescale", False))
     dive_eps = float(config.get("divebatch_eps", 1e-12))
+    dive_microbatch = int(config.get("divebatch_microbatch", 8))
     epochs = int(config.get("epochs", 20))
 
     use_adabatchgrad_strategy = adaptive_enabled and adaptive_strategy == "adabatchgrad"
@@ -428,15 +429,6 @@ def train_model(
                 X = X.to(device)
                 y = y.to(device)
                 optimizer.zero_grad()
-                for p in param_list:
-                    if hasattr(p, "grad_batch"):
-                        p.grad_batch = None
-                logits = model(X)
-                losses = loss_fn(logits, y)
-                loss = losses.mean()
-                with backpack(BatchGrad()):
-                    loss.backward()
-
                 batch_size_now = X.size(0)
                 scale_factor = float(batch_size_now)
                 if dive_grad_sums is None:
@@ -444,27 +436,50 @@ def train_model(
                         torch.zeros_like(p, device=p.device) if p is not None else None
                         for p in param_list
                     ]
-                with torch.no_grad():
-                    for idx, p in enumerate(param_list):
-                        grad_batch = getattr(p, "grad_batch", None)
-                        if grad_batch is None:
-                            raise RuntimeError(
-                                "grad_batch is missing. Ensure Backpack BatchGrad extension is applied."
-                            )
-                        grad_batch = grad_batch * scale_factor
-                        grad_batch_flat = grad_batch.reshape(grad_batch.shape[0], -1)
-                        dive_grad_sq_sum += grad_batch_flat.pow(2).sum().item()
-                        batch_grad_sum_flat = grad_batch_flat.sum(dim=0)
-                        dive_grad_sums[idx].add_(batch_grad_sum_flat.view_as(p))
 
-                # Drop grad_batch to release memory before the next iteration.
-                for p in param_list:
-                    if hasattr(p, "grad_batch"):
-                        p.grad_batch = None
+                # Process batch in micro-chunks to avoid huge per-sample Jacobians.
+                last_loss_value = 0.0
+                for start in range(0, batch_size_now, max(1, dive_microbatch)):
+                    end = min(batch_size_now, start + max(1, dive_microbatch))
+                    X_chunk = X[start:end]
+                    y_chunk = y[start:end]
+                    micro_size = X_chunk.size(0)
+                    if micro_size == 0:
+                        continue
+                    factor = micro_size / float(batch_size_now)
+
+                    for p in param_list:
+                        if hasattr(p, "grad_batch"):
+                            p.grad_batch = None
+
+                    logits = model(X_chunk)
+                    losses = loss_fn(logits, y_chunk)
+                    loss = losses.mean() * factor
+                    last_loss_value = losses.mean().item()
+                    with backpack(BatchGrad()):
+                        loss.backward()
+
+                    with torch.no_grad():
+                        for idx, p in enumerate(param_list):
+                            grad_batch = getattr(p, "grad_batch", None)
+                            if grad_batch is None:
+                                raise RuntimeError(
+                                    "grad_batch is missing. Ensure Backpack BatchGrad extension is applied."
+                                )
+                            # Undo scaling from mean and factor to recover per-sample grads.
+                            grad_batch = grad_batch * batch_size_now
+                            grad_batch_flat = grad_batch.reshape(grad_batch.shape[0], -1)
+                            dive_grad_sq_sum += grad_batch_flat.pow(2).sum().item()
+                            batch_grad_sum_flat = grad_batch_flat.sum(dim=0)
+                            dive_grad_sums[idx].add_(batch_grad_sum_flat.view_as(p))
+
+                    for p in param_list:
+                        if hasattr(p, "grad_batch"):
+                            p.grad_batch = None
 
                 optimizer.step()
 
-                total_loss += loss.item()
+                total_loss += last_loss_value
                 steps += 1
                 train_step += 1
 
