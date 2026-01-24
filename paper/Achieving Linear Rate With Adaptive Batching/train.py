@@ -1,4 +1,5 @@
 import math
+import types
 from typing import Dict, Any, List, Optional, Tuple
 
 import mlflow
@@ -154,6 +155,28 @@ def train_model(
     for m in model.modules():
         if isinstance(m, torch.nn.ReLU):
             m.inplace = False
+        if hasattr(torchvision.models.resnet, "BasicBlock") and isinstance(
+            m, torchvision.models.resnet.BasicBlock
+        ):
+            if not hasattr(m, "_patched_for_backpack"):
+                def _forward_no_inplace(self, x):
+                    identity = x
+                    out = self.conv1(x)
+                    out = self.bn1(out)
+                    out = self.relu(out)
+
+                    out = self.conv2(out)
+                    out = self.bn2(out)
+
+                    if self.downsample is not None:
+                        identity = self.downsample(x)
+
+                    out = out + identity
+                    out = self.relu(out)
+                    return out
+
+                m.forward = types.MethodType(_forward_no_inplace, m)
+                m._patched_for_backpack = True
 
     if use_divebatch_strategy:
         model = extend(model)
