@@ -17,6 +17,7 @@ Experiments on CIFAR10 and SVHN with two modes:
 python main.py --config configs/cifar10_baseline.json          # train with config
 python main.py --config configs/cifar10_baseline.json --tune   # run tuning only
 python main.py --config configs/cifar10_adaptive.json --use-tuned  # load tuned params before training
+python main.py --config configs/sgd/cifar10/divebatch/cifar10_divebatch.json  # DiveBatch (gradient diversity)
 ```
 
 ## Config fields (JSON)
@@ -31,6 +32,7 @@ Common:
 Adaptive:
 - `adaptive_batch` (bool), `adaptive_batch_beta` (default 0.0), `batch_size_multiplier` (1.0), `adaptive_batch_min` (10), `adaptive_batch_max` (1024), `epoch_start_ab` (2)
 - `adaptive_batch_strategy`: `variance_ratio` (default, legacy three-phase) or `adabatchgrad` (per-step sizing via AdaBatchGrad tests). For `adabatchgrad`, additional knobs mirror the reference defaults: `adabatchgrad_batch_test` (`random_increase` or `inner_ortho_nn`), `adabatchgrad_theta` (0.1), `adabatchgrad_nu` (0.1), `adabatchgrad_prob_new` (0.005), `adabatchgrad_k` (5), `adabatchgrad_alpha` (1.0), `adabatchgrad_beta` (1.0), `adabatchgrad_power_eps` (0.0).
+- `adaptive_batch_strategy`: `divebatch` (gradient-diversity driven). At each epoch, accumulate per-sample gradient norms with Backpack BatchGrad; compute `delta_hat = numerator / denom` where numerator = Σ‖g_i‖² and denom = ‖Σ g_i‖² over the epoch. Next batch size is `floor(min(divebatch_max_batch, divebatch_delta * n * delta_hat))` clamped by `adaptive_batch_min` and dataset size. Config knobs: `divebatch_delta` (δ scale, default 0.1), `divebatch_max_batch` (default 2048), `divebatch_lr_rescale` (bool, rescale lr by new/old batch size; default false), `divebatch_eps` (denominator epsilon).
 
 Tuning:
 - `tune_runs` (100), `n_epoches_tune` (5), `tune_name`, `use_old_tune_params` (reuse saved), `use_tuned_params` (when loading)

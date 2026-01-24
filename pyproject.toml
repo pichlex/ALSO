@@ -8,6 +8,7 @@ dependencies = [
     "click>=8.1",
     "delu>=0.0.26",
     "fastervit",
+    "backpack-for-pytorch>=1.6.0",
     "loguru>=0.7.3",
     "mlflow>=2.14,<3",
     "optuna>=4.6.0",

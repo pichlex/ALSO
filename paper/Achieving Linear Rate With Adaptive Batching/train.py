@@ -116,9 +116,14 @@ def train_model(
         model.fc = torch.nn.Linear(model.fc.in_features, 10)
     else:
         raise ValueError(f"Unsupported model: {model_name}")
+
+    if use_divebatch_strategy:
+        model = extend(model)
     model.to(device)
 
     loss_fn = torch.nn.CrossEntropyLoss(reduction="none")
+    if use_divebatch_strategy:
+        loss_fn = extend(loss_fn)
     optimizer = build_optimizer(model, config)
     scheduler = build_scheduler(optimizer, config)
 
@@ -135,6 +140,10 @@ def train_model(
     adabatchgrad_nu = float(config.get("adabatchgrad_nu", 0.1))
     adabatchgrad_prob_new = float(config.get("adabatchgrad_prob_new", 0.005))
     adabatchgrad_k = int(config.get("adabatchgrad_k", 5))
+    dive_delta = float(config.get("divebatch_delta", 0.1))
+    dive_max_batch = int(config.get("divebatch_max_batch", batch_size_max))
+    dive_lr_rescale = bool(config.get("divebatch_lr_rescale", False))
+    dive_eps = float(config.get("divebatch_eps", 1e-12))
     epochs = int(config.get("epochs", 20))
 
     log_to_mlflow = config.get("report_to") == "mlflow"
@@ -152,7 +161,18 @@ def train_model(
     g, seed_worker = set_seed(int(config.get("seed", 42)))
     train_dataset: IndexedDataset = train_loader.dataset
     use_adabatchgrad_strategy = adaptive_enabled and adaptive_strategy == "adabatchgrad"
-    use_variance_strategy = adaptive_enabled and adaptive_strategy != "adabatchgrad"
+    use_divebatch_strategy = adaptive_enabled and adaptive_strategy == "divebatch"
+    use_variance_strategy = adaptive_enabled and adaptive_strategy == "variance_ratio"
+
+    if use_divebatch_strategy:
+        try:
+            from backpack import backpack, extend
+            from backpack.extensions import BatchGrad
+        except ImportError as exc:
+            raise ImportError(
+                "backpack-for-pytorch is required for the divebatch strategy. "
+                "Install it with `pip install backpack-for-pytorch`."
+            ) from exc
 
     adaptive_sampler: Optional[DynamicBatchSampler] = None
     if use_adabatchgrad_strategy:
@@ -173,6 +193,9 @@ def train_model(
     fixed_indices = (
         torch.randperm(len(train_dataset), generator=g).tolist() if use_variance_strategy else []
     )
+
+    dive_batch_size = batch_size_init
+    dive_dataset_size = len(train_dataset)
 
     hat_norm_history: List[float] = []
     var_history: List[float] = []
@@ -205,6 +228,19 @@ def train_model(
             if adaptive_sampler is not None:
                 adaptive_sampler.reset_epoch_state()
             current_loader = train_loader
+        elif use_divebatch_strategy:
+            current_loader = DataLoader(
+                train_dataset,
+                batch_size=dive_batch_size,
+                shuffle=True,
+                num_workers=int(config.get("num_workers", 2)),
+                worker_init_fn=seed_worker,
+                generator=g,
+                pin_memory=True,
+                drop_last=False,
+            )
+            if log_to_mlflow:
+                mlflow.log_metric("adaptive_batch/batch_size", dive_batch_size, step=epoch)
         elif use_variance_strategy and epoch >= epoch_start_ab:
             var_used = var_history[epoch - 1] if (epoch - 1) < len(var_history) else None
             theta_diff_norm_sq = None
@@ -254,6 +290,9 @@ def train_model(
         tracker = AdaptiveBatchTracker(device) if use_variance_strategy else None
         if tracker is not None:
             tracker.reset(prev_hat_grad)
+
+        dive_grad_sums: Optional[List[Optional[torch.Tensor]]] = None
+        dive_grad_sq_sum = 0.0
 
         model.train()
         total_loss = 0.0
@@ -330,6 +369,80 @@ def train_model(
                 train_step += 1
                 pbar.update(1)
             pbar.close()
+        elif use_divebatch_strategy:
+            batch_iter = tqdm(
+                current_loader,
+                desc=f"Epoch {epoch + 1}/{epochs}",
+                leave=False,
+            )
+            prev_bs = dive_batch_size
+            for (X, y), _ in batch_iter:
+                X = X.to(device)
+                y = y.to(device)
+                optimizer.zero_grad()
+                for p in param_list:
+                    if hasattr(p, "grad_batch"):
+                        p.grad_batch = None
+                logits = model(X)
+                losses = loss_fn(logits, y)
+                loss = losses.mean()
+                with backpack(BatchGrad()):
+                    loss.backward()
+
+                batch_size_now = X.size(0)
+                scale_factor = float(batch_size_now)
+                if dive_grad_sums is None:
+                    dive_grad_sums = [
+                        torch.zeros_like(p, device=p.device) if p is not None else None
+                        for p in param_list
+                    ]
+                with torch.no_grad():
+                    for idx, p in enumerate(param_list):
+                        grad_batch = getattr(p, "grad_batch", None)
+                        if grad_batch is None:
+                            raise RuntimeError(
+                                "grad_batch is missing. Ensure Backpack BatchGrad extension is applied."
+                            )
+                        grad_batch = grad_batch * scale_factor
+                        grad_batch_flat = grad_batch.reshape(grad_batch.shape[0], -1)
+                        dive_grad_sq_sum += grad_batch_flat.pow(2).sum().item()
+                        batch_grad_sum_flat = grad_batch_flat.sum(dim=0)
+                        dive_grad_sums[idx].add_(batch_grad_sum_flat.view_as(p))
+
+                optimizer.step()
+
+                total_loss += loss.item()
+                steps += 1
+                train_step += 1
+
+            denom_norm_sq = 0.0
+            if dive_grad_sums is not None:
+                for summed in dive_grad_sums:
+                    if summed is None:
+                        continue
+                    denom_norm_sq += torch.sum(summed * summed).item()
+            delta_hat = None
+            if epoch >= epoch_start_ab and denom_norm_sq > dive_eps:
+                delta_hat = dive_grad_sq_sum / max(denom_norm_sq, dive_eps)
+                candidate_bs = int(math.floor(dive_delta * dive_dataset_size * delta_hat))
+                candidate_bs = max(batch_size_min, candidate_bs)
+                candidate_bs = min(candidate_bs, dive_max_batch, len(train_dataset))
+                if candidate_bs < 1:
+                    candidate_bs = batch_size_init
+                if dive_lr_rescale and prev_bs > 0 and candidate_bs > 0:
+                    lr_scale = candidate_bs / float(prev_bs)
+                    for group in optimizer.param_groups:
+                        if "lr" in group and group["lr"] is not None:
+                            group["lr"] *= lr_scale
+                    if log_to_mlflow:
+                        mlflow.log_metric("adaptive_batch/lr_scale", lr_scale, step=epoch)
+                dive_batch_size = candidate_bs
+            if log_to_mlflow:
+                mlflow.log_metric("adaptive_batch/numerator_norm_sq", dive_grad_sq_sum, step=epoch)
+                mlflow.log_metric("adaptive_batch/denominator_norm_sq", denom_norm_sq, step=epoch)
+                if delta_hat is not None:
+                    mlflow.log_metric("adaptive_batch/ratio_raw", delta_hat, step=epoch)
+                    mlflow.log_metric("adaptive_batch/batch_size_next", dive_batch_size, step=epoch)
         else:
             batch_iter = tqdm(
                 current_loader,

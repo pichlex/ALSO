@@ -31,7 +31,7 @@ def apply_defaults(cfg: Dict[str, Any]) -> Dict[str, Any]:
         "adaptive_batch_min": 10,
         "adaptive_batch_max": 1024,
         "epoch_start_ab": 2,
-        "adaptive_batch_strategy": "variance_ratio",  # "variance_ratio" | "adabatchgrad"
+        "adaptive_batch_strategy": "variance_ratio",  # "variance_ratio" | "adabatchgrad" | "divebatch"
         "adabatchgrad_batch_test": "random_increase",
         "adabatchgrad_theta": 0.1,
         "adabatchgrad_nu": 0.1,
@@ -40,6 +40,10 @@ def apply_defaults(cfg: Dict[str, Any]) -> Dict[str, Any]:
         "adabatchgrad_alpha": 1.0,
         "adabatchgrad_beta": 1.0,
         "adabatchgrad_power_eps": 0.0,
+        "divebatch_delta": 0.1,
+        "divebatch_max_batch": 2048,
+        "divebatch_lr_rescale": False,
+        "divebatch_eps": 1e-12,
         "augment": True,
         "num_workers": 2,
         "seed": 42,
