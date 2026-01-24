@@ -189,9 +189,17 @@ def train_model(
     train_step = 0
 
     for epoch in range(epochs):
-        current_lr = optimizer.param_groups[0]["lr"]
+        current_lr = optimizer.param_groups[0].get("lr")
+        # For AdaBatchGrad, log the current step size instead of lr (lr is undefined).
         if log_to_mlflow:
-            mlflow.log_metric("lr", current_lr, step=epoch)
+            if current_lr is not None:
+                mlflow.log_metric("lr", current_lr, step=epoch)
+            else:
+                # Use the shared step size from the optimizer state if present.
+                first_param = next(iter(model.parameters()))
+                step_size = optimizer.state.get(first_param, {}).get("step_size")
+                if step_size is not None:
+                    mlflow.log_metric("lr", float(step_size), step=epoch)
 
         if use_adabatchgrad_strategy:
             if adaptive_sampler is not None:
