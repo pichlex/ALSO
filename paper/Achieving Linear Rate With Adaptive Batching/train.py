@@ -457,6 +457,11 @@ def train_model(
                         batch_grad_sum_flat = grad_batch_flat.sum(dim=0)
                         dive_grad_sums[idx].add_(batch_grad_sum_flat.view_as(p))
 
+                # Drop grad_batch to release memory before the next iteration.
+                for p in param_list:
+                    if hasattr(p, "grad_batch"):
+                        p.grad_batch = None
+
                 optimizer.step()
 
                 total_loss += loss.item()
