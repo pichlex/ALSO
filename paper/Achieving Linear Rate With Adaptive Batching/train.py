@@ -150,6 +150,11 @@ def train_model(
     else:
         raise ValueError(f"Unsupported model: {model_name}")
 
+    # Backpack is incompatible with in-place activations; disable them.
+    for m in model.modules():
+        if isinstance(m, torch.nn.ReLU):
+            m.inplace = False
+
     if use_divebatch_strategy:
         model = extend(model)
     model.to(device)
