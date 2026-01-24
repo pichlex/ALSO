@@ -111,6 +111,7 @@ def train_model(
     if preferred_device and preferred_device.startswith("cuda") and not torch.cuda.is_available():
         # Fall back gracefully if CUDA requested but unavailable.
         device = "cpu"
+    dataset_name = str(config.get("dataset", "cifar10")).lower()
 
     adaptive_enabled = bool(config.get("adaptive_batch", False))
     batch_size_min = int(config.get("adaptive_batch_min", 10))
@@ -146,8 +147,13 @@ def train_model(
             ) from exc
     model_name = config.get("model", "resnet18").lower()
     if model_name == "resnet18":
-        model = torchvision.models.resnet18(weights=torchvision.models.ResNet18_Weights.IMAGENET1K_V1)
-        model.fc = torch.nn.Linear(model.fc.in_features, 10)
+        weights = None if dataset_name in {"cifar10", "cifar100"} else torchvision.models.ResNet18_Weights.IMAGENET1K_V1
+        model = torchvision.models.resnet18(weights=weights)
+        model.fc = torch.nn.Linear(model.fc.in_features, 10 if dataset_name == "cifar10" else model.fc.out_features)
+        if dataset_name in {"cifar10", "cifar100"}:
+            # CIFAR-friendly stem: smaller kernel, no early downsampling to keep index math manageable for Backpack.
+            model.conv1 = torch.nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
+            model.maxpool = torch.nn.Identity()
     else:
         raise ValueError(f"Unsupported model: {model_name}")
 
