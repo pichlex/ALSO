@@ -3,7 +3,7 @@
   "model": "resnet18",
   "seed": 18,
   "augment": true,
-  "batch_size": 64,
+  "batch_size": 512,
   "epochs": 40,
   "optimizer": "adamw",
   "lr":  0.001,
@@ -12,7 +12,7 @@
   "scheduler_T_max": 40,
   "scheduler_eta_min": 1e-5,
   "adaptive_batch": false,
-  "mlflow_experiment": "AdamW base bs 64",
+  "mlflow_experiment": "AdamW base bs 512",
   "report_to": "mlflow",
   "use_old_tune_params": false
 }
