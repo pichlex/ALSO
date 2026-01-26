@@ -1,5 +1,5 @@
 {
-  "dataset": "cifar10",
+  "dataset": "svhn",
   "model": "resnet18",
   "seed": 18,
   "augment": true,
@@ -13,7 +13,7 @@
   "scheduler_T_max": 40,
   "scheduler_eta_min": 1e-4,
   "adaptive_batch": false,
-  "mlflow_experiment": "SGD base bs 512",
+  "mlflow_experiment": "SGD SVHN base bs 512",
   "report_to": "mlflow",
   "use_old_tune_params": false
 }

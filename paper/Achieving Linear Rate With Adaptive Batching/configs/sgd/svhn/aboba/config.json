@@ -1,5 +1,5 @@
 {
-  "dataset": "cifar10",
+  "dataset": "svhn",
   "model": "resnet18",
   "seed": 18,
   "augment": true,
@@ -19,7 +19,7 @@
   "adaptive_batch_max": 4096,
   "batch_size_multiplier": 1.0,
   "epoch_start_ab": 2,
-  "mlflow_experiment": "SGD ABObA",
+  "mlflow_experiment": "SGD SVHN ABObA",
   "report_to": "mlflow",
   "tune_runs": 100,
   "n_epoches_tune": 10,
