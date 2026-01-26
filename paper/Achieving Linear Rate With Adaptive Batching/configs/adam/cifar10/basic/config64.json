@@ -10,7 +10,7 @@
   "weight_decay":  5e-3,
   "scheduler": "cosine",
   "scheduler_T_max": 40,
-  "scheduler_eta_min": 1e-5,
+  "scheduler_eta_min": 5e-6,
   "adaptive_batch": false,
   "mlflow_experiment": "AdamW base bs 64",
   "report_to": "mlflow",
