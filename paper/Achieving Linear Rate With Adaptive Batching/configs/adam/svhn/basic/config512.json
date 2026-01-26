@@ -1,0 +1,18 @@
+{
+  "dataset": "svhn",
+  "model": "resnet18",
+  "seed": 18,
+  "augment": true,
+  "batch_size": 512,
+  "epochs": 40,
+  "optimizer": "adamw",
+  "lr":  0.001,
+  "weight_decay":  5e-3,
+  "scheduler": "cosine",
+  "scheduler_T_max": 40,
+  "scheduler_eta_min": 1e-5,
+  "adaptive_batch": false,
+  "mlflow_experiment": "AdamW SVHN base bs 512",
+  "report_to": "mlflow",
+  "use_old_tune_params": false
+}
