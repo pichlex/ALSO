@@ -29,8 +29,11 @@ Common:
 - `mlflow_experiment`, `report_to`
 
 Adaptive:
-- `adaptive_batch` (bool), `adaptive_batch_beta` (default 0.0), `batch_size_multiplier` (1.0), `adaptive_batch_min` (10), `adaptive_batch_max` (1024), `epoch_start_ab` (2)
-- `adaptive_batch_strategy`: `variance_ratio` (default, legacy three-phase) or `adabatchgrad` (per-step sizing via AdaBatchGrad tests). For `adabatchgrad`, additional knobs mirror the reference defaults: `adabatchgrad_batch_test` (`random_increase` or `inner_ortho_nn`), `adabatchgrad_theta` (0.1), `adabatchgrad_nu` (0.1), `adabatchgrad_prob_new` (0.005), `adabatchgrad_k` (5), `adabatchgrad_alpha` (1.0), `adabatchgrad_beta` (1.0), `adabatchgrad_power_eps` (0.0).
+- `adaptive_batch` (bool), `adaptive_batch_beta` (default 0.0), `batch_size_multiplier` (1.0), `adaptive_batch_min` (10), `adaptive_batch_max` (65536), `epoch_start_ab` (2)
+- `adaptive_batch_strategy`:  
+  - `variance_ratio` (default, legacy three-phase)  
+  - `adabatchgrad` (per-step sizing via AdaBatchGrad tests). For `adabatchgrad`, knobs mirror the reference defaults: `adabatchgrad_batch_test` (`random_increase` or `inner_ortho_nn`), `adabatchgrad_theta` (0.1), `adabatchgrad_nu` (0.1), `adabatchgrad_prob_new` (0.005), `adabatchgrad_k` (5), `adabatchgrad_alpha` (1.0), `adabatchgrad_beta` (1.0), `adabatchgrad_power_eps` (0.0).  
+  - `seesaw` (epoch-based cosine-threshold schedule): detect cosine LR crossings at `lr0 / alpha^k`; on each crossing multiply batch size by `alpha` (clamped by `adaptive_batch_max`) and scale LR by `1/alpha` for SGD or `1/sqrt(alpha)` for Adam/AdamW. Config knob: `seesaw_alpha` (default 2.0). No warmup support is expected.
 
 Tuning:
 - `tune_runs` (100), `n_epoches_tune` (5), `tune_name`, `use_old_tune_params` (reuse saved), `use_tuned_params` (when loading)
