@@ -1,0 +1,19 @@
+{
+  "dataset": "cifar10",
+  "model": "resnet18",
+  "seed": 18,
+  "augment": true,
+  "batch_size": 128,
+  "epochs": 40,
+  "optimizer": "sgd",
+  "lr":  0.005,
+  "momentum": 0.9,
+  "weight_decay":  5e-3,
+  "scheduler": "cosine",
+  "scheduler_T_max": 40,
+  "scheduler_eta_min": 1e-4,
+  "adaptive_batch": false,
+  "mlflow_experiment": "SGD base bs 128",
+  "report_to": "mlflow",
+  "use_old_tune_params": false
+}
