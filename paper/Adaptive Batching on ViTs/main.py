@@ -29,6 +29,8 @@ def apply_defaults(cfg: Dict[str, Any]) -> Dict[str, Any]:
         "adaptive_batch_min": 8,
         "adaptive_batch_max": 512,
         "epoch_start_ab": 1,
+        "adaptive_batch_strategy": "variance_ratio",
+        "seesaw_alpha": 2.0,
         "augment": True,
         "num_workers": 4,
         "seed": 42,

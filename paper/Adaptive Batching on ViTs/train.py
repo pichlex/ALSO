@@ -88,6 +88,56 @@ def _make_adaptive_loader(
     )
 
 
+def _make_shuffled_loader(
+    train_dataset: IndexedDataset,
+    batch_size: int,
+    num_workers: int,
+    seed_worker,
+    generator: torch.Generator,
+) -> DataLoader:
+    return DataLoader(
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers,
+        worker_init_fn=seed_worker,
+        generator=generator,
+        pin_memory=True,
+    )
+
+
+def _set_optimizer_lr(optimizer: torch.optim.Optimizer, lr: float) -> None:
+    for group in optimizer.param_groups:
+        group["lr"] = lr
+
+
+def _simulate_cosine_lrs(
+    base_lr: float, eta_min: float, T_max: int, epochs: int
+) -> List[float]:
+    # Mirror PyTorch CosineAnnealingLR to find LR crossings without instantiating the real scheduler.
+    T_max = max(1, T_max)
+    dummy_param = torch.nn.Parameter(torch.tensor(0.0))
+    opt = torch.optim.SGD([dummy_param], lr=base_lr)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=T_max, eta_min=eta_min)
+    lrs: List[float] = []
+    for _ in range(epochs):
+        lrs.append(opt.param_groups[0]["lr"])
+        scheduler.step()
+    return lrs
+
+
+def _compute_seesaw_cut_epochs(alpha: float, lr0: float, lr_schedule: List[float]) -> List[int]:
+    if alpha <= 1.0:
+        return []
+    cuts: List[int] = []
+    threshold = lr0 / alpha
+    for idx, lr in enumerate(lr_schedule):
+        if lr <= threshold:
+            cuts.append(idx)
+            threshold /= alpha
+    return cuts
+
+
 def _clone_model_params(model: torch.nn.Module) -> List[torch.Tensor]:
     # Snapshot parameters to CPU to measure cross-epoch movement without holding extra GPU memory.
     return [p.detach().clone().cpu() for p in model.parameters()]
@@ -120,7 +170,10 @@ def train_model(
     adaptive_beta = float(config.get("adaptive_batch_beta", 0.0))
     batch_size_multiplier = float(config.get("batch_size_multiplier", 1.0))
     epoch_start_ab = int(config.get("epoch_start_ab", 1))
+    adaptive_strategy = str(config.get("adaptive_batch_strategy", "variance_ratio")).lower()
     epochs = int(config.get("epochs", 10))
+    optimizer_name = str(config.get("optimizer", "sgd")).lower()
+    seesaw_alpha = float(config.get("seesaw_alpha", 2.0))
 
     log_to_mlflow = config.get("report_to") == "mlflow"
     if log_to_mlflow:
@@ -138,6 +191,19 @@ def train_model(
     g, seed_worker = set_seed(int(config.get("seed", 42)))
     train_dataset: IndexedDataset = train_loader.dataset
     fixed_indices = torch.randperm(len(train_dataset), generator=g).tolist()
+
+    use_seesaw_strategy = adaptive_enabled and adaptive_strategy == "seesaw"
+    use_variance_strategy = adaptive_enabled and adaptive_strategy != "seesaw"
+    if use_seesaw_strategy:
+        scheduler = None
+
+    seesaw_cut_epochs: List[int] = []
+    if use_seesaw_strategy:
+        eta_min = float(config.get("scheduler_eta_min", 0.0))
+        T_max = int(config.get("scheduler_T_max", epochs))
+        current_lr_cfg = float(config.get("lr", 0.1))
+        lr_schedule = _simulate_cosine_lrs(current_lr_cfg, eta_min, T_max, epochs)
+        seesaw_cut_epochs = _compute_seesaw_cut_epochs(seesaw_alpha, current_lr_cfg, lr_schedule)
 
     hat_norm_history: List[float] = []
     var_history: List[float] = []
@@ -158,7 +224,29 @@ def train_model(
         if log_to_mlflow:
             mlflow.log_metric("lr", current_lr, step=epoch)
 
-        if adaptive_enabled and epoch >= epoch_start_ab:
+        if use_seesaw_strategy:
+            batch_size_epoch = int(prev_batch_size) if prev_batch_size is not None else batch_size_init
+            if epoch in seesaw_cut_epochs:
+                lr_divisor = seesaw_alpha if optimizer_name == "sgd" else math.sqrt(seesaw_alpha)
+                if lr_divisor > 0:
+                    current_lr = current_lr / lr_divisor
+                    _set_optimizer_lr(optimizer, current_lr)
+                batch_size_epoch = int(math.ceil(batch_size_epoch * seesaw_alpha))
+            batch_size_epoch = max(batch_size_min, min(batch_size_max, batch_size_epoch))
+            batch_size_epoch = max(1, min(batch_size_epoch, len(train_dataset)))
+            prev_batch_size = batch_size_epoch
+            current_loader = _make_shuffled_loader(
+                train_dataset,
+                batch_size_epoch,
+                int(config.get("num_workers", 2)),
+                seed_worker,
+                g,
+            )
+            if log_to_mlflow:
+                mlflow.log_metric("seesaw/batch_size", batch_size_epoch, step=epoch)
+                mlflow.log_metric("seesaw/lr", current_lr, step=epoch)
+
+        elif use_variance_strategy and epoch >= epoch_start_ab:
             var_used = var_history[epoch - 1] if (epoch - 1) < len(var_history) else None
             theta_diff_norm_sq = None
             if prev_params is not None and prev_prev_params is not None:
