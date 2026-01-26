@@ -1,0 +1,30 @@
+{
+  "dataset": "food101",
+  "batch_size": 64,
+  "epochs": 25,
+  "optimizer": "adamw",
+  "lr": 0.001,
+  "weight_decay": 5e-3,
+  "scheduler": "cosine",
+  "scheduler_T_max": 25,
+  "scheduler_eta_min": 1e-5,
+  "augment": true,
+  "image_size": 224,
+  "adaptive_batch": true,
+  "adaptive_batch_strategy": "variance_ratio",
+  "adaptive_batch_beta": 0,
+  "adaptive_batch_min": 10,
+  "adaptive_batch_max": 4096,
+  "batch_size_multiplier": 8.0,
+  "epoch_start_ab": 2,
+  "lora_r": 8,
+  "lora_alpha": 16,
+  "lora_dropout": 0.1,
+  "lora_target_modules": [
+    "qkv"
+  ],
+  "pretrained": true,
+  "model_path": "models/faster_vit_0.pth.tar",
+  "mlflow_experiment": "ViT Food101 AdamW Aboba 8",
+  "report_to": "mlflow"
+}
