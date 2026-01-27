@@ -21,4 +21,5 @@ dependencies = [
     "tomli-w>=1.2.0",
     "torch==2.5.1",
     "torchvision>=0.20.1",
+    "seaborn>=0.13.2",
 ]
