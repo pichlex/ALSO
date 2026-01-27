@@ -21,7 +21,7 @@
   "adabatchgrad_batch_test": "inner_ortho_nn",
   "adabatchgrad_theta": 0.9,
   "adabatchgrad_nu": 5.84,
-  "adabatchgrad_prob_new": 0.005,
+  "adabatchgrad_prob_new": 0.01,
   "adabatchgrad_k": 5,
   "adabatchgrad_alpha": 0.001,
   "adabatchgrad_beta": 1.0,
