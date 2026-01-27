@@ -5,7 +5,7 @@
   "augment": true,
   "batch_size": 8,
   "epochs": 40,
-  "optimizer": "adabatchgrad",
+  "optimizer": "sgd",
   "lr": 0.005,
   "momentum": 0.75,
   "weight_decay": 5e-3,
