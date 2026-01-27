@@ -23,7 +23,7 @@
   "adabatchgrad_nu": 5.84,
   "adabatchgrad_prob_new": 0.01,
   "adabatchgrad_k": 5,
-  "adabatchgrad_alpha": 0.05,
+  "adabatchgrad_alpha": 0.1,
   "adabatchgrad_beta": 1.0,
   "adabatchgrad_power_eps": 0.0,
   "mlflow_experiment": "SGD adabatchgrad bs 64",
