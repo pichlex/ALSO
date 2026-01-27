@@ -417,6 +417,15 @@ def train_model(
                 train_step += 1
                 pbar.update(1)
             pbar.close()
+            if log_to_mlflow:
+                epoch_batch_size = (
+                    adaptive_sampler.batch_size
+                    if adaptive_sampler is not None
+                    else batch_size_init
+                )
+                mlflow.log_metric(
+                    "adaptive_batch/batch_size_epoch", epoch_batch_size, step=epoch
+                )
         else:
             batch_iter = tqdm(
                 current_loader,
