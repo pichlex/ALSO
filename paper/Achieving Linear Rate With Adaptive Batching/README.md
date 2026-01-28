@@ -21,8 +21,8 @@ python main.py --config configs/cifar10_adaptive.json --use-tuned  # load tuned 
 
 ## Config fields (JSON)
 Common:
-- `dataset`: `cifar10` | `svhn`
-- `model`: `resnet18`
+- `dataset`: `cifar10` | `cifar100` | `svhn`
+- `model`: `resnet18` | `resnet34`
 - `batch_size`, `epochs`, `optimizer` (`sgd` or `adamw`), `lr`, `momentum`, `nesterov`, `weight_decay`
 - `device` (optional): e.g. `"cuda"`, `"cuda:0"`, `"cpu"`; defaults to auto-detect CUDA
 - `augment` (bool, default true), `num_workers`, `seed`

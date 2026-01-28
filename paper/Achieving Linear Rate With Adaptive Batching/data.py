@@ -47,6 +47,10 @@ def _build_transforms(dataset: str, augment: bool):
     if dataset == "cifar10":
         mean = (0.4914, 0.4822, 0.4465)
         std = (0.2023, 0.1994, 0.2010)
+    elif dataset == "cifar100":
+        # Statistics from torchvision docs for CIFAR-100
+        mean = (0.5071, 0.4867, 0.4408)
+        std = (0.2675, 0.2565, 0.2761)
     elif dataset == "svhn":
         mean = tuple(x / 255.0 for x in [109.9, 109.7, 113.8])
         std = tuple(x / 255.0 for x in [50.1, 50.6, 50.8])
@@ -79,6 +83,14 @@ def _load_dataset(dataset: str, transform):
             root="../datasets", train=True, transform=transform, download=True
         )
         test_base = torchvision.datasets.CIFAR10(
+            root="../datasets", train=False, transform=transform, download=True
+        )
+        targets = train_base.targets
+    elif dataset == "cifar100":
+        train_base = torchvision.datasets.CIFAR100(
+            root="../datasets", train=True, transform=transform, download=True
+        )
+        test_base = torchvision.datasets.CIFAR100(
             root="../datasets", train=False, transform=transform, download=True
         )
         targets = train_base.targets
