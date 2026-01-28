@@ -4,7 +4,7 @@
 **/datasets/**
 *.gz
 
-**notebooks**
+#**notebooks**
 
 # -------------------------
 # PYTHON
