@@ -4,7 +4,7 @@
   "seed": 1,
   "augment": true,
   "batch_size": 64,
-  "epochs": 200,
+  "epochs": 300,
   "optimizer": "sgd",
   "lr":  0.05,
   "momentum": 0.9,
