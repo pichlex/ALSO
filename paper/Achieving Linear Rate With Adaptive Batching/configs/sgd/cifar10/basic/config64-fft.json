@@ -10,7 +10,7 @@
   "momentum": 0.9,
   "weight_decay":  5e-4,
   "scheduler": "cosine",
-  "scheduler_T_max": 200,
+  "scheduler_T_max": 300,
   "scheduler_eta_min": 1e-4,
   "adaptive_batch": false,
   "mlflow_experiment": "SGD FFT bs 64",
