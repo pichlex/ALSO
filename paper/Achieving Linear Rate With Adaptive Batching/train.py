@@ -164,9 +164,9 @@ def train_model(
     model_name = config.get("model", "resnet18").lower()
     num_classes = 100 if config.get("dataset", "cifar10").lower() == "cifar100" else 10
     if model_name == "resnet18":
-        model = torchvision.models.resnet18(weights=torchvision.models.ResNet18_Weights.IMAGENET1K_V1)
+        model = torchvision.models.resnet18.train()
     elif model_name == "resnet34":
-        model = torchvision.models.resnet34(weights=torchvision.models.ResNet34_Weights.IMAGENET1K_V1)
+        model = torchvision.models.resnet18.train()
     else:
         raise ValueError(f"Unsupported model: {model_name}")
     model.fc = torch.nn.Linear(model.fc.in_features, num_classes)
