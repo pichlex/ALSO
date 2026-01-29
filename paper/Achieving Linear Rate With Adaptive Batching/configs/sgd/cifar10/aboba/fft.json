@@ -15,7 +15,7 @@
   "adaptive_batch": true,
   "adaptive_batch_strategy": "variance_ratio",
   "adaptive_batch_beta": 0,
-  "adaptive_batch_min": 32,
+  "adaptive_batch_min": 64,
   "adaptive_batch_max": 8192,
   "batch_size_multiplier": 2.0,
   "epoch_start_ab": 50,
