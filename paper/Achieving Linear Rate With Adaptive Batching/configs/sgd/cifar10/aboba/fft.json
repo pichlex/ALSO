@@ -6,7 +6,7 @@
   "batch_size": 128,
   "epochs": 100,
   "optimizer": "sgd",
-  "lr": 0.03,
+  "lr": 0.085,
   "momentum": 0.9,
   "weight_decay": 5e-4,
   "scheduler": "cosine",
