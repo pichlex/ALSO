@@ -3,7 +3,7 @@
   "model": "resnet18",
   "seed": 0,
   "augment": true,
-  "batch_size": 32,
+  "batch_size": 128,
   "epochs": 100,
   "optimizer": "sgd",
   "lr": 0.03,
