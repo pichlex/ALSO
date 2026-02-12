@@ -19,7 +19,7 @@
     "qkv"
   ],
   "pretrained": true,
-  "model_path": "paper/Adaptive Batching on ViTs/models/faster_vit_0.pth.tar",
+  "model_path": "models/faster_vit_0.pth.tar",
   "report_to": "mlflow",
   "batch_size": 16,
   "seed": 2,

@@ -27,7 +27,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--pretrained", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument(
         "--model-path",
-        default="paper/Adaptive Batching on ViTs/models/faster_vit_0.pth.tar",
+        default="models/faster_vit_0.pth.tar",
     )
     parser.add_argument("--adaptive-min", type=int, default=8, help="Lower cap for adaptive batch.")
     parser.add_argument("--adaptive-max", type=int, default=4096, help="Upper cap for adaptive batch.")
