@@ -4,7 +4,7 @@ set -euo pipefail
 # Split a config directory into four runnable scripts.
 CONFIG_ROOT="${CONFIG_ROOT:-paper/Adaptive Batching on ViTs/configs-uai/sgd/food101}"
 OUT_PREFIX="${OUT_PREFIX:-${CONFIG_ROOT}/run-part}"
-PYTHON_BIN="${PYTHON_BIN:-python}"
+UV_BIN="${UV_BIN:-uv}"
 MAIN_PATH="${MAIN_PATH:-paper/Adaptive Batching on ViTs/main.py}"
 
 configs=()
@@ -32,11 +32,11 @@ write_chunk() {
   {
     echo "#!/usr/bin/env bash"
     echo "set -euo pipefail"
-    echo "PYTHON_BIN=\${PYTHON_BIN:-${PYTHON_BIN}}"
+    echo "UV_BIN=\${UV_BIN:-${UV_BIN}}"
     echo "MAIN_PATH=\${MAIN_PATH:-\"${MAIN_PATH}\"}"
     echo
     for cfg in "${chunk[@]}"; do
-      echo "\"\${PYTHON_BIN}\" \"\${MAIN_PATH}\" --config \"${cfg}\""
+      echo "\"\${UV_BIN}\" run \"\${MAIN_PATH}\" --config \"${cfg}\""
     done
   } > "${out}"
   chmod +x "${out}"
