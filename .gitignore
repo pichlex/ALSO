@@ -48,3 +48,6 @@ optuna.db
 *.pt
 paper/Adaptive Batching on ViTs/models/*.pth*
 events.out.tfevents.*
+
+#We have not done it yet
+paper/RiemanianFinetune-FixedVersion/
