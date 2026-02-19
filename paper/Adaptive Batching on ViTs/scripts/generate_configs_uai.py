@@ -101,6 +101,26 @@ def _base_config(args: argparse.Namespace) -> Dict:
     }
 
 
+def _format_name(
+    pattern: str,
+    variant: str,
+    batch_size: int,
+    seed: int,
+    args: argparse.Namespace,
+) -> str:
+    name = pattern.format(
+        optimizer=args.optimizer,
+        dataset=args.dataset,
+        variant=variant,
+        batch_size=batch_size,
+        seed=seed,
+        aboba_batch_multiplier=args.aboba_batch_multiplier,
+    )
+    if variant == "aboba" and "{aboba_batch_multiplier}" not in pattern:
+        name = f"{name}-abm{args.aboba_batch_multiplier}"
+    return name
+
+
 def _apply_variant(
     base: Dict,
     variant: str,
@@ -111,20 +131,20 @@ def _apply_variant(
     cfg = dict(base)
     cfg["batch_size"] = batch_size
     cfg["seed"] = seed
-    cfg["mlflow_experiment"] = args.mlflow_pattern.format(
-        optimizer=args.optimizer,
-        dataset=args.dataset,
+    cfg["mlflow_experiment"] = _format_name(
+        args.mlflow_pattern,
         variant=variant,
         batch_size=batch_size,
         seed=seed,
+        args=args,
     )
     if args.run_name_pattern:
-        cfg["run_name"] = args.run_name_pattern.format(
-            optimizer=args.optimizer,
-            dataset=args.dataset,
+        cfg["run_name"] = _format_name(
+            args.run_name_pattern,
             variant=variant,
             batch_size=batch_size,
             seed=seed,
+            args=args,
         )
 
     if variant == "basic":

@@ -5,6 +5,7 @@ set -euo pipefail
 CONFIG_ROOT="${CONFIG_ROOT:-paper/Adaptive Batching on ViTs/configs-uai/sgd/food101}"
 WORKDIR="${WORKDIR:-paper/Adaptive Batching on ViTs}"
 OUT_PREFIX="${OUT_PREFIX:-${CONFIG_ROOT}/run-part}"
+VARIANT="${VARIANT:-}"
 UV_BIN="${UV_BIN:-uv}"
 MAIN_PATH="${MAIN_PATH:-main.py}"
 
@@ -12,9 +13,15 @@ CONFIG_ROOT_ABS=$(cd "${CONFIG_ROOT}" && pwd)
 WORKDIR_ABS=$(cd "${WORKDIR}" && pwd)
 
 configs=()
-while IFS= read -r line; do
-  configs+=("$line")
-done < <(find "${CONFIG_ROOT_ABS}" -type f -name '*.json' | sort)
+if [[ -n "${VARIANT}" ]]; then
+  while IFS= read -r line; do
+    configs+=("$line")
+  done < <(find "${CONFIG_ROOT_ABS}" -type f -name '*.json' -path "*/${VARIANT}/*" | sort)
+else
+  while IFS= read -r line; do
+    configs+=("$line")
+  done < <(find "${CONFIG_ROOT_ABS}" -type f -name '*.json' | sort)
+fi
 total=${#configs[@]}
 
 if (( total == 0 )); then
