@@ -313,6 +313,8 @@ def train_model(
                     ratio_smoothed = ratio_for_batch
                 ratio_for_batch *= batch_size_multiplier
                 batch_size_epoch = int(math.floor(ratio_for_batch))
+                if adaptive_strategy == "variance_ratio_sq":
+                    batch_size_epoch = batch_size_epoch * batch_size_epoch
             else:
                 batch_size_epoch = batch_size_init
             batch_size_epoch = max(batch_size_min, min(batch_size_max, batch_size_epoch))
