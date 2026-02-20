@@ -311,10 +311,13 @@ def train_model(
                 if adaptive_beta > 0 and prev_batch_size is not None:
                     ratio_for_batch = adaptive_beta * prev_batch_size + (1 - adaptive_beta) * ratio_raw
                     ratio_smoothed = ratio_for_batch
-                ratio_for_batch *= batch_size_multiplier
-                batch_size_epoch = int(math.floor(ratio_for_batch))
+                ratio_base = ratio_for_batch
                 if adaptive_strategy == "variance_ratio_sq":
-                    batch_size_epoch = batch_size_epoch * batch_size_epoch
+                    scaled_batch = (ratio_base * ratio_base) * batch_size_multiplier
+                    batch_size_epoch = int(math.floor(scaled_batch))
+                else:
+                    scaled_batch = ratio_base * batch_size_multiplier
+                    batch_size_epoch = int(math.floor(scaled_batch))
             else:
                 batch_size_epoch = batch_size_init
             batch_size_epoch = max(batch_size_min, min(batch_size_max, batch_size_epoch))
