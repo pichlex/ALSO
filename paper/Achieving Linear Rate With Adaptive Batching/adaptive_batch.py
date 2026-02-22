@@ -87,15 +87,15 @@ def ensure_preconditioned_strategy_compat(
             )
 
 
-def compute_adamw_bias_corrected_first_moment_signal(
+def compute_adamw_adaptive_update_signal(
     optimizer: torch.optim.AdamW,
     optimizer_params: List[torch.Tensor],
 ) -> List[Optional[torch.Tensor]]:
     """
-    Build a parameter-ordered list of AdamW first-moment signals m_hat_t.
+    Build a parameter-ordered list of AdamW adaptive-part update signals u_t.
 
     For each parameter p this returns:
-      m_hat_t = exp_avg / (1 - beta1^step)
+      u_t = m_hat_t / (sqrt(v_hat_t) + eps)
     when available and finite; otherwise None.
     """
     index_by_param_id = {id(p): idx for idx, p in enumerate(optimizer_params)}
@@ -103,6 +103,8 @@ def compute_adamw_bias_corrected_first_moment_signal(
 
     for group in optimizer.param_groups:
         beta1 = float(group.get("betas", (0.9, 0.999))[0])
+        beta2 = float(group.get("betas", (0.9, 0.999))[1])
+        eps = float(group.get("eps", 1e-8))
         for p in group["params"]:
             idx = index_by_param_id.get(id(p))
             if idx is None:
@@ -110,10 +112,11 @@ def compute_adamw_bias_corrected_first_moment_signal(
 
             state = optimizer.state.get(p, {})
             exp_avg = state.get("exp_avg")
+            exp_avg_sq = state.get("exp_avg_sq")
             step_t = state.get("step")
-            if exp_avg is None or step_t is None:
+            if exp_avg is None or exp_avg_sq is None or step_t is None:
                 continue
-            if exp_avg.shape != p.shape:
+            if exp_avg.shape != p.shape or exp_avg_sq.shape != p.shape:
                 continue
 
             if torch.is_tensor(step_t):
@@ -127,128 +130,38 @@ def compute_adamw_bias_corrected_first_moment_signal(
             if not math.isfinite(bias_correction1) or bias_correction1 <= 0:
                 continue
 
+            bias_correction2 = 1.0 - (beta2 ** step)
+            if not math.isfinite(bias_correction2) or bias_correction2 <= 0:
+                continue
+
             m_t = exp_avg.detach().to(device=p.device, dtype=p.dtype)
             if not torch.isfinite(m_t).all().item():
+                continue
+
+            v_t = exp_avg_sq.detach().to(device=p.device, dtype=p.dtype)
+            if not torch.isfinite(v_t).all().item():
+                continue
+            if torch.any(v_t < 0).item():
                 continue
 
             m_hat = m_t / bias_correction1
             if not torch.isfinite(m_hat).all().item():
                 continue
-            signal[idx] = m_hat
 
-    return signal
-
-
-def compute_adamw_preconditioned_theta_diff_norm_sq(
-    optimizer: torch.optim.AdamW,
-    optimizer_params: List[torch.Tensor],
-    prev_params: Optional[List[torch.Tensor]],
-    prev_prev_params: Optional[List[torch.Tensor]],
-) -> Tuple[Optional[float], Optional[float], Optional[float], bool]:
-    """
-    Compute || (theta_{e-1} - theta_{e-2}) / (sqrt(v_hat_t) + eps) ||^2 for AdamW.
-
-    Returns:
-      - preconditioned norm squared when computable
-      - mean(v_t) over all used tensor elements
-      - ||v_t||_2 over all used tensor elements
-      - valid flag indicating whether any usable parameters contributed
-    """
-    if prev_params is None or prev_prev_params is None:
-        return None, None, None, False
-    if len(prev_params) != len(prev_prev_params):
-        return None, None, None, False
-    if len(optimizer_params) != len(prev_params):
-        return None, None, None, False
-
-    index_by_param_id = {id(p): idx for idx, p in enumerate(optimizer_params)}
-
-    norm_sq = 0.0
-    v_t_sum = 0.0
-    v_t_sq_sum = 0.0
-    v_t_count = 0
-    used_any = False
-
-    for group in optimizer.param_groups:
-        amsgrad = bool(group.get("amsgrad", False))
-        if amsgrad:
-            continue
-        eps = float(group.get("eps", 1e-8))
-        beta2 = float(group.get("betas", (0.9, 0.999))[1])
-        v_key = "exp_avg_sq"
-
-        for p in group["params"]:
-            idx = index_by_param_id.get(id(p))
-            if idx is None:
+            v_hat = v_t / bias_correction2
+            if not torch.isfinite(v_hat).all().item():
+                continue
+            if torch.any(v_hat < 0).item():
                 continue
 
-            theta_prev = prev_params[idx]
-            theta_prev_prev = prev_prev_params[idx]
-            if theta_prev.shape != theta_prev_prev.shape:
-                continue
-
-            state = optimizer.state.get(p, {})
-            v_t = state.get(v_key)
-            step_t = state.get("step")
-            if v_t is None:
-                continue
-            if step_t is None:
-                continue
-            if v_t.shape != theta_prev.shape:
-                continue
-
-            theta_diff = theta_prev - theta_prev_prev
-            if theta_diff.numel() == 0:
-                continue
-
-            v_t_cpu = v_t.detach().to(device=theta_diff.device, dtype=theta_diff.dtype)
-            if not torch.isfinite(v_t_cpu).all().item():
-                continue
-            if torch.any(v_t_cpu < 0).item():
-                continue
-
-            if torch.is_tensor(step_t):
-                step = float(step_t.detach().item())
-            else:
-                step = float(step_t)
-            if not math.isfinite(step) or step <= 0:
-                continue
-
-            bias_correction2 = 1.0 - (beta2 ** step)
-            if not math.isfinite(bias_correction2) or bias_correction2 <= 0:
-                continue
-
-            v_hat_t = v_t_cpu / bias_correction2
-            if not torch.isfinite(v_hat_t).all().item():
-                continue
-            if torch.any(v_hat_t < 0).item():
-                continue
-
-            denom = torch.sqrt(v_hat_t) + eps
+            denom = torch.sqrt(v_hat) + eps
             if not torch.isfinite(denom).all().item():
                 continue
 
-            scaled_diff = theta_diff / denom
-            if not torch.isfinite(scaled_diff).all().item():
+            u_t = m_hat / denom
+            if not torch.isfinite(u_t).all().item():
                 continue
+            signal[idx] = u_t
 
-            norm_sq += torch.sum(scaled_diff * scaled_diff).item()
-            v_t_sum += torch.sum(v_t_cpu).item()
-            v_t_sq_sum += torch.sum(v_t_cpu * v_t_cpu).item()
-            v_t_count += int(v_t_cpu.numel())
-            used_any = True
+    return signal
 
-    if not used_any:
-        return None, None, None, False
-    if not math.isfinite(norm_sq) or norm_sq <= 0:
-        return None, None, None, False
-
-    v_t_mean = (v_t_sum / float(v_t_count)) if v_t_count > 0 else None
-    if v_t_mean is not None and not math.isfinite(v_t_mean):
-        v_t_mean = None
-
-    v_t_norm = math.sqrt(v_t_sq_sum)
-    if not math.isfinite(v_t_norm) or v_t_norm <= 0:
-        return None, v_t_mean, None, False
-
-    return norm_sq, v_t_mean, v_t_norm, True

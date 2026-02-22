@@ -16,7 +16,7 @@
   "use_old_tune_params": false,
   "batch_size": 16,
   "seed": 3,
-  "mlflow_experiment": "adamw-cifar100-aboba-preco-bs16-seed3-abm4.0",
+  "mlflow_experiment": "adamw-cifar100-aboba-prcd-bs16-seed3-abm4.0",
   "adaptive_batch": true,
   "adaptive_batch_strategy": "variance_ratio_preconditioned",
   "batch_size_multiplier": 4.0,

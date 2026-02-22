@@ -16,8 +16,7 @@ from adabatchgrad import (
 )
 from adaptive_batch import (
     AdaptiveBatchTracker,
-    compute_adamw_bias_corrected_first_moment_signal,
-    compute_adamw_preconditioned_theta_diff_norm_sq,
+    compute_adamw_adaptive_update_signal,
     ensure_preconditioned_strategy_compat,
 )
 from data import get_device, set_seed, IndexedDataset
@@ -304,23 +303,7 @@ def train_model(
         elif use_variance_strategy and epoch >= epoch_start_ab:
             var_used = var_history[epoch - 1] if (epoch - 1) < len(var_history) else None
             theta_diff_norm_sq = None
-            v_t_mean = None
-            v_t_norm = None
-            theta_diff_preconditioned_valid = False
-            if adaptive_strategy == "variance_ratio_preconditioned":
-                optimizer_params = _get_param_list(optimizer)
-                (
-                    theta_diff_norm_sq,
-                    v_t_mean,
-                    v_t_norm,
-                    theta_diff_preconditioned_valid,
-                ) = compute_adamw_preconditioned_theta_diff_norm_sq(
-                    optimizer,
-                    optimizer_params,
-                    prev_params,
-                    prev_prev_params,
-                )
-            elif prev_params is not None and prev_prev_params is not None:
+            if prev_params is not None and prev_prev_params is not None:
                 theta_diff_norm_sq = 0.0
                 for p1, p0 in zip(prev_params, prev_prev_params):
                     diff = p1 - p0
@@ -363,20 +346,10 @@ def train_model(
                 if var_used is not None and theta_diff_norm_sq is not None:
                     mlflow.log_metric("adaptive_batch/var_sum", var_used, step=epoch)
                     if adaptive_strategy == "variance_ratio_preconditioned":
-                        mlflow.log_metric("adaptive_batch/var_sum_mhat", var_used, step=epoch)
+                        mlflow.log_metric("adaptive_batch/var_sum_update", var_used, step=epoch)
                     mlflow.log_metric(
                         "adaptive_batch/theta_diff_norm_sq", theta_diff_norm_sq, step=epoch
                     )
-                if adaptive_strategy == "variance_ratio_preconditioned" and theta_diff_preconditioned_valid:
-                    mlflow.log_metric(
-                        "adaptive_batch/theta_diff_norm_sq_preconditioned",
-                        theta_diff_norm_sq,
-                        step=epoch,
-                    )
-                    if v_t_mean is not None:
-                        mlflow.log_metric("adaptive_batch/v_t_mean", v_t_mean, step=epoch)
-                    if v_t_norm is not None:
-                        mlflow.log_metric("adaptive_batch/v_t_norm", v_t_norm, step=epoch)
                 if ratio_raw is not None:
                     mlflow.log_metric("adaptive_batch/ratio_raw", ratio_raw, step=epoch)
                     if adaptive_strategy == "variance_ratio_preconditioned":
@@ -499,7 +472,7 @@ def train_model(
 
                 if tracker is not None:
                     if adaptive_strategy == "variance_ratio_preconditioned":
-                        signal_now = compute_adamw_bias_corrected_first_moment_signal(
+                        signal_now = compute_adamw_adaptive_update_signal(
                             optimizer, param_list
                         )
                     else:
@@ -515,7 +488,7 @@ def train_model(
                     mlflow.log_metric("adaptive_batch/F_hat_norm_sq", hat_norm_sq, step=epoch)
                     mlflow.log_metric("adaptive_batch/var_sum", var_sum, step=epoch)
                     if adaptive_strategy == "variance_ratio_preconditioned":
-                        mlflow.log_metric("adaptive_batch/var_sum_mhat", var_sum, step=epoch)
+                        mlflow.log_metric("adaptive_batch/var_sum_update", var_sum, step=epoch)
                     if hat_norm_sq > 0:
                         ratio_now = var_sum / hat_norm_sq
                         mlflow.log_metric("adaptive_batch/ratio_raw", ratio_now, step=epoch)
