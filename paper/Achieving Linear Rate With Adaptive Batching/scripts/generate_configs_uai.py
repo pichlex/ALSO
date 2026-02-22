@@ -43,7 +43,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--use-old-tune-params", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument(
         "--mlflow-pattern",
-        default="{optimizer}-{dataset}-{variant}-bs{batch_size}-seed{seed}",
+        default="{optimizer}-{dataset}-{variant}-prcnd-bs{batch_size}-seed{seed}",
     )
     parser.add_argument(
         "--run-name-pattern",
@@ -52,9 +52,9 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument("--seeds", type=int, nargs="+", default=[1, 2, 3])
-    parser.add_argument("--basic-batch-sizes", type=int, nargs="+", default=[128])
-    parser.add_argument("--seesaw-batch-sizes", type=int, nargs="+", default=[128])
-    parser.add_argument("--aboba-batch-sizes", type=int, nargs="+", default=[128])
+    parser.add_argument("--basic-batch-sizes", type=int, nargs="+", default=[16, 64, 256])
+    parser.add_argument("--seesaw-batch-sizes", type=int, nargs="+", default=[16, 64, 256])
+    parser.add_argument("--aboba-batch-sizes", type=int, nargs="+", default=[16, 64, 256, 512, 1024])
 
     parser.add_argument("--seesaw-alpha", type=float, default=3.0)
     parser.add_argument("--seesaw-epoch-start", type=int, default=2)
@@ -65,7 +65,7 @@ def parse_args() -> argparse.Namespace:
         help="Multiplier kept for completeness; Seesaw ignores it in training.",
     )
 
-    parser.add_argument("--aboba-strategy", default="variance_ratio")
+    parser.add_argument("--aboba-strategy", default="variance_ratio_preconditioned")
     parser.add_argument(
         "--aboba-batch-multipliers",
         type=float,

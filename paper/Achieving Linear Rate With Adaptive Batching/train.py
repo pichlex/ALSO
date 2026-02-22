@@ -332,7 +332,7 @@ def train_model(
                     if v_t_norm is None or v_t_norm <= 0:
                         numerator = None
                     else:
-                        numerator = var_used * v_t_norm
+                        numerator = var_used / v_t_norm
                 if numerator is not None and numerator > 0:
                     ratio_raw = math.sqrt(numerator / theta_diff_norm_sq)
                 ratio_for_batch = ratio_raw
