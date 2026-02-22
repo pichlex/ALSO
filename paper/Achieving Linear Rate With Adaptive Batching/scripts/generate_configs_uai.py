@@ -70,7 +70,7 @@ def parse_args() -> argparse.Namespace:
         "--aboba-batch-multipliers",
         type=float,
         nargs="+",
-        default=[2.0, 4.0, 8.0, 16.0],
+        default=[1.0, 2.0, 4.0],
     )
     parser.add_argument("--aboba-epoch-start", type=int, default=2)
 
