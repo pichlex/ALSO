@@ -7,7 +7,10 @@ from typing import Dict, Iterable, List, Tuple, Optional
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Generate CIFAR100 AdamW configs for basic, seesaw, and aboba variants."
+        description=(
+            "Generate configs for basic, seesaw, and aboba variants "
+            "(default profile: CIFAR100 + ResNet34 + AdamW)."
+        )
     )
     parser.add_argument(
         "--output-root",
@@ -22,6 +25,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--optimizer", default="adamw")
     parser.add_argument("--epochs", type=int, default=40)
     parser.add_argument("--lr", type=float, default=0.0001)
+    parser.add_argument(
+        "--momentum",
+        type=float,
+        default=0.9,
+        help="SGD momentum to write into configs when optimizer=sgd.",
+    )
     parser.add_argument("--weight-decay", type=float, default=5e-3)
     parser.add_argument("--scheduler-T-max", dest="scheduler_T_max", type=int, default=40)
     parser.add_argument("--scheduler-eta-min", type=float, default=1e-5)
@@ -75,7 +84,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def _base_config(args: argparse.Namespace) -> Dict:
-    return {
+    base = {
         "dataset": args.dataset,
         "model": args.model,
         "epochs": args.epochs,
@@ -92,6 +101,9 @@ def _base_config(args: argparse.Namespace) -> Dict:
         "report_to": args.report_to,
         "use_old_tune_params": args.use_old_tune_params,
     }
+    if str(args.optimizer).lower() == "sgd":
+        base["momentum"] = args.momentum
+    return base
 
 
 def _format_name(

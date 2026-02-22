@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -euo pipefail
+UV_BIN=${UV_BIN:-uv}
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+WORKDIR=${WORKDIR:-$(cd -- "${SCRIPT_DIR}/../../.." && pwd)}
+CONFIG_DIR=${CONFIG_DIR:-${SCRIPT_DIR}}
+MAIN_PATH=${MAIN_PATH:-"main.py"}
+
+cd "${WORKDIR}"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm16/bs1024-seed2.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm16/bs16-seed1.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm16/bs16-seed3.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm16/bs256-seed2.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm16/bs512-seed1.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm16/bs512-seed3.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm16/bs64-seed2.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm2/bs1024-seed1.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm2/bs1024-seed3.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm2/bs16-seed2.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm2/bs256-seed1.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm2/bs256-seed3.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm2/bs512-seed2.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm2/bs64-seed1.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm2/bs64-seed3.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm4/bs1024-seed2.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm4/bs16-seed1.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm4/bs16-seed3.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm4/bs256-seed2.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm4/bs512-seed1.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm4/bs512-seed3.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm4/bs64-seed2.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm8/bs1024-seed1.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm8/bs1024-seed3.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm8/bs16-seed2.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm8/bs256-seed1.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm8/bs256-seed3.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm8/bs512-seed2.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm8/bs64-seed1.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm8/bs64-seed3.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/basic/bs16-seed2.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/basic/bs256-seed1.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/basic/bs256-seed3.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/basic/bs64-seed2.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/seesaw/bs16-seed1.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/seesaw/bs16-seed3.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/seesaw/bs256-seed2.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/seesaw/bs64-seed1.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/seesaw/bs64-seed3.json"
