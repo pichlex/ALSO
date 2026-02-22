@@ -304,12 +304,14 @@ def train_model(
             var_used = var_history[epoch - 1] if (epoch - 1) < len(var_history) else None
             theta_diff_norm_sq = None
             v_t_mean = None
+            v_t_norm = None
             theta_diff_preconditioned_valid = False
             if adaptive_strategy == "variance_ratio_preconditioned":
                 optimizer_params = _get_param_list(optimizer)
                 (
                     theta_diff_norm_sq,
                     v_t_mean,
+                    v_t_norm,
                     theta_diff_preconditioned_valid,
                 ) = compute_adamw_preconditioned_theta_diff_norm_sq(
                     optimizer,
@@ -325,18 +327,28 @@ def train_model(
             ratio_raw = None
             ratio_smoothed = None
             if var_used is not None and theta_diff_norm_sq is not None and theta_diff_norm_sq > 0:
-                ratio_raw = math.sqrt(var_used / theta_diff_norm_sq)
+                numerator = var_used
+                if adaptive_strategy == "variance_ratio_preconditioned":
+                    if v_t_norm is None or v_t_norm <= 0:
+                        numerator = None
+                    else:
+                        numerator = var_used * v_t_norm
+                if numerator is not None and numerator > 0:
+                    ratio_raw = math.sqrt(numerator / theta_diff_norm_sq)
                 ratio_for_batch = ratio_raw
-                if adaptive_beta > 0 and prev_batch_size is not None:
+                if ratio_raw is not None and adaptive_beta > 0 and prev_batch_size is not None:
                     ratio_for_batch = adaptive_beta * prev_batch_size + (1 - adaptive_beta) * ratio_raw
                     ratio_smoothed = ratio_for_batch
-                ratio_base = ratio_for_batch
-                if adaptive_strategy == "variance_ratio_sq":
-                    scaled_batch = (ratio_base * ratio_base) * batch_size_multiplier
-                    batch_size_epoch = int(math.floor(scaled_batch))
+                if ratio_raw is None:
+                    batch_size_epoch = batch_size_init
                 else:
-                    scaled_batch = ratio_base * batch_size_multiplier
-                    batch_size_epoch = int(math.floor(scaled_batch))
+                    ratio_base = ratio_for_batch
+                    if adaptive_strategy == "variance_ratio_sq":
+                        scaled_batch = (ratio_base * ratio_base) * batch_size_multiplier
+                        batch_size_epoch = int(math.floor(scaled_batch))
+                    else:
+                        scaled_batch = ratio_base * batch_size_multiplier
+                        batch_size_epoch = int(math.floor(scaled_batch))
             else:
                 batch_size_epoch = batch_size_init
             batch_size_epoch = max(batch_size_min, min(batch_size_max, batch_size_epoch))
@@ -365,6 +377,8 @@ def train_model(
                     )
                     if v_t_mean is not None:
                         mlflow.log_metric("adaptive_batch/v_t_mean", v_t_mean, step=epoch)
+                    if v_t_norm is not None:
+                        mlflow.log_metric("adaptive_batch/v_t_norm", v_t_norm, step=epoch)
                 if ratio_raw is not None:
                     mlflow.log_metric("adaptive_batch/ratio_raw", ratio_raw, step=epoch)
                     if adaptive_strategy == "variance_ratio_preconditioned":

@@ -88,26 +88,28 @@ def compute_adamw_preconditioned_theta_diff_norm_sq(
     optimizer_params: List[torch.Tensor],
     prev_params: Optional[List[torch.Tensor]],
     prev_prev_params: Optional[List[torch.Tensor]],
-) -> Tuple[Optional[float], Optional[float], bool]:
+) -> Tuple[Optional[float], Optional[float], Optional[float], bool]:
     """
     Compute || (theta_{e-1} - theta_{e-2}) / (sqrt(v_t) + eps) ||^2 for AdamW.
 
     Returns:
       - preconditioned norm squared when computable
       - mean(v_t) over all used tensor elements
+      - ||v_t||_2 over all used tensor elements
       - valid flag indicating whether any usable parameters contributed
     """
     if prev_params is None or prev_prev_params is None:
-        return None, None, False
+        return None, None, None, False
     if len(prev_params) != len(prev_prev_params):
-        return None, None, False
+        return None, None, None, False
     if len(optimizer_params) != len(prev_params):
-        return None, None, False
+        return None, None, None, False
 
     index_by_param_id = {id(p): idx for idx, p in enumerate(optimizer_params)}
 
     norm_sq = 0.0
     v_t_sum = 0.0
+    v_t_sq_sum = 0.0
     v_t_count = 0
     used_any = False
 
@@ -151,16 +153,21 @@ def compute_adamw_preconditioned_theta_diff_norm_sq(
 
             norm_sq += torch.sum(scaled_diff * scaled_diff).item()
             v_t_sum += torch.sum(v_t_cpu).item()
+            v_t_sq_sum += torch.sum(v_t_cpu * v_t_cpu).item()
             v_t_count += int(v_t_cpu.numel())
             used_any = True
 
     if not used_any:
-        return None, None, False
+        return None, None, None, False
     if not math.isfinite(norm_sq) or norm_sq <= 0:
-        return None, None, False
+        return None, None, None, False
 
     v_t_mean = (v_t_sum / float(v_t_count)) if v_t_count > 0 else None
     if v_t_mean is not None and not math.isfinite(v_t_mean):
         v_t_mean = None
 
-    return norm_sq, v_t_mean, True
+    v_t_norm = math.sqrt(v_t_sq_sum)
+    if not math.isfinite(v_t_norm) or v_t_norm <= 0:
+        return None, v_t_mean, None, False
+
+    return norm_sq, v_t_mean, v_t_norm, True
