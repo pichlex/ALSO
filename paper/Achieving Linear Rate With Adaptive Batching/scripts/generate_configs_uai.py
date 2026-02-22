@@ -43,7 +43,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--use-old-tune-params", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument(
         "--mlflow-pattern",
-        default="{optimizer}-{dataset}-{variant}-pre-bs{batch_size}-seed{seed}",
+        default="{optimizer}-{dataset}-{variant}-preco-bs{batch_size}-seed{seed}",
     )
     parser.add_argument(
         "--run-name-pattern",

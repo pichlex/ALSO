@@ -87,6 +87,58 @@ def ensure_preconditioned_strategy_compat(
             )
 
 
+def compute_adamw_bias_corrected_first_moment_signal(
+    optimizer: torch.optim.AdamW,
+    optimizer_params: List[torch.Tensor],
+) -> List[Optional[torch.Tensor]]:
+    """
+    Build a parameter-ordered list of AdamW first-moment signals m_hat_t.
+
+    For each parameter p this returns:
+      m_hat_t = exp_avg / (1 - beta1^step)
+    when available and finite; otherwise None.
+    """
+    index_by_param_id = {id(p): idx for idx, p in enumerate(optimizer_params)}
+    signal: List[Optional[torch.Tensor]] = [None] * len(optimizer_params)
+
+    for group in optimizer.param_groups:
+        beta1 = float(group.get("betas", (0.9, 0.999))[0])
+        for p in group["params"]:
+            idx = index_by_param_id.get(id(p))
+            if idx is None:
+                continue
+
+            state = optimizer.state.get(p, {})
+            exp_avg = state.get("exp_avg")
+            step_t = state.get("step")
+            if exp_avg is None or step_t is None:
+                continue
+            if exp_avg.shape != p.shape:
+                continue
+
+            if torch.is_tensor(step_t):
+                step = float(step_t.detach().item())
+            else:
+                step = float(step_t)
+            if not math.isfinite(step) or step <= 0:
+                continue
+
+            bias_correction1 = 1.0 - (beta1 ** step)
+            if not math.isfinite(bias_correction1) or bias_correction1 <= 0:
+                continue
+
+            m_t = exp_avg.detach().to(device=p.device, dtype=p.dtype)
+            if not torch.isfinite(m_t).all().item():
+                continue
+
+            m_hat = m_t / bias_correction1
+            if not torch.isfinite(m_hat).all().item():
+                continue
+            signal[idx] = m_hat
+
+    return signal
+
+
 def compute_adamw_preconditioned_theta_diff_norm_sq(
     optimizer: torch.optim.AdamW,
     optimizer_params: List[torch.Tensor],

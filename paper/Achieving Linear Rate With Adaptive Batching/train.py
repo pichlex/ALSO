@@ -16,6 +16,7 @@ from adabatchgrad import (
 )
 from adaptive_batch import (
     AdaptiveBatchTracker,
+    compute_adamw_bias_corrected_first_moment_signal,
     compute_adamw_preconditioned_theta_diff_norm_sq,
     ensure_preconditioned_strategy_compat,
 )
@@ -328,11 +329,6 @@ def train_model(
             ratio_smoothed = None
             if var_used is not None and theta_diff_norm_sq is not None and theta_diff_norm_sq > 0:
                 numerator = var_used
-                if adaptive_strategy == "variance_ratio_preconditioned":
-                    if v_t_norm is None or v_t_norm <= 0:
-                        numerator = None
-                    else:
-                        numerator = var_used / v_t_norm
                 if numerator is not None and numerator > 0:
                     ratio_raw = math.sqrt(numerator / theta_diff_norm_sq)
                 ratio_for_batch = ratio_raw
@@ -366,6 +362,8 @@ def train_model(
                 mlflow.log_metric("adaptive_batch/batch_size", batch_size_epoch, step=epoch)
                 if var_used is not None and theta_diff_norm_sq is not None:
                     mlflow.log_metric("adaptive_batch/var_sum", var_used, step=epoch)
+                    if adaptive_strategy == "variance_ratio_preconditioned":
+                        mlflow.log_metric("adaptive_batch/var_sum_mhat", var_used, step=epoch)
                     mlflow.log_metric(
                         "adaptive_batch/theta_diff_norm_sq", theta_diff_norm_sq, step=epoch
                     )
@@ -500,8 +498,13 @@ def train_model(
                 train_step += 1
 
                 if tracker is not None:
-                    grads_now = [p.grad for p in param_list]
-                    tracker.update(grads_now)
+                    if adaptive_strategy == "variance_ratio_preconditioned":
+                        signal_now = compute_adamw_bias_corrected_first_moment_signal(
+                            optimizer, param_list
+                        )
+                    else:
+                        signal_now = [p.grad for p in param_list]
+                    tracker.update(signal_now)
 
             if tracker is not None:
                 hat_grad, hat_norm_sq, var_sum = tracker.finalize()
@@ -511,6 +514,8 @@ def train_model(
                 if log_to_mlflow:
                     mlflow.log_metric("adaptive_batch/F_hat_norm_sq", hat_norm_sq, step=epoch)
                     mlflow.log_metric("adaptive_batch/var_sum", var_sum, step=epoch)
+                    if adaptive_strategy == "variance_ratio_preconditioned":
+                        mlflow.log_metric("adaptive_batch/var_sum_mhat", var_sum, step=epoch)
                     if hat_norm_sq > 0:
                         ratio_now = var_sum / hat_norm_sq
                         mlflow.log_metric("adaptive_batch/ratio_raw", ratio_now, step=epoch)
