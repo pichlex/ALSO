@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import json
+import os
 from pathlib import Path
 from typing import Dict, Iterable, List, Tuple, Optional
 
@@ -79,6 +80,24 @@ def parse_args() -> argparse.Namespace:
         action=argparse.BooleanOptionalAction,
         default=True,
         help="Whether to overwrite existing config files.",
+    )
+    parser.add_argument(
+        "--write-run-scripts",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Whether to generate run-all.sh and run-part*.sh in output root.",
+    )
+    parser.add_argument(
+        "--run-split-parts",
+        type=int,
+        default=2,
+        help="How many run-part*.sh scripts to split run-all commands into.",
+    )
+    parser.add_argument(
+        "--prune-stale-configs",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Delete JSON configs under output root that are not in the generated plan.",
     )
     return parser.parse_args()
 
@@ -209,8 +228,43 @@ def _fmt_multiplier(value: float) -> str:
     return str(value).replace(".", "p")
 
 
+def _run_script_header() -> str:
+    return (
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        "UV_BIN=${UV_BIN:-uv}\n"
+        "SCRIPT_DIR=$(cd -- \"$(dirname -- \"${BASH_SOURCE[0]}\")\" && pwd)\n"
+        "WORKDIR=${WORKDIR:-$(cd -- \"${SCRIPT_DIR}/../../..\" && pwd)}\n"
+        "CONFIG_DIR=${CONFIG_DIR:-${SCRIPT_DIR}}\n"
+        "MAIN_PATH=${MAIN_PATH:-\"main.py\"}\n"
+        "\n"
+        "cd \"${WORKDIR}\"\n"
+    )
+
+
+def _run_command(output_root: Path, config_path: Path) -> str:
+    rel = config_path.relative_to(output_root).as_posix()
+    return f"\"${{UV_BIN}}\" run \"${{MAIN_PATH}}\" --config \"${{CONFIG_DIR}}/{rel}\""
+
+
+def _write_run_script(path: Path, commands: List[str]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    body = _run_script_header() + "\n".join(commands) + ("\n" if commands else "")
+    path.write_text(body)
+    os.chmod(path, 0o755)
+
+
+def _find_stale_json_configs(output_root: Path, planned_paths: List[Path]) -> List[Path]:
+    planned_set = {p.resolve() for p in planned_paths}
+    existing = [p for p in output_root.rglob("*.json") if p.is_file()]
+    stale = [p for p in existing if p.resolve() not in planned_set]
+    return sorted(stale, key=lambda p: p.as_posix())
+
+
 def main() -> None:
     args = parse_args()
+    if args.run_split_parts < 1:
+        raise ValueError("--run-split-parts must be >= 1.")
     base = _base_config(args)
     plan: List[Tuple[str, Path, Dict]] = []
 
@@ -231,20 +285,57 @@ def main() -> None:
             path = args.output_root / "aboba" / f"abm{suffix}" / f"bs{bs}-seed{seed}.json"
             plan.append(("aboba", path, cfg))
 
+    run_order = sorted(plan, key=lambda item: item[1].as_posix())
+    run_commands = [_run_command(args.output_root, path) for _, path, _ in run_order]
+    planned_paths = [path for _, path, _ in plan]
+    stale_configs = _find_stale_json_configs(args.output_root, planned_paths)
+    part_commands: List[List[str]] = []
+    if args.write_run_scripts:
+        for part_idx in range(args.run_split_parts):
+            cmds = [cmd for cmd_idx, cmd in enumerate(run_commands) if cmd_idx % args.run_split_parts == part_idx]
+            part_commands.append(cmds)
+
     if args.dry_run:
         for variant, path, _ in plan:
             print(f"[dry-run] {variant}: {path}")
         print(f"Total configs: {len(plan)}")
+        if args.prune_stale_configs:
+            print(f"[dry-run] stale-json-to-delete: {len(stale_configs)}")
+        if args.write_run_scripts:
+            print(f"[dry-run] run-all.sh commands: {len(run_commands)}")
+            for idx, cmds in enumerate(part_commands, start=1):
+                print(f"[dry-run] run-part{idx}.sh commands: {len(cmds)}")
         return
 
     for _, path, cfg in plan:
         _write_config(path, cfg, args.overwrite)
+
+    pruned_count = 0
+    if args.prune_stale_configs:
+        for stale in stale_configs:
+            stale.unlink()
+            pruned_count += 1
+
+    if args.write_run_scripts:
+        _write_run_script(args.output_root / "run-all.sh", run_commands)
+        for idx, cmds in enumerate(part_commands, start=1):
+            _write_run_script(args.output_root / f"run-part{idx}.sh", cmds)
 
     counts = {}
     for variant, _, _ in plan:
         counts[variant] = counts.get(variant, 0) + 1
     summary = ", ".join(f"{k}={v}" for k, v in sorted(counts.items()))
     print(f"Wrote {len(plan)} configs -> {args.output_root} ({summary})")
+    if args.prune_stale_configs:
+        print(f"Pruned stale configs: {pruned_count}")
+    if args.write_run_scripts:
+        part_summary = ", ".join(
+            f"run-part{idx + 1}={len(cmds)}" for idx, cmds in enumerate(part_commands)
+        )
+        print(
+            f"Wrote run scripts -> {args.output_root} "
+            f"(run-all={len(run_commands)}, {part_summary})"
+        )
 
 
 if __name__ == "__main__":

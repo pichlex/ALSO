@@ -31,7 +31,7 @@ def apply_defaults(cfg: Dict[str, Any]) -> Dict[str, Any]:
         "adaptive_batch_min": 10,
         "adaptive_batch_max": 1024,
         "epoch_start_ab": 2,
-        "adaptive_batch_strategy": "variance_ratio",  # "variance_ratio" | "variance_ratio_sq" | "adabatchgrad" | "seesaw"
+        "adaptive_batch_strategy": "variance_ratio",  # "variance_ratio" | "variance_ratio_sq" | "variance_ratio_preconditioned" | "adabatchgrad" | "seesaw"
         "adabatchgrad_batch_test": "random_increase",
         "adabatchgrad_theta": 0.1,
         "adabatchgrad_nu": 0.1,

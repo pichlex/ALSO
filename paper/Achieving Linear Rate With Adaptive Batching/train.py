@@ -14,7 +14,11 @@ from adabatchgrad import (
     calculate_batch_size,
     per_sample_cross_entropy_grads,
 )
-from adaptive_batch import AdaptiveBatchTracker
+from adaptive_batch import (
+    AdaptiveBatchTracker,
+    compute_adamw_preconditioned_theta_diff_norm_sq,
+    ensure_preconditioned_strategy_compat,
+)
 from data import get_device, set_seed, IndexedDataset
 from optimizers import build_optimizer, build_scheduler
 
@@ -144,9 +148,9 @@ def _compute_seesaw_cut_epochs(alpha: float, lr0: float, lr_schedule: List[float
     return cuts
 
 
-def _clone_model_params(model: torch.nn.Module) -> List[torch.Tensor]:
+def _clone_model_params(params: List[torch.Tensor]) -> List[torch.Tensor]:
     # Snapshot parameters to CPU to measure cross-epoch movement without holding extra GPU memory.
-    return [p.detach().clone().cpu() for p in model.parameters()]
+    return [p.detach().clone().cpu() for p in params]
 
 
 def train_model(
@@ -190,6 +194,7 @@ def train_model(
     adabatchgrad_prob_new = float(config.get("adabatchgrad_prob_new", 0.005))
     adabatchgrad_k = int(config.get("adabatchgrad_k", 5))
     epochs = int(config.get("epochs", 20))
+    ensure_preconditioned_strategy_compat(adaptive_enabled, adaptive_strategy, optimizer)
 
     log_to_mlflow = config.get("report_to") == "mlflow"
     if log_to_mlflow:
@@ -298,7 +303,21 @@ def train_model(
         elif use_variance_strategy and epoch >= epoch_start_ab:
             var_used = var_history[epoch - 1] if (epoch - 1) < len(var_history) else None
             theta_diff_norm_sq = None
-            if prev_params is not None and prev_prev_params is not None:
+            v_t_mean = None
+            theta_diff_preconditioned_valid = False
+            if adaptive_strategy == "variance_ratio_preconditioned":
+                optimizer_params = _get_param_list(optimizer)
+                (
+                    theta_diff_norm_sq,
+                    v_t_mean,
+                    theta_diff_preconditioned_valid,
+                ) = compute_adamw_preconditioned_theta_diff_norm_sq(
+                    optimizer,
+                    optimizer_params,
+                    prev_params,
+                    prev_prev_params,
+                )
+            elif prev_params is not None and prev_prev_params is not None:
                 theta_diff_norm_sq = 0.0
                 for p1, p0 in zip(prev_params, prev_prev_params):
                     diff = p1 - p0
@@ -338,8 +357,20 @@ def train_model(
                     mlflow.log_metric(
                         "adaptive_batch/theta_diff_norm_sq", theta_diff_norm_sq, step=epoch
                     )
+                if adaptive_strategy == "variance_ratio_preconditioned" and theta_diff_preconditioned_valid:
+                    mlflow.log_metric(
+                        "adaptive_batch/theta_diff_norm_sq_preconditioned",
+                        theta_diff_norm_sq,
+                        step=epoch,
+                    )
+                    if v_t_mean is not None:
+                        mlflow.log_metric("adaptive_batch/v_t_mean", v_t_mean, step=epoch)
                 if ratio_raw is not None:
-                        mlflow.log_metric("adaptive_batch/ratio_raw", ratio_raw, step=epoch)
+                    mlflow.log_metric("adaptive_batch/ratio_raw", ratio_raw, step=epoch)
+                    if adaptive_strategy == "variance_ratio_preconditioned":
+                        mlflow.log_metric(
+                            "adaptive_batch/ratio_raw_preconditioned", ratio_raw, step=epoch
+                        )
                 if ratio_smoothed is not None:
                     mlflow.log_metric("adaptive_batch/ratio_ema", ratio_smoothed, step=epoch)
         else:
@@ -472,7 +503,7 @@ def train_model(
 
             # Snapshot model parameters at the end of the epoch to measure movement between epochs.
             prev_prev_params = prev_params
-            prev_params = _clone_model_params(model)
+            prev_params = _clone_model_params(param_list)
 
         train_loss_epoch = total_loss / max(1, steps)
         val_loss, val_metrics = _evaluate(model, val_loader, loss_fn, device)

@@ -1,3 +1,4 @@
+import math
 from typing import List, Optional, Tuple
 
 import torch
@@ -67,3 +68,99 @@ class AdaptiveBatchTracker:
             hat_grad_norm_sq += torch.sum(g_hat * g_hat).item()
         hat_norm_sq = hat_grad_norm_sq
         return hat_grad, hat_norm_sq, self.var_sum
+
+
+def ensure_preconditioned_strategy_compat(
+    adaptive_enabled: bool,
+    adaptive_strategy: str,
+    optimizer: torch.optim.Optimizer,
+) -> None:
+    """Validate optimizer compatibility for adaptive strategies."""
+    if adaptive_enabled and adaptive_strategy == "variance_ratio_preconditioned":
+        if not isinstance(optimizer, torch.optim.AdamW):
+            raise ValueError(
+                "adaptive_batch_strategy='variance_ratio_preconditioned' requires optimizer='adamw'."
+            )
+
+
+def compute_adamw_preconditioned_theta_diff_norm_sq(
+    optimizer: torch.optim.AdamW,
+    optimizer_params: List[torch.Tensor],
+    prev_params: Optional[List[torch.Tensor]],
+    prev_prev_params: Optional[List[torch.Tensor]],
+) -> Tuple[Optional[float], Optional[float], bool]:
+    """
+    Compute || (theta_{e-1} - theta_{e-2}) / (sqrt(v_t) + eps) ||^2 for AdamW.
+
+    Returns:
+      - preconditioned norm squared when computable
+      - mean(v_t) over all used tensor elements
+      - valid flag indicating whether any usable parameters contributed
+    """
+    if prev_params is None or prev_prev_params is None:
+        return None, None, False
+    if len(prev_params) != len(prev_prev_params):
+        return None, None, False
+    if len(optimizer_params) != len(prev_params):
+        return None, None, False
+
+    index_by_param_id = {id(p): idx for idx, p in enumerate(optimizer_params)}
+
+    norm_sq = 0.0
+    v_t_sum = 0.0
+    v_t_count = 0
+    used_any = False
+
+    for group in optimizer.param_groups:
+        amsgrad = bool(group.get("amsgrad", False))
+        eps = float(group.get("eps", 1e-8))
+        v_key = "max_exp_avg_sq" if amsgrad else "exp_avg_sq"
+
+        for p in group["params"]:
+            idx = index_by_param_id.get(id(p))
+            if idx is None:
+                continue
+
+            theta_prev = prev_params[idx]
+            theta_prev_prev = prev_prev_params[idx]
+            if theta_prev.shape != theta_prev_prev.shape:
+                continue
+
+            state = optimizer.state.get(p, {})
+            v_t = state.get(v_key)
+            if v_t is None:
+                continue
+            if v_t.shape != theta_prev.shape:
+                continue
+
+            theta_diff = theta_prev - theta_prev_prev
+            if theta_diff.numel() == 0:
+                continue
+
+            v_t_cpu = v_t.detach().to(device=theta_diff.device, dtype=theta_diff.dtype)
+            if not torch.isfinite(v_t_cpu).all().item():
+                continue
+
+            denom = torch.sqrt(v_t_cpu) + eps
+            if not torch.isfinite(denom).all().item():
+                continue
+
+            scaled_diff = theta_diff / denom
+            if not torch.isfinite(scaled_diff).all().item():
+                continue
+
+            norm_sq += torch.sum(scaled_diff * scaled_diff).item()
+            v_t_sum += torch.sum(v_t_cpu).item()
+            v_t_count += int(v_t_cpu.numel())
+            used_any = True
+
+    if not used_any:
+        return None, None, False
+    if not math.isfinite(norm_sq) or norm_sq <= 0:
+        return None, None, False
+
+    v_t_mean = (v_t_sum / float(v_t_count)) if v_t_count > 0 else None
+    if v_t_mean is not None and not math.isfinite(v_t_mean):
+        v_t_mean = None
+
+    return norm_sq, v_t_mean, True
