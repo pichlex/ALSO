@@ -16,7 +16,7 @@
   "use_old_tune_params": false,
   "batch_size": 16,
   "seed": 1,
-  "mlflow_experiment": "adamw-cifar100-basic-prcnd-bs16-seed1",
+  "mlflow_experiment": "adamw-cifar100-basic-pre-bs16-seed1",
   "adaptive_batch": false,
   "batch_size_multiplier": 1.0,
   "epoch_start_ab": 1

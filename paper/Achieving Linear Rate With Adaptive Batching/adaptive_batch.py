@@ -81,6 +81,10 @@ def ensure_preconditioned_strategy_compat(
             raise ValueError(
                 "adaptive_batch_strategy='variance_ratio_preconditioned' requires optimizer='adamw'."
             )
+        if any(bool(group.get("amsgrad", False)) for group in optimizer.param_groups):
+            raise ValueError(
+                "adaptive_batch_strategy='variance_ratio_preconditioned' does not support amsgrad=True."
+            )
 
 
 def compute_adamw_preconditioned_theta_diff_norm_sq(
@@ -90,7 +94,7 @@ def compute_adamw_preconditioned_theta_diff_norm_sq(
     prev_prev_params: Optional[List[torch.Tensor]],
 ) -> Tuple[Optional[float], Optional[float], Optional[float], bool]:
     """
-    Compute || (theta_{e-1} - theta_{e-2}) / (sqrt(v_t) + eps) ||^2 for AdamW.
+    Compute || (theta_{e-1} - theta_{e-2}) / (sqrt(v_hat_t) + eps) ||^2 for AdamW.
 
     Returns:
       - preconditioned norm squared when computable
@@ -115,8 +119,11 @@ def compute_adamw_preconditioned_theta_diff_norm_sq(
 
     for group in optimizer.param_groups:
         amsgrad = bool(group.get("amsgrad", False))
+        if amsgrad:
+            continue
         eps = float(group.get("eps", 1e-8))
-        v_key = "max_exp_avg_sq" if amsgrad else "exp_avg_sq"
+        beta2 = float(group.get("betas", (0.9, 0.999))[1])
+        v_key = "exp_avg_sq"
 
         for p in group["params"]:
             idx = index_by_param_id.get(id(p))
@@ -130,7 +137,10 @@ def compute_adamw_preconditioned_theta_diff_norm_sq(
 
             state = optimizer.state.get(p, {})
             v_t = state.get(v_key)
+            step_t = state.get("step")
             if v_t is None:
+                continue
+            if step_t is None:
                 continue
             if v_t.shape != theta_prev.shape:
                 continue
@@ -142,8 +152,27 @@ def compute_adamw_preconditioned_theta_diff_norm_sq(
             v_t_cpu = v_t.detach().to(device=theta_diff.device, dtype=theta_diff.dtype)
             if not torch.isfinite(v_t_cpu).all().item():
                 continue
+            if torch.any(v_t_cpu < 0).item():
+                continue
 
-            denom = torch.sqrt(v_t_cpu) + eps
+            if torch.is_tensor(step_t):
+                step = float(step_t.detach().item())
+            else:
+                step = float(step_t)
+            if not math.isfinite(step) or step <= 0:
+                continue
+
+            bias_correction2 = 1.0 - (beta2 ** step)
+            if not math.isfinite(bias_correction2) or bias_correction2 <= 0:
+                continue
+
+            v_hat_t = v_t_cpu / bias_correction2
+            if not torch.isfinite(v_hat_t).all().item():
+                continue
+            if torch.any(v_hat_t < 0).item():
+                continue
+
+            denom = torch.sqrt(v_hat_t) + eps
             if not torch.isfinite(denom).all().item():
                 continue
 
