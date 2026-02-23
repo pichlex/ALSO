@@ -7,11 +7,11 @@ CONFIG_DIR=${CONFIG_DIR:-${SCRIPT_DIR}}
 MAIN_PATH=${MAIN_PATH:-"main.py"}
 
 cd "${WORKDIR}"
-"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm0p04/bs128-seed1.json"
-"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm0p04/bs128-seed3.json"
-"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm0p04/bs256-seed2.json"
-"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm0p04/bs64-seed1.json"
-"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm0p04/bs64-seed3.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm0p02/bs128-seed1.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm0p02/bs128-seed3.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm0p02/bs256-seed2.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm0p02/bs64-seed1.json"
+"${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/aboba/abm0p02/bs64-seed3.json"
 "${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/basic/bs128-seed2.json"
 "${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/basic/bs256-seed1.json"
 "${UV_BIN}" run "${MAIN_PATH}" --config "${CONFIG_DIR}/basic/bs256-seed3.json"
