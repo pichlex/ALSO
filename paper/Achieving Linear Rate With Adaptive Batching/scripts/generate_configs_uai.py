@@ -52,9 +52,9 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument("--seeds", type=int, nargs="+", default=[1, 2, 3])
-    parser.add_argument("--basic-batch-sizes", type=int, nargs="+", default=[16, 64, 256])
-    parser.add_argument("--seesaw-batch-sizes", type=int, nargs="+", default=[16, 64, 256])
-    parser.add_argument("--aboba-batch-sizes", type=int, nargs="+", default=[16, 64, 256, 512, 1024])
+    parser.add_argument("--basic-batch-sizes", type=int, nargs="+", default=[64, 128, 256])
+    parser.add_argument("--seesaw-batch-sizes", type=int, nargs="+", default=[64, 128, 256])
+    parser.add_argument("--aboba-batch-sizes", type=int, nargs="+", default=[64, 128, 256])
 
     parser.add_argument("--seesaw-alpha", type=float, default=3.0)
     parser.add_argument("--seesaw-epoch-start", type=int, default=2)
@@ -70,7 +70,7 @@ def parse_args() -> argparse.Namespace:
         "--aboba-batch-multipliers",
         type=float,
         nargs="+",
-        default=[0.2, 0.1, 0.01, 0.04, 0.075],
+        default=[0.04],
     )
     parser.add_argument("--aboba-epoch-start", type=int, default=2)
 

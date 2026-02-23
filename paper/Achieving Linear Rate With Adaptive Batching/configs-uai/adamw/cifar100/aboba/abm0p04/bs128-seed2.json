@@ -14,10 +14,11 @@
   "adaptive_batch_beta": 0.0,
   "report_to": "mlflow",
   "use_old_tune_params": false,
-  "batch_size": 16,
-  "seed": 1,
-  "mlflow_experiment": "adamw-cifar100-basic-prcd-bs16-seed1",
-  "adaptive_batch": false,
-  "batch_size_multiplier": 1.0,
-  "epoch_start_ab": 1
+  "batch_size": 128,
+  "seed": 2,
+  "mlflow_experiment": "adamw-cifar100-aboba-prcd-bs128-seed2-abm0.04",
+  "adaptive_batch": true,
+  "adaptive_batch_strategy": "variance_ratio_preconditioned",
+  "batch_size_multiplier": 0.04,
+  "epoch_start_ab": 2
 }
