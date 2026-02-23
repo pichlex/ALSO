@@ -1,0 +1,30 @@
+{
+  "dataset": "food101",
+  "epochs": 30,
+  "optimizer": "adamw",
+  "lr": 0.001,
+  "weight_decay": 0.005,
+  "scheduler": "cosine",
+  "scheduler_T_max": 30,
+  "scheduler_eta_min": 1e-05,
+  "augment": true,
+  "image_size": 224,
+  "adaptive_batch_min": 10,
+  "adaptive_batch_max": 4096,
+  "adaptive_batch_beta": 0.0,
+  "lora_r": 8,
+  "lora_alpha": 16,
+  "lora_dropout": 0.1,
+  "lora_target_modules": [
+    "qkv"
+  ],
+  "pretrained": true,
+  "model_path": "models/faster_vit_0.pth.tar",
+  "report_to": "mlflow",
+  "batch_size": 128,
+  "seed": 3,
+  "mlflow_experiment": "adamw-food101-basic-prcd-bs128-seed3",
+  "adaptive_batch": false,
+  "batch_size_multiplier": 1.0,
+  "epoch_start_ab": 1
+}
