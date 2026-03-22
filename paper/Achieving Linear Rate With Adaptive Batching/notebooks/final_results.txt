@@ -1,0 +1,874 @@
+Epoch 2
+================================================================================
+Approximation from previous epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 17100476.087257635 ||The sum of norms with full grad 17106946.531954516 ||Diff between full and approx 6.55267333984375 ||
+The distances:
+ ||between two last iterations: 0.28339018973201746||From prev epoch: 84.42429375149368||
+For Batch size = 32:
+ ||The sum of norms with approx grad 114766.42252277024 ||The sum of norms with full grad 114082.08888784982 ||Diff between full and approx 6.55267333984375 ||
+The distances:
+ ||between two last iterations: 0.28339018973201746||From prev epoch: 84.42429375149368||
+For Batch size = 64:
+ ||The sum of norms with approx grad 41676.86086313613 ||The sum of norms with full grad 41191.32501314115 ||Diff between full and approx 6.55267333984375 ||
+The distances:
+ ||between two last iterations: 0.28339018973201746||From prev epoch: 84.42429375149368||
+For Batch size = 128:
+ ||The sum of norms with approx grad 15361.588957305998 ||The sum of norms with full grad 15024.119364318438 ||Diff between full and approx 6.55267333984375 ||
+The distances:
+ ||between two last iterations: 0.28339018973201746||From prev epoch: 84.42429375149368||
+For Batch size = 256:
+ ||The sum of norms with approx grad 5828.811554373242 ||The sum of norms with full grad 5601.423247016966 ||Diff between full and approx 6.55267333984375 ||
+The distances:
+ ||between two last iterations: 0.28339018973201746||From prev epoch: 84.42429375149368||
+For Batch size = 512:
+ ||The sum of norms with approx grad 2287.749848756008 ||The sum of norms with full grad 2139.0851201219484 ||Diff between full and approx 6.55267333984375 ||
+The distances:
+ ||between two last iterations: 0.28339018973201746||From prev epoch: 84.42429375149368||
+================================================================================
+Approximation from 2 epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 17100323.786420964 ||The sum of norms with full grad 17106946.522408072 ||Diff between full and approx 6.687532424926758 ||
+The distances:
+ ||between two last iterations: 0.27695388579013525||From prev epoch: 47.906657208441175||
+For Batch size = 32:
+ ||The sum of norms with approx grad 114781.3830065094 ||The sum of norms with full grad 114082.08889249898 ||Diff between full and approx 6.687532424926758 ||
+The distances:
+ ||between two last iterations: 0.27695388579013525||From prev epoch: 47.906657208441175||
+For Batch size = 64:
+ ||The sum of norms with approx grad 41687.481412699446 ||The sum of norms with full grad 41191.32501993608 ||Diff between full and approx 6.687532424926758 ||
+The distances:
+ ||between two last iterations: 0.27695388579013525||From prev epoch: 47.906657208441175||
+For Batch size = 128:
+ ||The sum of norms with approx grad 15368.949291585013 ||The sum of norms with full grad 15024.119363364764 ||Diff between full and approx 6.687532424926758 ||
+The distances:
+ ||between two last iterations: 0.27695388579013525||From prev epoch: 47.906657208441175||
+For Batch size = 256:
+ ||The sum of norms with approx grad 5833.672661636956 ||The sum of norms with full grad 5601.423248119652 ||Diff between full and approx 6.687532424926758 ||
+The distances:
+ ||between two last iterations: 0.27695388579013525||From prev epoch: 47.906657208441175||
+For Batch size = 512:
+ ||The sum of norms with approx grad 2290.8044690303504 ||The sum of norms with full grad 2139.0851201219484 ||Diff between full and approx 6.687532424926758 ||
+The distances:
+ ||between two last iterations: 0.27695388579013525||From prev epoch: 47.906657208441175||
+================================================================================
+Approximation from our method
+For Batch size = 1:
+ ||The sum of norms with approx grad from 2nd 913488.824992689 ||The sum of norms with approx grad from 1910702.3215680209 ||The sum of norms with full grad  1052790.1858218373 ||
+For Batch size = 32:
+ ||The sum of norms with approx grad from 2nd 44213.86481481232 ||The sum of norms with approx grad from 144196.4400362391 ||The sum of norms with full grad  45516.472780216485 ||
+For Batch size = 64:
+ ||The sum of norms with approx grad from 2nd 19563.32905204408 ||The sum of norms with approx grad from 119550.74704829231 ||The sum of norms with full grad  20249.1920968676 ||
+For Batch size = 128:
+ ||The sum of norms with approx grad from 2nd 7990.808282521553 ||The sum of norms with approx grad from 17980.607567465864 ||The sum of norms with full grad  8386.840783826075 ||
+For Batch size = 256:
+ ||The sum of norms with approx grad from 2nd 3039.3999045719393 ||The sum of norms with approx grad from 13031.2035892875865 ||The sum of norms with full grad  3294.25041500479 ||
+For Batch size = 512:
+ ||The sum of norms with approx grad from 2nd 1077.7371039818972 ||The sum of norms with approx grad from 11072.5156510542147 ||The sum of norms with full grad  1246.8784313602373 ||
+Epoch 4
+================================================================================
+Approximation from previous epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 18993616.306356605 ||The sum of norms with full grad 19018307.65874755 ||Diff between full and approx 8.352252960205078 ||
+The distances:
+ ||between two last iterations: 0.320603125859634||From prev epoch: 85.7947474014145||
+For Batch size = 32:
+ ||The sum of norms with approx grad 138940.36660444923 ||The sum of norms with full grad 138051.40291582607 ||Diff between full and approx 8.352252960205078 ||
+The distances:
+ ||between two last iterations: 0.320603125859634||From prev epoch: 85.7947474014145||
+For Batch size = 64:
+ ||The sum of norms with approx grad 50408.53746529203 ||The sum of norms with full grad 49780.4938982008 ||Diff between full and approx 8.352252960205078 ||
+The distances:
+ ||between two last iterations: 0.320603125859634||From prev epoch: 85.7947474014145||
+For Batch size = 128:
+ ||The sum of norms with approx grad 18499.301096470095 ||The sum of norms with full grad 18063.19388721045 ||Diff between full and approx 8.352252960205078 ||
+The distances:
+ ||between two last iterations: 0.320603125859634||From prev epoch: 85.7947474014145||
+For Batch size = 256:
+ ||The sum of norms with approx grad 6987.43064770475 ||The sum of norms with full grad 6695.464468890335 ||Diff between full and approx 8.352252960205078 ||
+The distances:
+ ||between two last iterations: 0.320603125859634||From prev epoch: 85.7947474014145||
+For Batch size = 512:
+ ||The sum of norms with approx grad 2714.313843802549 ||The sum of norms with full grad 2523.618834779598 ||Diff between full and approx 8.352252960205078 ||
+The distances:
+ ||between two last iterations: 0.320603125859634||From prev epoch: 85.7947474014145||
+================================================================================
+Approximation from 2 epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 18993588.24933833 ||The sum of norms with full grad 19018307.64746887 ||Diff between full and approx 8.355448722839355 ||
+The distances:
+ ||between two last iterations: 0.30629859514010604||From prev epoch: 51.57846475480619||
+For Batch size = 32:
+ ||The sum of norms with approx grad 138938.84035050683 ||The sum of norms with full grad 138051.40291856788 ||Diff between full and approx 8.355448722839355 ||
+The distances:
+ ||between two last iterations: 0.30629859514010604||From prev epoch: 51.57846475480619||
+For Batch size = 64:
+ ||The sum of norms with approx grad 50407.442998778075 ||The sum of norms with full grad 49780.4938930152 ||Diff between full and approx 8.355448722839355 ||
+The distances:
+ ||between two last iterations: 0.30629859514010604||From prev epoch: 51.57846475480619||
+For Batch size = 128:
+ ||The sum of norms with approx grad 18498.570679469965 ||The sum of norms with full grad 18063.19388709124 ||Diff between full and approx 8.355448722839355 ||
+The distances:
+ ||between two last iterations: 0.30629859514010604||From prev epoch: 51.57846475480619||
+For Batch size = 256:
+ ||The sum of norms with approx grad 6986.917733684182 ||The sum of norms with full grad 6695.464468353894 ||Diff between full and approx 8.355448722839355 ||
+The distances:
+ ||between two last iterations: 0.30629859514010604||From prev epoch: 51.57846475480619||
+For Batch size = 512:
+ ||The sum of norms with approx grad 2713.9887325707823 ||The sum of norms with full grad 2523.6188349286094 ||Diff between full and approx 8.355448722839355 ||
+The distances:
+ ||between two last iterations: 0.30629859514010604||From prev epoch: 51.57846475480619||
+================================================================================
+Approximation from our method
+For Batch size = 1:
+ ||The sum of norms with approx grad from 2nd 873318.0285197512 ||The sum of norms with approx grad from 1871818.476756256 ||The sum of norms with full grad  1078622.5866908794 ||
+For Batch size = 32:
+ ||The sum of norms with approx grad from 2nd 46145.64121161867 ||The sum of norms with approx grad from 146143.068896233104 ||The sum of norms with full grad  48138.6974156769 ||
+For Batch size = 64:
+ ||The sum of norms with approx grad from 2nd 21289.169378187507 ||The sum of norms with approx grad from 121287.343191309832 ||The sum of norms with full grad  22304.032636752352 ||
+For Batch size = 128:
+ ||The sum of norms with approx grad from 2nd 9446.640241410583 ||The sum of norms with approx grad from 19444.956955703907 ||The sum of norms with full grad  9989.799560273066 ||
+For Batch size = 256:
+ ||The sum of norms with approx grad from 2nd 3790.5277668498456 ||The sum of norms with approx grad from 13788.3693555574864 ||The sum of norms with full grad  4125.4533580150455 ||
+For Batch size = 512:
+ ||The sum of norms with approx grad from 2nd 1373.6931755403057 ||The sum of norms with approx grad from 11372.4021090571769 ||The sum of norms with full grad  1591.7869957014918 ||
+Epoch 6
+================================================================================
+Approximation from previous epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 20878601.97353811 ||The sum of norms with full grad 20937298.521500792 ||Diff between full and approx 11.227296829223633 ||
+The distances:
+ ||between two last iterations: 0.366581177644548||From prev epoch: 91.5383173041555||
+For Batch size = 32:
+ ||The sum of norms with approx grad 166154.26868739538 ||The sum of norms with full grad 165120.24709212035 ||Diff between full and approx 11.227296829223633 ||
+The distances:
+ ||between two last iterations: 0.366581177644548||From prev epoch: 91.5383173041555||
+For Batch size = 64:
+ ||The sum of norms with approx grad 60508.834376582876 ||The sum of norms with full grad 59775.2102158675 ||Diff between full and approx 11.227296829223633 ||
+The distances:
+ ||between two last iterations: 0.366581177644548||From prev epoch: 91.5383173041555||
+For Batch size = 128:
+ ||The sum of norms with approx grad 22416.206453913823 ||The sum of norms with full grad 21913.526944944635 ||Diff between full and approx 11.227296829223633 ||
+The distances:
+ ||between two last iterations: 0.366581177644548||From prev epoch: 91.5383173041555||
+For Batch size = 256:
+ ||The sum of norms with approx grad 8634.263264654204 ||The sum of norms with full grad 8306.885854383 ||Diff between full and approx 11.227296829223633 ||
+The distances:
+ ||between two last iterations: 0.366581177644548||From prev epoch: 91.5383173041555||
+For Batch size = 512:
+ ||The sum of norms with approx grad 3436.389100253582 ||The sum of norms with full grad 3229.1732047307305 ||Diff between full and approx 11.227296829223633 ||
+The distances:
+ ||between two last iterations: 0.366581177644548||From prev epoch: 91.5383173041555||
+================================================================================
+Approximation from 2 epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 20878169.723550677 ||The sum of norms with full grad 20937298.548936013 ||Diff between full and approx 11.161642074584961 ||
+The distances:
+ ||between two last iterations: 0.3688481595600024||From prev epoch: 56.94098004917396||
+For Batch size = 32:
+ ||The sum of norms with approx grad 166133.9067034796 ||The sum of norms with full grad 165120.2470916435 ||Diff between full and approx 11.161642074584961 ||
+The distances:
+ ||between two last iterations: 0.3688481595600024||From prev epoch: 56.94098004917396||
+For Batch size = 64:
+ ||The sum of norms with approx grad 60494.88695403561 ||The sum of norms with full grad 59775.21021932457 ||Diff between full and approx 11.161642074584961 ||
+The distances:
+ ||between two last iterations: 0.3688481595600024||From prev epoch: 56.94098004917396||
+For Batch size = 128:
+ ||The sum of norms with approx grad 22406.839502370916 ||The sum of norms with full grad 21913.52694476582 ||Diff between full and approx 11.161642074584961 ||
+The distances:
+ ||between two last iterations: 0.3688481595600024||From prev epoch: 56.94098004917396||
+For Batch size = 256:
+ ||The sum of norms with approx grad 8628.239281851798 ||The sum of norms with full grad 8306.885855753906 ||Diff between full and approx 11.161642074584961 ||
+The distances:
+ ||between two last iterations: 0.3688481595600024||From prev epoch: 56.94098004917396||
+For Batch size = 512:
+ ||The sum of norms with approx grad 3432.692323804833 ||The sum of norms with full grad 3229.173205416184 ||Diff between full and approx 11.161642074584961 ||
+The distances:
+ ||between two last iterations: 0.3688481595600024||From prev epoch: 56.94098004917396||
+================================================================================
+Approximation from our method
+For Batch size = 1:
+ ||The sum of norms with approx grad from 2nd 1010228.9731229645 ||The sum of norms with approx grad from 11010853.2171641178 ||The sum of norms with full grad  1292544.3685549153 ||
+For Batch size = 32:
+ ||The sum of norms with approx grad from 2nd 47883.0269960491 ||The sum of norms with approx grad from 147888.37485939171 ||The sum of norms with full grad  51329.06952400319 ||
+For Batch size = 64:
+ ||The sum of norms with approx grad from 2nd 23262.131138033234 ||The sum of norms with approx grad from 123264.819120321423 ||The sum of norms with full grad  24949.644573308527 ||
+For Batch size = 128:
+ ||The sum of norms with approx grad from 2nd 11355.270720173605 ||The sum of norms with approx grad from 111356.14429223258 ||The sum of norms with full grad  12178.020504512824 ||
+For Batch size = 256:
+ ||The sum of norms with approx grad from 2nd 4695.627964119427 ||The sum of norms with approx grad from 14694.392216887325 ||The sum of norms with full grad  5181.735678857192 ||
+For Batch size = 512:
+ ||The sum of norms with approx grad from 2nd 1600.9136942615733 ||The sum of norms with approx grad from 11599.884166723583 ||The sum of norms with full grad  1932.2748770690523 ||
+Epoch 8
+================================================================================
+Approximation from previous epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 22163769.486354716 ||The sum of norms with full grad 22279336.41674969 ||Diff between full and approx 13.489415168762207 ||
+The distances:
+ ||between two last iterations: 0.4299509287811816||From prev epoch: 101.54800575369154||
+For Batch size = 32:
+ ||The sum of norms with approx grad 196103.78329462 ||The sum of norms with full grad 194467.7902420452 ||Diff between full and approx 13.489415168762207 ||
+The distances:
+ ||between two last iterations: 0.4299509287811816||From prev epoch: 101.54800575369154||
+For Batch size = 64:
+ ||The sum of norms with approx grad 72110.2082059849 ||The sum of norms with full grad 70964.29095221963 ||Diff between full and approx 13.489415168762207 ||
+The distances:
+ ||between two last iterations: 0.4299509287811816||From prev epoch: 101.54800575369154||
+For Batch size = 128:
+ ||The sum of norms with approx grad 26951.916564974934 ||The sum of norms with full grad 26177.774838761427 ||Diff between full and approx 13.489415168762207 ||
+The distances:
+ ||between two last iterations: 0.4299509287811816||From prev epoch: 101.54800575369154||
+For Batch size = 256:
+ ||The sum of norms with approx grad 10510.538952666335 ||The sum of norms with full grad 10012.90707222186 ||Diff between full and approx 13.489415168762207 ||
+The distances:
+ ||between two last iterations: 0.4299509287811816||From prev epoch: 101.54800575369154||
+For Batch size = 512:
+ ||The sum of norms with approx grad 4206.330922088586 ||The sum of norms with full grad 3895.499751924537 ||Diff between full and approx 13.489415168762207 ||
+The distances:
+ ||between two last iterations: 0.4299509287811816||From prev epoch: 101.54800575369154||
+================================================================================
+Approximation from 2 epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 22162687.57409324 ||The sum of norms with full grad 22279336.43076499 ||Diff between full and approx 13.302083969116211 ||
+The distances:
+ ||between two last iterations: 0.5176320628961548||From prev epoch: 66.07787197772996||
+For Batch size = 32:
+ ||The sum of norms with approx grad 196060.14909534343 ||The sum of norms with full grad 194467.79023912456 ||Diff between full and approx 13.302083969116211 ||
+The distances:
+ ||between two last iterations: 0.5176320628961548||From prev epoch: 66.07787197772996||
+For Batch size = 64:
+ ||The sum of norms with approx grad 72080.44630740955 ||The sum of norms with full grad 70964.29095496144 ||Diff between full and approx 13.302083969116211 ||
+The distances:
+ ||between two last iterations: 0.5176320628961548||From prev epoch: 66.07787197772996||
+For Batch size = 128:
+ ||The sum of norms with approx grad 26932.148025231436 ||The sum of norms with full grad 26177.774840251543 ||Diff between full and approx 13.302083969116211 ||
+The distances:
+ ||between two last iterations: 0.5176320628961548||From prev epoch: 66.07787197772996||
+For Batch size = 256:
+ ||The sum of norms with approx grad 10498.04624424968 ||The sum of norms with full grad 10012.907072460279 ||Diff between full and approx 13.302083969116211 ||
+The distances:
+ ||between two last iterations: 0.5176320628961548||From prev epoch: 66.07787197772996||
+For Batch size = 512:
+ ||The sum of norms with approx grad 4198.719833626412 ||The sum of norms with full grad 3895.4997518649325 ||Diff between full and approx 13.302083969116211 ||
+The distances:
+ ||between two last iterations: 0.5176320628961548||From prev epoch: 66.07787197772996||
+================================================================================
+Approximation from our method
+For Batch size = 1:
+ ||The sum of norms with approx grad from 2nd 982968.6009310577 ||The sum of norms with approx grad from 1985514.5781212447 ||The sum of norms with full grad  1364838.8525535595 ||
+For Batch size = 32:
+ ||The sum of norms with approx grad from 2nd 48321.911636990495 ||The sum of norms with approx grad from 148332.91225027107 ||The sum of norms with full grad  53319.11365668662 ||
+For Batch size = 64:
+ ||The sum of norms with approx grad from 2nd 25033.838917617686 ||The sum of norms with approx grad from 125038.157052675262 ||The sum of norms with full grad  27373.859867179766 ||
+For Batch size = 128:
+ ||The sum of norms with approx grad from 2nd 13455.864337135106 ||The sum of norms with approx grad from 113456.950051803142 ||The sum of norms with full grad  14491.642084626481 ||
+For Batch size = 256:
+ ||The sum of norms with approx grad from 2nd 5765.387439029291 ||The sum of norms with approx grad from 15763.652353442274 ||The sum of norms with full grad  6351.6587727041915 ||
+For Batch size = 512:
+ ||The sum of norms with approx grad from 2nd 1815.4643115960062 ||The sum of norms with approx grad from 11813.9645291781053 ||The sum of norms with full grad  2237.588030975312 ||
+Epoch 10
+================================================================================
+Approximation from previous epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 19812733.115723368 ||The sum of norms with full grad 19934532.744024258 ||Diff between full and approx 11.488431930541992 ||
+The distances:
+ ||between two last iterations: 0.4175299521884881||From prev epoch: 106.34355308608065||
+For Batch size = 32:
+ ||The sum of norms with approx grad 195647.72824343946 ||The sum of norms with full grad 194728.1377561828 ||Diff between full and approx 11.488431930541992 ||
+The distances:
+ ||between two last iterations: 0.4175299521884881||From prev epoch: 106.34355308608065||
+For Batch size = 64:
+ ||The sum of norms with approx grad 71959.13262552721 ||The sum of norms with full grad 71283.33451589476 ||Diff between full and approx 11.488431930541992 ||
+The distances:
+ ||between two last iterations: 0.4175299521884881||From prev epoch: 106.34355308608065||
+For Batch size = 128:
+ ||The sum of norms with approx grad 26755.437534899916 ||The sum of norms with full grad 26285.735636536032 ||Diff between full and approx 11.488431930541992 ||
+The distances:
+ ||between two last iterations: 0.4175299521884881||From prev epoch: 106.34355308608065||
+For Batch size = 256:
+ ||The sum of norms with approx grad 10326.67854278488 ||The sum of norms with full grad 10015.598591081798 ||Diff between full and approx 11.488431930541992 ||
+The distances:
+ ||between two last iterations: 0.4175299521884881||From prev epoch: 106.34355308608065||
+For Batch size = 512:
+ ||The sum of norms with approx grad 4130.19364555832 ||The sum of norms with full grad 3930.9144729077816 ||Diff between full and approx 11.488431930541992 ||
+The distances:
+ ||between two last iterations: 0.4175299521884881||From prev epoch: 106.34355308608065||
+================================================================================
+Approximation from 2 epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 19812016.555445317 ||The sum of norms with full grad 19934532.71843261 ||Diff between full and approx 11.349081039428711 ||
+The distances:
+ ||between two last iterations: 0.6158920943562407||From prev epoch: 74.76635717674435||
+For Batch size = 32:
+ ||The sum of norms with approx grad 195628.9133340856 ||The sum of norms with full grad 194728.13774938788 ||Diff between full and approx 11.349081039428711 ||
+The distances:
+ ||between two last iterations: 0.6158920943562407||From prev epoch: 74.76635717674435||
+For Batch size = 64:
+ ||The sum of norms with approx grad 71946.22243878664 ||The sum of norms with full grad 71283.33451693784 ||Diff between full and approx 11.349081039428711 ||
+The distances:
+ ||between two last iterations: 0.6158920943562407||From prev epoch: 74.76635717674435||
+For Batch size = 128:
+ ||The sum of norms with approx grad 26746.667757394724 ||The sum of norms with full grad 26285.735639754683 ||Diff between full and approx 11.349081039428711 ||
+The distances:
+ ||between two last iterations: 0.6158920943562407||From prev epoch: 74.76635717674435||
+For Batch size = 256:
+ ||The sum of norms with approx grad 10320.970171961933 ||The sum of norms with full grad 10015.598589591682 ||Diff between full and approx 11.349081039428711 ||
+The distances:
+ ||between two last iterations: 0.6158920943562407||From prev epoch: 74.76635717674435||
+For Batch size = 512:
+ ||The sum of norms with approx grad 4126.673653781414 ||The sum of norms with full grad 3930.9144736230373 ||Diff between full and approx 11.349081039428711 ||
+The distances:
+ ||between two last iterations: 0.6158920943562407||From prev epoch: 74.76635717674435||
+================================================================================
+Approximation from our method
+For Batch size = 1:
+ ||The sum of norms with approx grad from 2nd 1025224.224703361 ||The sum of norms with approx grad from 11026194.7532567119 ||The sum of norms with full grad  1295602.1967603164 ||
+For Batch size = 32:
+ ||The sum of norms with approx grad from 2nd 46658.419999225065 ||The sum of norms with approx grad from 146665.032071949914 ||The sum of norms with full grad  50240.834969235584 ||
+For Batch size = 64:
+ ||The sum of norms with approx grad from 2nd 25477.18831860274 ||The sum of norms with approx grad from 125478.486134829 ||The sum of norms with full grad  27066.510631088167 ||
+For Batch size = 128:
+ ||The sum of norms with approx grad from 2nd 14739.669542042539 ||The sum of norms with approx grad from 114738.60600753408 ||The sum of norms with full grad  15400.184204209596 ||
+For Batch size = 256:
+ ||The sum of norms with approx grad from 2nd 6239.724218477495 ||The sum of norms with approx grad from 16235.735014518723 ||The sum of norms with full grad  6623.1303103435785 ||
+For Batch size = 512:
+ ||The sum of norms with approx grad from 2nd 1876.6499030529521 ||The sum of norms with approx grad from 11872.776750465855 ||The sum of norms with full grad  2180.418702462688 ||
+Epoch 12
+================================================================================
+Approximation from previous epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 18264920.745817013 ||The sum of norms with full grad 18408907.334005404 ||Diff between full and approx 10.724076271057129 ||
+The distances:
+ ||between two last iterations: 0.4771613839257043||From prev epoch: 107.12495306911296||
+For Batch size = 32:
+ ||The sum of norms with approx grad 199418.62749085622 ||The sum of norms with full grad 198711.03921440244 ||Diff between full and approx 10.724076271057129 ||
+The distances:
+ ||between two last iterations: 0.4771613839257043||From prev epoch: 107.12495306911296||
+For Batch size = 64:
+ ||The sum of norms with approx grad 73069.55569115328 ||The sum of norms with full grad 72534.27518779319 ||Diff between full and approx 10.724076271057129 ||
+The distances:
+ ||between two last iterations: 0.4771613839257043||From prev epoch: 107.12495306911296||
+For Batch size = 128:
+ ||The sum of norms with approx grad 26903.580986221787 ||The sum of norms with full grad 26526.41205656994 ||Diff between full and approx 10.724076271057129 ||
+The distances:
+ ||between two last iterations: 0.4771613839257043||From prev epoch: 107.12495306911296||
+For Batch size = 256:
+ ||The sum of norms with approx grad 10107.222617450636 ||The sum of norms with full grad 9849.428221172653 ||Diff between full and approx 10.724076271057129 ||
+The distances:
+ ||between two last iterations: 0.4771613839257043||From prev epoch: 107.12495306911296||
+For Batch size = 512:
+ ||The sum of norms with approx grad 3908.8868607673794 ||The sum of norms with full grad 3738.5646572019905 ||Diff between full and approx 10.724076271057129 ||
+The distances:
+ ||between two last iterations: 0.4771613839257043||From prev epoch: 107.12495306911296||
+================================================================================
+Approximation from 2 epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 18259218.654130384 ||The sum of norms with full grad 18408907.325833667 ||Diff between full and approx 10.435022354125977 ||
+The distances:
+ ||between two last iterations: 0.67231798011926||From prev epoch: 57.0951044272515||
+For Batch size = 32:
+ ||The sum of norms with approx grad 199385.00045454316 ||The sum of norms with full grad 198711.03921100497 ||Diff between full and approx 10.435022354125977 ||
+The distances:
+ ||between two last iterations: 0.67231798011926||From prev epoch: 57.0951044272515||
+For Batch size = 64:
+ ||The sum of norms with approx grad 73046.97458206397 ||The sum of norms with full grad 72534.27519220393 ||Diff between full and approx 10.435022354125977 ||
+The distances:
+ ||between two last iterations: 0.67231798011926||From prev epoch: 57.0951044272515||
+For Batch size = 128:
+ ||The sum of norms with approx grad 26888.21164348768 ||The sum of norms with full grad 26526.412055705674 ||Diff between full and approx 10.435022354125977 ||
+The distances:
+ ||between two last iterations: 0.67231798011926||From prev epoch: 57.0951044272515||
+For Batch size = 256:
+ ||The sum of norms with approx grad 10096.908572110347 ||The sum of norms with full grad 9849.428220934235 ||Diff between full and approx 10.435022354125977 ||
+The distances:
+ ||between two last iterations: 0.67231798011926||From prev epoch: 57.0951044272515||
+For Batch size = 512:
+ ||The sum of norms with approx grad 3902.2247143867426 ||The sum of norms with full grad 3738.5646576788276 ||Diff between full and approx 10.435022354125977 ||
+The distances:
+ ||between two last iterations: 0.67231798011926||From prev epoch: 57.0951044272515||
+================================================================================
+Approximation from our method
+For Batch size = 1:
+ ||The sum of norms with approx grad from 2nd 959575.598518057 ||The sum of norms with approx grad from 1967289.346959936 ||The sum of norms with full grad  1210076.480999208 ||
+For Batch size = 32:
+ ||The sum of norms with approx grad from 2nd 45631.04337986559 ||The sum of norms with approx grad from 145678.763214433566 ||The sum of norms with full grad  48798.96665756591 ||
+For Batch size = 64:
+ ||The sum of norms with approx grad from 2nd 24112.50507101603 ||The sum of norms with approx grad from 124132.181666364893 ||The sum of norms with full grad  25596.69100479968 ||
+For Batch size = 128:
+ ||The sum of norms with approx grad from 2nd 15006.370574507862 ||The sum of norms with approx grad from 115010.602902701125 ||The sum of norms with full grad  15576.562524565496 ||
+For Batch size = 256:
+ ||The sum of norms with approx grad from 2nd 6167.67546046013 ||The sum of norms with approx grad from 16167.735866084695 ||The sum of norms with full grad  6513.711614448577 ||
+For Batch size = 512:
+ ||The sum of norms with approx grad from 2nd 1745.1898120245896 ||The sum of norms with approx grad from 11745.3860370325856 ||The sum of norms with full grad  2029.6366433911026 ||
+Epoch 14
+================================================================================
+Approximation from previous epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 23498503.237442546 ||The sum of norms with full grad 23716271.740048606 ||Diff between full and approx 15.79228687286377 ||
+The distances:
+ ||between two last iterations: 0.5222137386444956||From prev epoch: 108.26562575325079||
+For Batch size = 32:
+ ||The sum of norms with approx grad 241855.49480981706 ||The sum of norms with full grad 240638.96232674737 ||Diff between full and approx 15.79228687286377 ||
+The distances:
+ ||between two last iterations: 0.5222137386444956||From prev epoch: 108.26562575325079||
+For Batch size = 64:
+ ||The sum of norms with approx grad 88341.08971100068 ||The sum of norms with full grad 87435.6686312072 ||Diff between full and approx 15.79228687286377 ||
+The distances:
+ ||between two last iterations: 0.5222137386444956||From prev epoch: 108.26562575325079||
+For Batch size = 128:
+ ||The sum of norms with approx grad 32785.53311472759 ||The sum of norms with full grad 32147.14131640084 ||Diff between full and approx 15.79228687286377 ||
+The distances:
+ ||between two last iterations: 0.5222137386444956||From prev epoch: 108.26562575325079||
+For Batch size = 256:
+ ||The sum of norms with approx grad 12390.335660248064 ||The sum of norms with full grad 11960.598971529864 ||Diff between full and approx 15.79228687286377 ||
+The distances:
+ ||between two last iterations: 0.5222137386444956||From prev epoch: 108.26562575325079||
+For Batch size = 512:
+ ||The sum of norms with approx grad 4835.8563078348525 ||The sum of norms with full grad 4552.954162419308 ||Diff between full and approx 15.79228687286377 ||
+The distances:
+ ||between two last iterations: 0.5222137386444956||From prev epoch: 108.26562575325079||
+================================================================================
+Approximation from 2 epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 23488119.92737308 ||The sum of norms with full grad 23716271.75645234 ||Diff between full and approx 15.529290199279785 ||
+The distances:
+ ||between two last iterations: 0.6103583331569098||From prev epoch: 39.463795714382286||
+For Batch size = 32:
+ ||The sum of norms with approx grad 241809.088049863 ||The sum of norms with full grad 240638.9623283567 ||Diff between full and approx 15.529290199279785 ||
+The distances:
+ ||between two last iterations: 0.6103583331569098||From prev epoch: 39.463795714382286||
+For Batch size = 64:
+ ||The sum of norms with approx grad 88309.5947782509 ||The sum of norms with full grad 87435.66863061115 ||Diff between full and approx 15.529290199279785 ||
+The distances:
+ ||between two last iterations: 0.6103583331569098||From prev epoch: 39.463795714382286||
+For Batch size = 128:
+ ||The sum of norms with approx grad 32764.303397275973 ||The sum of norms with full grad 32147.141318904236 ||Diff between full and approx 15.529290199279785 ||
+The distances:
+ ||between two last iterations: 0.6103583331569098||From prev epoch: 39.463795714382286||
+For Batch size = 256:
+ ||The sum of norms with approx grad 12376.21071339352 ||The sum of norms with full grad 11960.59897045698 ||Diff between full and approx 15.529290199279785 ||
+The distances:
+ ||between two last iterations: 0.6103583331569098||From prev epoch: 39.463795714382286||
+For Batch size = 512:
+ ||The sum of norms with approx grad 4826.843737633433 ||The sum of norms with full grad 4552.954163194168 ||Diff between full and approx 15.529290199279785 ||
+The distances:
+ ||between two last iterations: 0.6103583331569098||From prev epoch: 39.463795714382286||
+================================================================================
+Approximation from our method
+For Batch size = 1:
+ ||The sum of norms with approx grad from 2nd 1049448.0246414957 ||The sum of norms with approx grad from 11062618.951964017 ||The sum of norms with full grad  1476757.6574595086 ||
+For Batch size = 32:
+ ||The sum of norms with approx grad from 2nd 44370.636121911 ||The sum of norms with approx grad from 144468.025045746006 ||The sum of norms with full grad  51459.835295669734 ||
+For Batch size = 64:
+ ||The sum of norms with approx grad from 2nd 23914.587800516747 ||The sum of norms with approx grad from 123954.9255942069 ||The sum of norms with full grad  27190.814120876603 ||
+For Batch size = 128:
+ ||The sum of norms with approx grad from 2nd 14150.658003346529 ||The sum of norms with approx grad from 114163.903164919931 ||The sum of norms with full grad  15519.446452793665 ||
+For Batch size = 256:
+ ||The sum of norms with approx grad from 2nd 3283.595160786994 ||The sum of norms with approx grad from 13299.552175733028 ||The sum of norms with full grad  4566.228142390028 ||
+For Batch size = 512:
+ ||The sum of norms with approx grad from 2nd 1271.8990604337305 ||The sum of norms with approx grad from 11280.985306727467 ||The sum of norms with full grad  1998.0377659182996 ||
+Epoch 16
+================================================================================
+Approximation from previous epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 29406634.0717905 ||The sum of norms with full grad 29624627.96703403 ||Diff between full and approx 14.930839538574219 ||
+The distances:
+ ||between two last iterations: 0.6879015322774649||From prev epoch: 87.49108296780469||
+For Batch size = 32:
+ ||The sum of norms with approx grad 301556.25014393777 ||The sum of norms with full grad 300406.0477014445 ||Diff between full and approx 14.930839538574219 ||
+The distances:
+ ||between two last iterations: 0.6879015322774649||From prev epoch: 87.49108296780469||
+For Batch size = 64:
+ ||The sum of norms with approx grad 109631.10899517825 ||The sum of norms with full grad 108788.11850285158 ||Diff between full and approx 14.930839538574219 ||
+The distances:
+ ||between two last iterations: 0.6879015322774649||From prev epoch: 87.49108296780469||
+For Batch size = 128:
+ ||The sum of norms with approx grad 40677.16713603819 ||The sum of norms with full grad 40086.11073520221 ||Diff between full and approx 14.930839538574219 ||
+The distances:
+ ||between two last iterations: 0.6879015322774649||From prev epoch: 87.49108296780469||
+For Batch size = 256:
+ ||The sum of norms with approx grad 15228.953176230658 ||The sum of norms with full grad 14829.369886399247 ||Diff between full and approx 14.930839538574219 ||
+The distances:
+ ||between two last iterations: 0.6879015322774649||From prev epoch: 87.49108296780469||
+For Batch size = 512:
+ ||The sum of norms with approx grad 5871.252709299792 ||The sum of norms with full grad 5604.184081709944 ||Diff between full and approx 14.930839538574219 ||
+The distances:
+ ||between two last iterations: 0.6879015322774649||From prev epoch: 87.49108296780469||
+================================================================================
+Approximation from 2 epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 29395870.15450021 ||The sum of norms with full grad 29624627.944083523 ||Diff between full and approx 14.675066947937012 ||
+The distances:
+ ||between two last iterations: 0.3996356072020717||From prev epoch: 29.782505468578165||
+For Batch size = 32:
+ ||The sum of norms with approx grad 301520.0055238325 ||The sum of norms with full grad 300406.04768800363 ||Diff between full and approx 14.675066947937012 ||
+The distances:
+ ||between two last iterations: 0.3996356072020717||From prev epoch: 29.782505468578165||
+For Batch size = 64:
+ ||The sum of norms with approx grad 109606.16067203041 ||The sum of norms with full grad 108788.11848604307 ||Diff between full and approx 14.675066947937012 ||
+The distances:
+ ||between two last iterations: 0.3996356072020717||From prev epoch: 29.782505468578165||
+For Batch size = 128:
+ ||The sum of norms with approx grad 40660.27238730062 ||The sum of norms with full grad 40086.11073320545 ||Diff between full and approx 14.675066947937012 ||
+The distances:
+ ||between two last iterations: 0.3996356072020717||From prev epoch: 29.782505468578165||
+For Batch size = 256:
+ ||The sum of norms with approx grad 15217.6032619467 ||The sum of norms with full grad 14829.36988747213 ||Diff between full and approx 14.675066947937012 ||
+The distances:
+ ||between two last iterations: 0.3996356072020717||From prev epoch: 29.782505468578165||
+For Batch size = 512:
+ ||The sum of norms with approx grad 5863.864079516381 ||The sum of norms with full grad 5604.18408230599 ||Diff between full and approx 14.675066947937012 ||
+The distances:
+ ||between two last iterations: 0.3996356072020717||From prev epoch: 29.782505468578165||
+================================================================================
+Approximation from our method
+For Batch size = 1:
+ ||The sum of norms with approx grad from 2nd 986311.9953664847 ||The sum of norms with approx grad from 11004138.9102270617 ||The sum of norms with full grad  1419424.7894913657 ||
+For Batch size = 32:
+ ||The sum of norms with approx grad from 2nd 43575.88018838968 ||The sum of norms with approx grad from 143656.34718454257 ||The sum of norms with full grad  50142.29638254549 ||
+For Batch size = 64:
+ ||The sum of norms with approx grad from 2nd 22763.165193279274 ||The sum of norms with approx grad from 122799.41150856437 ||The sum of norms with full grad  25902.16505744029 ||
+For Batch size = 128:
+ ||The sum of norms with approx grad from 2nd 13263.676466237754 ||The sum of norms with approx grad from 113277.761401375406 ||The sum of norms with full grad  14655.79338599369 ||
+For Batch size = 256:
+ ||The sum of norms with approx grad from 2nd 1053.8922374632675 ||The sum of norms with approx grad from 11099.6262196385069 ||The sum of norms with full grad  3105.687269926071 ||
+For Batch size = 512:
+ ||The sum of norms with approx grad from 2nd 483.1962511970778 ||The sum of norms with approx grad from 1505.64635471696965 ||The sum of norms with full grad  1521.8309790594503 ||
+Epoch 18
+================================================================================
+Approximation from previous epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 1164742.1532368155 ||The sum of norms with full grad 1168065.4784930518 ||Diff between full and approx 0.5687335729598999 ||
+The distances:
+ ||between two last iterations: 0.09380989241708448||From prev epoch: 37.03088404175742||
+For Batch size = 32:
+ ||The sum of norms with approx grad 13375.310176443134 ||The sum of norms with full grad 13355.482727838069 ||Diff between full and approx 0.5687335729598999 ||
+The distances:
+ ||between two last iterations: 0.09380989241708448||From prev epoch: 37.03088404175742||
+For Batch size = 64:
+ ||The sum of norms with approx grad 5172.854550356278 ||The sum of norms with full grad 5155.828035287035 ||Diff between full and approx 0.5687335729598999 ||
+The distances:
+ ||between two last iterations: 0.09380989241708448||From prev epoch: 37.03088404175742||
+For Batch size = 128:
+ ||The sum of norms with approx grad 2024.2523547646124 ||The sum of norms with full grad 2011.81695281656 ||Diff between full and approx 0.5687335729598999 ||
+The distances:
+ ||between two last iterations: 0.09380989241708448||From prev epoch: 37.03088404175742||
+For Batch size = 256:
+ ||The sum of norms with approx grad 808.8244242755463 ||The sum of norms with full grad 800.3342716888292 ||Diff between full and approx 0.5687335729598999 ||
+The distances:
+ ||between two last iterations: 0.09380989241708448||From prev epoch: 37.03088404175742||
+For Batch size = 512:
+ ||The sum of norms with approx grad 330.03449289809214 ||The sum of norms with full grad 324.56247306836303 ||Diff between full and approx 0.5687335729598999 ||
+The distances:
+ ||between two last iterations: 0.09380989241708448||From prev epoch: 37.03088404175742||
+================================================================================
+Approximation from 2 epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 1164690.0005214703 ||The sum of norms with full grad 1168065.4783937794 ||Diff between full and approx 0.5430976152420044 ||
+The distances:
+ ||between two last iterations: 0.17730034869600786||From prev epoch: 19.09043158141594||
+For Batch size = 32:
+ ||The sum of norms with approx grad 13373.6340759671 ||The sum of norms with full grad 13355.48272752142 ||Diff between full and approx 0.5430976152420044 ||
+The distances:
+ ||between two last iterations: 0.17730034869600786||From prev epoch: 19.09043158141594||
+For Batch size = 64:
+ ||The sum of norms with approx grad 5171.683979186026 ||The sum of norms with full grad 5155.828035048617 ||Diff between full and approx 0.5430976152420044 ||
+The distances:
+ ||between two last iterations: 0.17730034869600786||From prev epoch: 19.09043158141594||
+For Batch size = 128:
+ ||The sum of norms with approx grad 2023.4802472063166 ||The sum of norms with full grad 2011.8169527420541 ||Diff between full and approx 0.5430976152420044 ||
+The distances:
+ ||between two last iterations: 0.17730034869600786||From prev epoch: 19.09043158141594||
+For Batch size = 256:
+ ||The sum of norms with approx grad 808.3313932098972 ||The sum of norms with full grad 800.3342716068728 ||Diff between full and approx 0.5430976152420044 ||
+The distances:
+ ||between two last iterations: 0.17730034869600786||From prev epoch: 19.09043158141594||
+For Batch size = 512:
+ ||The sum of norms with approx grad 329.7390979733609 ||The sum of norms with full grad 324.5624731130665 ||Diff between full and approx 0.5430976152420044 ||
+The distances:
+ ||between two last iterations: 0.17730034869600786||From prev epoch: 19.09043158141594||
+================================================================================
+Approximation from our method
+For Batch size = 1:
+ ||The sum of norms with approx grad from 2nd 855446.106325087 ||The sum of norms with approx grad from 1855503.0925603578 ||The sum of norms with full grad  859083.8153438302 ||
+For Batch size = 32:
+ ||The sum of norms with approx grad from 2nd 42001.24911466846 ||The sum of norms with approx grad from 142001.28880606266 ||The sum of norms with full grad  42011.3379720184 ||
+For Batch size = 64:
+ ||The sum of norms with approx grad from 2nd 21829.755211397947 ||The sum of norms with approx grad from 121829.81871111231 ||The sum of norms with full grad  21834.645114695013 ||
+For Batch size = 128:
+ ||The sum of norms with approx grad from 2nd 1321.4637843728124 ||The sum of norms with approx grad from 11321.4825102962786 ||The sum of norms with full grad  1344.0787401498237 ||
+For Batch size = 256:
+ ||The sum of norms with approx grad from 2nd 237.65947869053343 ||The sum of norms with approx grad from 1237.67787401087116 ||The sum of norms with full grad  261.3628808273352 ||
+For Batch size = 512:
+ ||The sum of norms with approx grad from 2nd 121.20036973548122 ||The sum of norms with approx grad from 1120.92231139882642 ||The sum of norms with full grad  132.126295266964 ||
+Epoch 20
+================================================================================
+Approximation from previous epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 1193246.700336343 ||The sum of norms with full grad 1195921.641931632 ||Diff between full and approx 0.5152507424354553 ||
+The distances:
+ ||between two last iterations: 0.0856561671853342||From prev epoch: 33.24467373395919||
+For Batch size = 32:
+ ||The sum of norms with approx grad 12144.680448089377 ||The sum of norms with full grad 12123.95668722177 ||Diff between full and approx 0.5152507424354553 ||
+The distances:
+ ||between two last iterations: 0.0856561671853342||From prev epoch: 33.24467373395919||
+For Batch size = 64:
+ ||The sum of norms with approx grad 4651.943123830715 ||The sum of norms with full grad 4634.786455827678 ||Diff between full and approx 0.5152507424354553 ||
+The distances:
+ ||between two last iterations: 0.0856561671853342||From prev epoch: 33.24467373395919||
+For Batch size = 128:
+ ||The sum of norms with approx grad 1822.2413091281196 ||The sum of norms with full grad 1810.008666996233 ||Diff between full and approx 0.5152507424354553 ||
+The distances:
+ ||between two last iterations: 0.0856561671853342||From prev epoch: 33.24467373395919||
+For Batch size = 256:
+ ||The sum of norms with approx grad 737.7842983994051 ||The sum of norms with full grad 729.74040488826 ||Diff between full and approx 0.5152507424354553 ||
+The distances:
+ ||between two last iterations: 0.0856561671853342||From prev epoch: 33.24467373395919||
+For Batch size = 512:
+ ||The sum of norms with approx grad 308.8893864687998 ||The sum of norms with full grad 303.8938838249014 ||Diff between full and approx 0.5152507424354553 ||
+The distances:
+ ||between two last iterations: 0.0856561671853342||From prev epoch: 33.24467373395919||
+================================================================================
+Approximation from 2 epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 1193274.415764575 ||The sum of norms with full grad 1195921.6426238902 ||Diff between full and approx 0.5141047239303589 ||
+The distances:
+ ||between two last iterations: 0.1135077903909405||From prev epoch: 16.928549389517457||
+For Batch size = 32:
+ ||The sum of norms with approx grad 12145.46058391314 ||The sum of norms with full grad 12123.956686636899 ||Diff between full and approx 0.5141047239303589 ||
+The distances:
+ ||between two last iterations: 0.1135077903909405||From prev epoch: 16.928549389517457||
+For Batch size = 64:
+ ||The sum of norms with approx grad 4652.406709760049 ||The sum of norms with full grad 4634.786455436522 ||Diff between full and approx 0.5141047239303589 ||
+The distances:
+ ||between two last iterations: 0.1135077903909405||From prev epoch: 16.928549389517457||
+For Batch size = 128:
+ ||The sum of norms with approx grad 1822.528554768709 ||The sum of norms with full grad 1810.0086670968158 ||Diff between full and approx 0.5141047239303589 ||
+The distances:
+ ||between two last iterations: 0.1135077903909405||From prev epoch: 16.928549389517457||
+For Batch size = 256:
+ ||The sum of norms with approx grad 737.9549464600859 ||The sum of norms with full grad 729.7404048323806 ||Diff between full and approx 0.5141047239303589 ||
+The distances:
+ ||between two last iterations: 0.1135077903909405||From prev epoch: 16.928549389517457||
+For Batch size = 512:
+ ||The sum of norms with approx grad 308.9923444338201 ||The sum of norms with full grad 303.89388389568194 ||Diff between full and approx 0.5141047239303589 ||
+The distances:
+ ||between two last iterations: 0.1135077903909405||From prev epoch: 16.928549389517457||
+================================================================================
+Approximation from our method
+For Batch size = 1:
+ ||The sum of norms with approx grad from 2nd 945945.8452607264 ||The sum of norms with approx grad from 1945785.1143541575 ||The sum of norms with full grad  951765.5047828441 ||
+For Batch size = 32:
+ ||The sum of norms with approx grad from 2nd 43175.5812369613 ||The sum of norms with approx grad from 143175.52568970574 ||The sum of norms with full grad  43185.0840674215 ||
+For Batch size = 64:
+ ||The sum of norms with approx grad from 2nd 21642.77442858665 ||The sum of norms with approx grad from 121642.76800039044 ||The sum of norms with full grad  21647.45619890734 ||
+For Batch size = 128:
+ ||The sum of norms with approx grad from 2nd 5177.09194109487 ||The sum of norms with approx grad from 15176.780882112565 ||The sum of norms with full grad  5194.843030877033 ||
+For Batch size = 256:
+ ||The sum of norms with approx grad from 2nd 202.28033569216495 ||The sum of norms with approx grad from 1202.10537835743162 ||The sum of norms with full grad  227.78602885635337 ||
+For Batch size = 512:
+ ||The sum of norms with approx grad from 2nd 87.63672652661626 ||The sum of norms with approx grad from 187.39449598132342 ||The sum of norms with full grad  101.07760067266645 ||
+Epoch 22
+================================================================================
+Approximation from previous epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 1339379.8078429361 ||The sum of norms with full grad 1341879.151412139 ||Diff between full and approx 0.5739607810974121 ||
+The distances:
+ ||between two last iterations: 0.08042573536113196||From prev epoch: 31.04048650827872||
+For Batch size = 32:
+ ||The sum of norms with approx grad 12968.808213187527 ||The sum of norms with full grad 12940.06516523927 ||Diff between full and approx 0.5739607810974121 ||
+The distances:
+ ||between two last iterations: 0.08042573536113196||From prev epoch: 31.04048650827872||
+For Batch size = 64:
+ ||The sum of norms with approx grad 4964.152129137947 ||The sum of norms with full grad 4941.454786108865 ||Diff between full and approx 0.5739607810974121 ||
+The distances:
+ ||between two last iterations: 0.08042573536113196||From prev epoch: 31.04048650827872||
+For Batch size = 128:
+ ||The sum of norms with approx grad 1951.0330966933398 ||The sum of norms with full grad 1935.2824246754753 ||Diff between full and approx 0.5739607810974121 ||
+The distances:
+ ||between two last iterations: 0.08042573536113196||From prev epoch: 31.04048650827872||
+For Batch size = 256:
+ ||The sum of norms with approx grad 797.5645717947045 ||The sum of norms with full grad 787.4181732126453 ||Diff between full and approx 0.5739607810974121 ||
+The distances:
+ ||between two last iterations: 0.08042573536113196||From prev epoch: 31.04048650827872||
+For Batch size = 512:
+ ||The sum of norms with approx grad 337.911526877142 ||The sum of norms with full grad 331.73219334436 ||Diff between full and approx 0.5739607810974121 ||
+The distances:
+ ||between two last iterations: 0.08042573536113196||From prev epoch: 31.04048650827872||
+================================================================================
+Approximation from 2 epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 1339385.3402813391 ||The sum of norms with full grad 1341879.1528258284 ||Diff between full and approx 0.5724844932556152 ||
+The distances:
+ ||between two last iterations: 0.10449958332173992||From prev epoch: 15.76392322101242||
+For Batch size = 32:
+ ||The sum of norms with approx grad 12969.567796272167 ||The sum of norms with full grad 12940.06516563415 ||Diff between full and approx 0.5724844932556152 ||
+The distances:
+ ||between two last iterations: 0.10449958332173992||From prev epoch: 15.76392322101242||
+For Batch size = 64:
+ ||The sum of norms with approx grad 4964.623589613999 ||The sum of norms with full grad 4941.45478642924 ||Diff between full and approx 0.5724844932556152 ||
+The distances:
+ ||between two last iterations: 0.10449958332173992||From prev epoch: 15.76392322101242||
+For Batch size = 128:
+ ||The sum of norms with approx grad 1951.3308646030782 ||The sum of norms with full grad 1935.2824246270466 ||Diff between full and approx 0.5724844932556152 ||
+The distances:
+ ||between two last iterations: 0.10449958332173992||From prev epoch: 15.76392322101242||
+For Batch size = 256:
+ ||The sum of norms with approx grad 797.7426188010722 ||The sum of norms with full grad 787.4181733095029 ||Diff between full and approx 0.5724844932556152 ||
+The distances:
+ ||between two last iterations: 0.10449958332173992||From prev epoch: 15.76392322101242||
+For Batch size = 512:
+ ||The sum of norms with approx grad 338.01817897873116 ||The sum of norms with full grad 331.73219323632657 ||Diff between full and approx 0.5724844932556152 ||
+The distances:
+ ||between two last iterations: 0.10449958332173992||From prev epoch: 15.76392322101242||
+================================================================================
+Approximation from our method
+For Batch size = 1:
+ ||The sum of norms with approx grad from 2nd 828016.9309375964 ||The sum of norms with approx grad from 1827926.0594059386 ||The sum of norms with full grad  834770.6961392842 ||
+For Batch size = 32:
+ ||The sum of norms with approx grad from 2nd 41129.08578396868 ||The sum of norms with approx grad from 141129.06993814185 ||The sum of norms with full grad  41141.56074853102 ||
+For Batch size = 64:
+ ||The sum of norms with approx grad from 2nd 21967.69274900935 ||The sum of norms with approx grad from 121967.702717105043 ||The sum of norms with full grad  21973.482403232483 ||
+For Batch size = 128:
+ ||The sum of norms with approx grad from 2nd 6069.210773435887 ||The sum of norms with approx grad from 16068.987904754584 ||The sum of norms with full grad  6087.180842664937 ||
+For Batch size = 256:
+ ||The sum of norms with approx grad from 2nd 207.54583377827657 ||The sum of norms with approx grad from 1207.45111254535732 ||The sum of norms with full grad  238.63776909766602 ||
+For Batch size = 512:
+ ||The sum of norms with approx grad from 2nd 86.13233820821915 ||The sum of norms with approx grad from 185.95957714524411 ||The sum of norms with full grad  103.32042616017861 ||
+Epoch 24
+================================================================================
+Approximation from previous epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 1479914.7093107367 ||The sum of norms with full grad 1482167.6075883375 ||Diff between full and approx 0.6198415160179138 ||
+The distances:
+ ||between two last iterations: 0.07573063217478193||From prev epoch: 29.040493176585642||
+For Batch size = 32:
+ ||The sum of norms with approx grad 13819.645166630362 ||The sum of norms with full grad 13785.973928542197 ||Diff between full and approx 0.6198415160179138 ||
+The distances:
+ ||between two last iterations: 0.07573063217478193||From prev epoch: 29.040493176585642||
+For Batch size = 64:
+ ||The sum of norms with approx grad 5300.347759121738 ||The sum of norms with full grad 5274.350834321056 ||Diff between full and approx 0.6198415160179138 ||
+The distances:
+ ||between two last iterations: 0.07573063217478193||From prev epoch: 29.040493176585642||
+For Batch size = 128:
+ ||The sum of norms with approx grad 2090.6164084927004 ||The sum of norms with full grad 2072.825758767198 ||Diff between full and approx 0.6198415160179138 ||
+The distances:
+ ||between two last iterations: 0.07573063217478193||From prev epoch: 29.040493176585642||
+For Batch size = 256:
+ ||The sum of norms with approx grad 861.3696005278616 ||The sum of norms with full grad 850.0290007186413 ||Diff between full and approx 0.6198415160179138 ||
+The distances:
+ ||between two last iterations: 0.07573063217478193||From prev epoch: 29.040493176585642||
+For Batch size = 512:
+ ||The sum of norms with approx grad 368.17189943409176 ||The sum of norms with full grad 361.3423764416948 ||Diff between full and approx 0.6198415160179138 ||
+The distances:
+ ||between two last iterations: 0.07573063217478193||From prev epoch: 29.040493176585642||
+================================================================================
+Approximation from 2 epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 1479915.6268745465 ||The sum of norms with full grad 1482167.6061231352 ||Diff between full and approx 0.6155487298965454 ||
+The distances:
+ ||between two last iterations: 0.09963864046403614||From prev epoch: 14.767363468211897||
+For Batch size = 32:
+ ||The sum of norms with approx grad 13819.72777954975 ||The sum of norms with full grad 13785.973929577827 ||Diff between full and approx 0.6155487298965454 ||
+The distances:
+ ||between two last iterations: 0.09963864046403614||From prev epoch: 14.767363468211897||
+For Batch size = 64:
+ ||The sum of norms with approx grad 5300.35685680958 ||The sum of norms with full grad 5274.350834306155 ||Diff between full and approx 0.6155487298965454 ||
+The distances:
+ ||between two last iterations: 0.09963864046403614||From prev epoch: 14.767363468211897||
+For Batch size = 128:
+ ||The sum of norms with approx grad 2090.6185115748667 ||The sum of norms with full grad 2072.825758808176 ||Diff between full and approx 0.6155487298965454 ||
+The distances:
+ ||between two last iterations: 0.09963864046403614||From prev epoch: 14.767363468211897||
+For Batch size = 256:
+ ||The sum of norms with approx grad 861.3666678654554 ||The sum of norms with full grad 850.0290006478608 ||Diff between full and approx 0.6155487298965454 ||
+The distances:
+ ||between two last iterations: 0.09963864046403614||From prev epoch: 14.767363468211897||
+For Batch size = 512:
+ ||The sum of norms with approx grad 368.1710161564406 ||The sum of norms with full grad 361.3423764342442 ||Diff between full and approx 0.6155487298965454 ||
+The distances:
+ ||between two last iterations: 0.09963864046403614||From prev epoch: 14.767363468211897||
+================================================================================
+Approximation from our method
+For Batch size = 1:
+ ||The sum of norms with approx grad from 2nd 973792.3556091564 ||The sum of norms with approx grad from 1973778.6980076851 ||The sum of norms with full grad  977028.6980332684 ||
+For Batch size = 32:
+ ||The sum of norms with approx grad from 2nd 40960.60652742628 ||The sum of norms with approx grad from 140960.57343615405 ||The sum of norms with full grad  40976.70662797894 ||
+For Batch size = 64:
+ ||The sum of norms with approx grad from 2nd 21757.230882203323 ||The sum of norms with approx grad from 121757.236007283325 ||The sum of norms with full grad  21763.899538267287 ||
+For Batch size = 128:
+ ||The sum of norms with approx grad from 2nd 6451.505998227629 ||The sum of norms with approx grad from 16451.337861318025 ||The sum of norms with full grad  6467.388157518813 ||
+For Batch size = 256:
+ ||The sum of norms with approx grad from 2nd 215.3639471019851 ||The sum of norms with approx grad from 1215.2966719669348 ||The sum of norms with full grad  250.42059432712267 ||
+For Batch size = 512:
+ ||The sum of norms with approx grad from 2nd 87.84231518574234 ||The sum of norms with approx grad from 187.69320657892968 ||The sum of norms with full grad  107.62514624628238 ||
+Epoch 26
+================================================================================
+Approximation from previous epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 1617263.7785246412 ||The sum of norms with full grad 1619275.9315764497 ||Diff between full and approx 0.6600483655929565 ||
+The distances:
+ ||between two last iterations: 0.07159341415263043||From prev epoch: 27.18125872000155||
+For Batch size = 32:
+ ||The sum of norms with approx grad 14730.322583998 ||The sum of norms with full grad 14691.533320151793 ||Diff between full and approx 0.6600483655929565 ||
+The distances:
+ ||between two last iterations: 0.07159341415263043||From prev epoch: 27.18125872000155||
+For Batch size = 64:
+ ||The sum of norms with approx grad 5662.824972471746 ||The sum of norms with full grad 5633.525666182948 ||Diff between full and approx 0.6600483655929565 ||
+The distances:
+ ||between two last iterations: 0.07159341415263043||From prev epoch: 27.18125872000155||
+For Batch size = 128:
+ ||The sum of norms with approx grad 2240.721454053506 ||The sum of norms with full grad 2220.8581014442025 ||Diff between full and approx 0.6600483655929565 ||
+The distances:
+ ||between two last iterations: 0.07159341415263043||From prev epoch: 27.18125872000155||
+For Batch size = 256:
+ ||The sum of norms with approx grad 929.6837567187322 ||The sum of norms with full grad 917.1199375104334 ||Diff between full and approx 0.6600483655929565 ||
+The distances:
+ ||between two last iterations: 0.07159341415263043||From prev epoch: 27.18125872000155||
+For Batch size = 512:
+ ||The sum of norms with approx grad 399.92675882045296 ||The sum of norms with full grad 392.4124057336594 ||Diff between full and approx 0.6600483655929565 ||
+The distances:
+ ||between two last iterations: 0.07159341415263043||From prev epoch: 27.18125872000155||
+================================================================================
+Approximation from 2 epoch
+For Batch size = 1:
+ ||The sum of norms with approx grad 1617265.1963758834 ||The sum of norms with full grad 1619275.930652751 ||Diff between full and approx 0.6545912027359009 ||
+The distances:
+ ||between two last iterations: 0.09501383469432767||From prev epoch: 13.852696735571044||
+For Batch size = 32:
+ ||The sum of norms with approx grad 14730.19482086142 ||The sum of norms with full grad 14691.533319190668 ||Diff between full and approx 0.6545912027359009 ||
+The distances:
+ ||between two last iterations: 0.09501383469432767||From prev epoch: 13.852696735571044||
+For Batch size = 64:
+ ||The sum of norms with approx grad 5662.699127100961 ||The sum of norms with full grad 5633.525665586902 ||Diff between full and approx 0.6545912027359009 ||
+The distances:
+ ||between two last iterations: 0.09501383469432767||From prev epoch: 13.852696735571044||
+For Batch size = 128:
+ ||The sum of norms with approx grad 2240.6393481809937 ||The sum of norms with full grad 2220.8581014814554 ||Diff between full and approx 0.6545912027359009 ||
+The distances:
+ ||between two last iterations: 0.09501383469432767||From prev epoch: 13.852696735571044||
+For Batch size = 256:
+ ||The sum of norms with approx grad 929.6314936778217 ||The sum of norms with full grad 917.119937774929 ||Diff between full and approx 0.6545912027359009 ||
+The distances:
+ ||between two last iterations: 0.09501383469432767||From prev epoch: 13.852696735571044||
+For Batch size = 512:
+ ||The sum of norms with approx grad 399.8959831618995 ||The sum of norms with full grad 392.4124057224835 ||Diff between full and approx 0.6545912027359009 ||
+The distances:
+ ||between two last iterations: 0.09501383469432767||From prev epoch: 13.852696735571044||
+================================================================================
+Approximation from our method
+For Batch size = 1:
+ ||The sum of norms with approx grad from 2nd 940440.3827478037 ||The sum of norms with approx grad from 1940379.2316986134 ||The sum of norms with full grad  948481.317811676 ||
+For Batch size = 32:
+ ||The sum of norms with approx grad from 2nd 40884.36513648741 ||The sum of norms with approx grad from 140884.341392593924 ||The sum of norms with full grad  40902.05099316873 ||
+For Batch size = 64:
+ ||The sum of norms with approx grad from 2nd 21093.722317738575 ||The sum of norms with approx grad from 121093.72335411911 ||The sum of norms with full grad  21101.99235337926 ||
+For Batch size = 128:
+ ||The sum of norms with approx grad from 2nd 8298.713753504388 ||The sum of norms with approx grad from 18298.624981193163 ||The sum of norms with full grad  8311.220659421 ||
+For Batch size = 256:
+ ||The sum of norms with approx grad from 2nd 221.26942819016404 ||The sum of norms with approx grad from 1221.22182117856573 ||The sum of norms with full grad  260.00032109147287 ||
+For Batch size = 512:
+ ||The sum of norms with approx grad from 2nd 89.81132678952417 ||The sum of norms with approx grad from 189.67539491939533 ||The sum of norms with full grad  111.8137103941117 ||
+Epoch 28
+================================================================================
+Approximation from previous epoch

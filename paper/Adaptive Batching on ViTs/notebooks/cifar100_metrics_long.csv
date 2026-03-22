@@ -1,0 +1,2737 @@
+run,variant,batch_size,seed,abm,metric,step,value
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,2,501.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,3,434.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,4,470.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,5,444.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,6,430.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,7,418.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,8,408.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,9,405.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,10,403.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,11,407.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,12,413.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,13,420.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,14,434.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,15,442.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,16,459.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,17,472.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,18,491.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,19,511.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,20,531.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,21,556.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,22,587.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,23,619.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,24,651.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,25,695.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,26,743.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,27,797.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,28,865.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,29,934.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,30,1030.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,31,1143.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,32,1271.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,33,1405.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,34,1591.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,35,1785.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,36,1997.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,37,2252.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,38,2469.0
+sgboba 128 abm16,aboba,128,seed1,16,adaptive_batch/batch_size,39,2702.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,2,510.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,3,431.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,4,476.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,5,450.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,6,435.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,7,421.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,8,414.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,9,406.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,10,409.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,11,410.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,12,415.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,13,422.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,14,432.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,15,446.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,16,459.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,17,478.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,18,489.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,19,515.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,20,533.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,21,564.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,22,584.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,23,620.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,24,657.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,25,701.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,26,754.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,27,807.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,28,865.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,29,950.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,30,1042.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,31,1143.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,32,1278.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,33,1418.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,34,1600.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,35,1815.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,36,1980.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,37,2238.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,38,2504.0
+sgboba 128 abm16,aboba,128,seed2,16,adaptive_batch/batch_size,39,2713.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,2,507.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,3,426.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,4,467.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,5,442.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,6,429.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,7,414.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,8,405.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,9,400.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,10,401.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,11,404.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,12,413.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,13,417.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,14,429.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,15,442.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,16,453.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,17,470.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,18,489.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,19,508.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,20,530.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,21,553.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,22,583.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,23,614.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,24,653.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,25,689.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,26,745.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,27,788.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,28,867.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,29,938.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,30,1026.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,31,1131.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,32,1252.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,33,1409.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,34,1582.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,35,1770.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,36,2003.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,37,2228.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,38,2483.0
+sgboba 128 abm16,aboba,128,seed3,16,adaptive_batch/batch_size,39,2661.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,2,63.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,3,81.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,4,85.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,5,82.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,6,81.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,7,82.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,8,83.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,9,85.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,10,85.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,11,87.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,12,90.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,13,92.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,14,94.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,15,95.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,16,98.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,17,99.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,18,101.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,19,104.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,20,105.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,21,107.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,22,110.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,23,113.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,24,115.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,25,119.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,26,123.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,27,128.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,28,132.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,29,140.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,30,144.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,31,150.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,32,158.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,33,169.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,34,176.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,35,186.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,36,199.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,37,210.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,38,215.0
+sgboba 128 abm2,aboba,128,seed1,2,adaptive_batch/batch_size,39,219.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,2,64.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,3,80.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,4,84.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,5,81.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,6,81.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,7,81.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,8,83.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,9,84.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,10,87.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,11,88.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,12,89.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,13,92.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,14,94.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,15,95.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,16,98.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,17,99.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,18,101.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,19,104.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,20,106.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,21,109.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,22,111.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,23,114.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,24,117.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,25,120.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,26,124.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,27,128.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,28,133.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,29,139.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,30,146.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,31,152.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,32,160.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,33,171.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,34,178.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,35,192.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,36,200.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,37,212.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,38,217.0
+sgboba 128 abm2,aboba,128,seed2,2,adaptive_batch/batch_size,39,222.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,2,63.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,3,80.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,4,83.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,5,81.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,6,80.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,7,81.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,8,82.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,9,85.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,10,85.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,11,87.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,12,90.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,13,92.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,14,93.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,15,95.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,16,98.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,17,99.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,18,101.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,19,103.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,20,104.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,21,107.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,22,110.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,23,113.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,24,115.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,25,119.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,26,122.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,27,127.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,28,131.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,29,137.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,30,143.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,31,152.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,32,158.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,33,168.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,34,178.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,35,188.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,36,200.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,37,211.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,38,214.0
+sgboba 128 abm2,aboba,128,seed3,2,adaptive_batch/batch_size,39,217.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,2,126.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,3,133.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,4,135.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,5,134.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,6,134.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,7,135.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,8,136.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,9,139.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,10,142.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,11,144.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,12,149.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,13,151.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,14,155.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,15,158.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,16,162.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,17,165.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,18,170.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,19,173.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,20,177.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,21,183.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,22,187.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,23,192.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,24,199.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,25,209.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,26,213.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,27,222.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,28,236.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,29,246.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,30,263.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,31,277.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,32,296.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,33,318.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,34,342.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,35,370.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,36,389.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,37,421.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,38,448.0
+sgboba 128 abm4,aboba,128,seed1,4,adaptive_batch/batch_size,39,453.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,2,129.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,3,133.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,4,135.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,5,134.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,6,136.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,7,136.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,8,137.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,9,139.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,10,141.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,11,144.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,12,148.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,13,152.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,14,155.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,15,159.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,16,162.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,17,165.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,18,170.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,19,176.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,20,179.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,21,182.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,22,188.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,23,194.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,24,202.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,25,209.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,26,216.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,27,227.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,28,237.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,29,249.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,30,265.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,31,282.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,32,302.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,33,319.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,34,344.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,35,370.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,36,396.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,37,429.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,38,436.0
+sgboba 128 abm4,aboba,128,seed2,4,adaptive_batch/batch_size,39,458.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,2,126.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,3,132.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,4,132.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,5,133.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,6,133.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,7,133.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,8,135.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,9,138.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,10,141.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,11,145.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,12,148.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,13,151.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,14,155.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,15,158.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,16,161.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,17,164.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,18,168.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,19,172.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,20,176.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,21,182.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,22,184.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,23,191.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,24,199.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,25,207.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,26,212.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,27,224.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,28,234.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,29,245.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,30,259.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,31,274.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,32,300.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,33,313.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,34,337.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,35,367.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,36,389.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,37,412.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,38,447.0
+sgboba 128 abm4,aboba,128,seed3,4,adaptive_batch/batch_size,39,446.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,2,252.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,3,242.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,4,241.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,5,232.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,6,227.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,7,226.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,8,227.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,9,231.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,10,234.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,11,238.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,12,245.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,13,249.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,14,256.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,15,263.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,16,272.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,17,282.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,18,288.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,19,299.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,20,306.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,21,316.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,22,327.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,23,344.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,24,359.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,25,376.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,26,395.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,27,419.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,28,447.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,29,475.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,30,507.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,31,555.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,32,607.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,33,647.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,34,727.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,35,798.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,36,842.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,37,947.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,38,1007.0
+sgboba 128 abm8,aboba,128,seed1,8,adaptive_batch/batch_size,39,1076.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,2,255.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,3,242.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,4,240.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,5,232.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,6,229.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,7,228.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,8,229.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,9,231.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,10,237.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,11,241.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,12,246.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,13,254.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,14,260.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,15,266.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,16,275.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,17,281.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,18,291.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,19,299.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,20,307.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,21,320.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,22,336.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,23,344.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,24,362.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,25,377.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,26,402.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,27,420.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,28,447.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,29,482.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,30,516.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,31,558.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,32,605.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,33,672.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,34,715.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,35,807.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,36,877.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,37,955.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,38,1026.0
+sgboba 128 abm8,aboba,128,seed2,8,adaptive_batch/batch_size,39,1098.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,2,253.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,3,236.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,4,235.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,5,227.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,6,225.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,7,222.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,8,225.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,9,230.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,10,232.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,11,236.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,12,242.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,13,249.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,14,254.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,15,261.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,16,270.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,17,277.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,18,285.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,19,296.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,20,305.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,21,316.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,22,327.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,23,340.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,24,356.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,25,374.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,26,395.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,27,419.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,28,443.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,29,474.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,30,511.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,31,556.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,32,604.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,33,654.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,34,724.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,35,783.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,36,870.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,37,938.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,38,1012.0
+sgboba 128 abm8,aboba,128,seed3,8,adaptive_batch/batch_size,39,1065.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,0,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,1,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,2,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,3,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,4,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,5,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,6,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,7,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,8,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,9,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,10,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,11,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,12,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,13,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,14,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,15,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,16,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,17,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,18,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,19,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,20,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,21,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,22,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,23,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,24,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,25,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,26,128.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,27,384.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,28,384.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,29,384.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,30,384.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,31,384.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,32,384.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,33,384.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,34,384.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,35,384.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,36,384.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,37,384.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,38,1152.0
+sgd_seesaw 128,seesaw,128,seed1,,seesaw/batch_size,39,1152.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,0,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,1,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,2,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,3,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,4,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,5,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,6,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,7,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,8,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,9,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,10,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,11,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,12,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,13,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,14,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,15,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,16,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,17,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,18,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,19,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,20,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,21,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,22,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,23,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,24,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,25,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,26,128.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,27,384.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,28,384.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,29,384.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,30,384.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,31,384.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,32,384.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,33,384.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,34,384.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,35,384.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,36,384.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,37,384.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,38,1152.0
+sgd_seesaw 128,seesaw,128,seed2,,seesaw/batch_size,39,1152.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,0,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,1,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,2,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,3,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,4,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,5,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,6,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,7,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,8,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,9,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,10,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,11,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,12,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,13,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,14,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,15,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,16,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,17,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,18,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,19,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,20,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,21,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,22,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,23,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,24,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,25,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,26,128.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,27,384.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,28,384.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,29,384.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,30,384.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,31,384.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,32,384.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,33,384.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,34,384.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,35,384.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,36,384.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,37,384.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,38,1152.0
+sgd_seesaw 128,seesaw,128,seed3,,seesaw/batch_size,39,1152.0
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,0,0.39
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,1,0.468
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,2,0.5112
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,3,0.5263
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,4,0.5373
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,5,0.5414
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,6,0.5429
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,7,0.5493
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,8,0.5543
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,9,0.5571
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,10,0.5614
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,11,0.5626
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,12,0.5687
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,13,0.5688
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,14,0.571
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,15,0.5695
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,16,0.5729
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,17,0.5742
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,18,0.5745
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,19,0.5773
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,20,0.5781
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,21,0.5781
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,22,0.5774
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,23,0.5772
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,24,0.5783
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,25,0.5785
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,26,0.5786
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,27,0.5783
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,28,0.5782
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,29,0.5779
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,30,0.5802
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,31,0.5802
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,32,0.5793
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,33,0.583
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,34,0.5824
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,35,0.5829
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,36,0.5824
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,37,0.5835
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,38,0.5835
+sgboba 128 abm16,aboba,128,seed1,16,test_accuracy,39,0.5832
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,0,0.3862
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,1,0.471
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,2,0.5067
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,3,0.518
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,4,0.5261
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,5,0.5394
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,6,0.5429
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,7,0.5547
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,8,0.5531
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,9,0.5596
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,10,0.5578
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,11,0.5668
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,12,0.5691
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,13,0.5736
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,14,0.5665
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,15,0.5709
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,16,0.5717
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,17,0.572
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,18,0.5758
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,19,0.573
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,20,0.5737
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,21,0.5691
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,22,0.5712
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,23,0.5729
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,24,0.5738
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,25,0.5733
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,26,0.5731
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,27,0.5744
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,28,0.5735
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,29,0.5751
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,30,0.5757
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,31,0.5755
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,32,0.5759
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,33,0.5764
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,34,0.5774
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,35,0.5759
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,36,0.576
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,37,0.5751
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,38,0.5769
+sgboba 128 abm16,aboba,128,seed2,16,test_accuracy,39,0.5773
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,0,0.3891
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,1,0.476
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,2,0.5105
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,3,0.523
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,4,0.5387
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,5,0.5434
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,6,0.5519
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,7,0.5562
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,8,0.5623
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,9,0.5638
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,10,0.5629
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,11,0.5657
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,12,0.5696
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,13,0.5692
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,14,0.5729
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,15,0.575
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,16,0.5721
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,17,0.577
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,18,0.5759
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,19,0.577
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,20,0.581
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,21,0.5815
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,22,0.5804
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,23,0.5814
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,24,0.5824
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,25,0.5822
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,26,0.5818
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,27,0.5824
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,28,0.5831
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,29,0.5844
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,30,0.5848
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,31,0.5855
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,32,0.586
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,33,0.5855
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,34,0.584
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,35,0.585
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,36,0.5852
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,37,0.5851
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,38,0.5854
+sgboba 128 abm16,aboba,128,seed3,16,test_accuracy,39,0.5847
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,0,0.3836
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,1,0.4703
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,2,0.4962
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,3,0.5326
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,4,0.5479
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,5,0.5524
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,6,0.5547
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,7,0.5591
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,8,0.5664
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,9,0.5677
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,10,0.569
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,11,0.5751
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,12,0.5738
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,13,0.5739
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,14,0.5753
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,15,0.5792
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,16,0.581
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,17,0.5786
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,18,0.5798
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,19,0.5834
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,20,0.5842
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,21,0.581
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,22,0.579
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,23,0.5836
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,24,0.5832
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,25,0.5882
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,26,0.5873
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,27,0.5884
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,28,0.587
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,29,0.5894
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,30,0.5912
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,31,0.5934
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,32,0.5933
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,33,0.5945
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,34,0.5951
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,35,0.5936
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,36,0.5939
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,37,0.5947
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,38,0.5949
+sgboba 128 abm2,aboba,128,seed1,2,test_accuracy,39,0.5961
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,0,0.3773
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,1,0.4699
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,2,0.5038
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,3,0.5234
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,4,0.5479
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,5,0.5462
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,6,0.5573
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,7,0.5657
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,8,0.5636
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,9,0.571
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,10,0.5737
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,11,0.5767
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,12,0.5728
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,13,0.5787
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,14,0.5739
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,15,0.5784
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,16,0.5797
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,17,0.5753
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,18,0.5805
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,19,0.5798
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,20,0.5805
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,21,0.5825
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,22,0.5863
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,23,0.5881
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,24,0.5873
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,25,0.5864
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,26,0.5879
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,27,0.5899
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,28,0.5915
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,29,0.5933
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,30,0.5969
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,31,0.5937
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,32,0.5937
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,33,0.5951
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,34,0.5958
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,35,0.5958
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,36,0.5946
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,37,0.5949
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,38,0.598
+sgboba 128 abm2,aboba,128,seed2,2,test_accuracy,39,0.5975
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,0,0.4032
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,1,0.4768
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,2,0.4982
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,3,0.5322
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,4,0.5422
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,5,0.5535
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,6,0.5546
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,7,0.5683
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,8,0.5718
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,9,0.5743
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,10,0.5766
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,11,0.5816
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,12,0.5754
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,13,0.5789
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,14,0.5847
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,15,0.5793
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,16,0.5852
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,17,0.5836
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,18,0.5855
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,19,0.5829
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,20,0.5867
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,21,0.584
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,22,0.5866
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,23,0.5858
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,24,0.5885
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,25,0.5926
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,26,0.595
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,27,0.5975
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,28,0.5941
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,29,0.5955
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,30,0.5973
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,31,0.5937
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,32,0.5975
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,33,0.5972
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,34,0.6001
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,35,0.5999
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,36,0.5997
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,37,0.5985
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,38,0.5982
+sgboba 128 abm2,aboba,128,seed3,2,test_accuracy,39,0.6024
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,0,0.3853
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,1,0.4708
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,2,0.5053
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,3,0.5353
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,4,0.5468
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,5,0.5512
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,6,0.5598
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,7,0.5588
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,8,0.5703
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,9,0.5725
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,10,0.5733
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,11,0.5696
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,12,0.5767
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,13,0.5746
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,14,0.5839
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,15,0.5811
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,16,0.585
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,17,0.5813
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,18,0.5805
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,19,0.5862
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,20,0.5856
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,21,0.5868
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,22,0.5909
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,23,0.5893
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,24,0.5914
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,25,0.589
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,26,0.5915
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,27,0.595
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,28,0.5946
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,29,0.5926
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,30,0.5927
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,31,0.5913
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,32,0.5942
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,33,0.5962
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,34,0.5955
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,35,0.5943
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,36,0.596
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,37,0.5937
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,38,0.5952
+sgboba 128 abm4,aboba,128,seed1,4,test_accuracy,39,0.5969
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,0,0.3866
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,1,0.4731
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,2,0.5018
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,3,0.5239
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,4,0.542
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,5,0.5521
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,6,0.5605
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,7,0.5604
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,8,0.5728
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,9,0.5714
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,10,0.5708
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,11,0.5771
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,12,0.5757
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,13,0.5806
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,14,0.5763
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,15,0.5758
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,16,0.5759
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,17,0.5797
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,18,0.5781
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,19,0.5776
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,20,0.5815
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,21,0.578
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,22,0.5798
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,23,0.5823
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,24,0.5833
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,25,0.5873
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,26,0.5865
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,27,0.5851
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,28,0.582
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,29,0.5863
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,30,0.5896
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,31,0.5879
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,32,0.5893
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,33,0.5905
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,34,0.591
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,35,0.5907
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,36,0.5894
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,37,0.5899
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,38,0.5905
+sgboba 128 abm4,aboba,128,seed2,4,test_accuracy,39,0.5921
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,0,0.393
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,1,0.4729
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,2,0.5079
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,3,0.5294
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,4,0.5398
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,5,0.5499
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,6,0.5555
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,7,0.5623
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,8,0.5638
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,9,0.5624
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,10,0.5747
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,11,0.5772
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,12,0.5755
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,13,0.5738
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,14,0.5701
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,15,0.5798
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,16,0.5803
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,17,0.5821
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,18,0.5823
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,19,0.581
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,20,0.5798
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,21,0.5825
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,22,0.5868
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,23,0.5877
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,24,0.5897
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,25,0.5902
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,26,0.5889
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,27,0.5925
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,28,0.5965
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,29,0.5955
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,30,0.5985
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,31,0.5969
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,32,0.5968
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,33,0.5982
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,34,0.5975
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,35,0.5975
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,36,0.5987
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,37,0.5985
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,38,0.5993
+sgboba 128 abm4,aboba,128,seed3,4,test_accuracy,39,0.5993
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,0,0.3845
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,1,0.4667
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,2,0.509
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,3,0.5291
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,4,0.5427
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,5,0.5488
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,6,0.5577
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,7,0.5643
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,8,0.5602
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,9,0.5645
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,10,0.5691
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,11,0.5755
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,12,0.5757
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,13,0.5721
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,14,0.5788
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,15,0.5766
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,16,0.5762
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,17,0.5747
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,18,0.5747
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,19,0.5798
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,20,0.5776
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,21,0.5779
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,22,0.579
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,23,0.5819
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,24,0.5804
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,25,0.5827
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,26,0.5861
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,27,0.5863
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,28,0.5858
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,29,0.5886
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,30,0.5862
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,31,0.5868
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,32,0.5872
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,33,0.5886
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,34,0.5872
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,35,0.5885
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,36,0.5873
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,37,0.5885
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,38,0.5871
+sgboba 128 abm8,aboba,128,seed1,8,test_accuracy,39,0.5885
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,0,0.3829
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,1,0.4694
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,2,0.5098
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,3,0.5217
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,4,0.5346
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,5,0.5442
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,6,0.5526
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,7,0.5533
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,8,0.5548
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,9,0.5616
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,10,0.5634
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,11,0.5719
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,12,0.5693
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,13,0.5716
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,14,0.571
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,15,0.5729
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,16,0.5747
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,17,0.5739
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,18,0.5731
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,19,0.5758
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,20,0.5784
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,21,0.5737
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,22,0.5782
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,23,0.5776
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,24,0.5848
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,25,0.5839
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,26,0.5796
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,27,0.5801
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,28,0.5823
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,29,0.5846
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,30,0.5874
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,31,0.5858
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,32,0.5874
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,33,0.5865
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,34,0.5865
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,35,0.5851
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,36,0.587
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,37,0.5875
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,38,0.588
+sgboba 128 abm8,aboba,128,seed2,8,test_accuracy,39,0.5865
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,0,0.3908
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,1,0.474
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,2,0.516
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,3,0.5347
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,4,0.5449
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,5,0.5586
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,6,0.5636
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,7,0.5664
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,8,0.5701
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,9,0.5716
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,10,0.5752
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,11,0.5734
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,12,0.5742
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,13,0.5743
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,14,0.5741
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,15,0.5755
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,16,0.5789
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,17,0.5798
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,18,0.5801
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,19,0.5799
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,20,0.5828
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,21,0.5852
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,22,0.587
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,23,0.5861
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,24,0.5867
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,25,0.5915
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,26,0.5896
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,27,0.5915
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,28,0.5892
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,29,0.5911
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,30,0.5898
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,31,0.5897
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,32,0.5918
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,33,0.591
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,34,0.592
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,35,0.5933
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,36,0.5949
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,37,0.5931
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,38,0.5928
+sgboba 128 abm8,aboba,128,seed3,8,test_accuracy,39,0.5926
+sgd 128,basic,128,seed1,,test_accuracy,0,0.3867
+sgd 128,basic,128,seed1,,test_accuracy,1,0.4719
+sgd 128,basic,128,seed1,,test_accuracy,2,0.5056
+sgd 128,basic,128,seed1,,test_accuracy,3,0.529
+sgd 128,basic,128,seed1,,test_accuracy,4,0.5469
+sgd 128,basic,128,seed1,,test_accuracy,5,0.5663
+sgd 128,basic,128,seed1,,test_accuracy,6,0.5675
+sgd 128,basic,128,seed1,,test_accuracy,7,0.5682
+sgd 128,basic,128,seed1,,test_accuracy,8,0.5725
+sgd 128,basic,128,seed1,,test_accuracy,9,0.5816
+sgd 128,basic,128,seed1,,test_accuracy,10,0.5877
+sgd 128,basic,128,seed1,,test_accuracy,11,0.577
+sgd 128,basic,128,seed1,,test_accuracy,12,0.5767
+sgd 128,basic,128,seed1,,test_accuracy,13,0.5873
+sgd 128,basic,128,seed1,,test_accuracy,14,0.5873
+sgd 128,basic,128,seed1,,test_accuracy,15,0.5899
+sgd 128,basic,128,seed1,,test_accuracy,16,0.5848
+sgd 128,basic,128,seed1,,test_accuracy,17,0.5945
+sgd 128,basic,128,seed1,,test_accuracy,18,0.5858
+sgd 128,basic,128,seed1,,test_accuracy,19,0.5909
+sgd 128,basic,128,seed1,,test_accuracy,20,0.5903
+sgd 128,basic,128,seed1,,test_accuracy,21,0.5934
+sgd 128,basic,128,seed1,,test_accuracy,22,0.5933
+sgd 128,basic,128,seed1,,test_accuracy,23,0.5934
+sgd 128,basic,128,seed1,,test_accuracy,24,0.5947
+sgd 128,basic,128,seed1,,test_accuracy,25,0.5995
+sgd 128,basic,128,seed1,,test_accuracy,26,0.5976
+sgd 128,basic,128,seed1,,test_accuracy,27,0.5935
+sgd 128,basic,128,seed1,,test_accuracy,28,0.5942
+sgd 128,basic,128,seed1,,test_accuracy,29,0.5921
+sgd 128,basic,128,seed1,,test_accuracy,30,0.5989
+sgd 128,basic,128,seed1,,test_accuracy,31,0.5983
+sgd 128,basic,128,seed1,,test_accuracy,32,0.6009
+sgd 128,basic,128,seed1,,test_accuracy,33,0.6002
+sgd 128,basic,128,seed1,,test_accuracy,34,0.6029
+sgd 128,basic,128,seed1,,test_accuracy,35,0.5997
+sgd 128,basic,128,seed1,,test_accuracy,36,0.6013
+sgd 128,basic,128,seed1,,test_accuracy,37,0.6019
+sgd 128,basic,128,seed1,,test_accuracy,38,0.6006
+sgd 128,basic,128,seed1,,test_accuracy,39,0.6025
+sgd 128,basic,128,seed2,,test_accuracy,0,0.3849
+sgd 128,basic,128,seed2,,test_accuracy,1,0.4713
+sgd 128,basic,128,seed2,,test_accuracy,2,0.5033
+sgd 128,basic,128,seed2,,test_accuracy,3,0.5226
+sgd 128,basic,128,seed2,,test_accuracy,4,0.5411
+sgd 128,basic,128,seed2,,test_accuracy,5,0.5565
+sgd 128,basic,128,seed2,,test_accuracy,6,0.5549
+sgd 128,basic,128,seed2,,test_accuracy,7,0.5676
+sgd 128,basic,128,seed2,,test_accuracy,8,0.5738
+sgd 128,basic,128,seed2,,test_accuracy,9,0.5807
+sgd 128,basic,128,seed2,,test_accuracy,10,0.5785
+sgd 128,basic,128,seed2,,test_accuracy,11,0.5778
+sgd 128,basic,128,seed2,,test_accuracy,12,0.581
+sgd 128,basic,128,seed2,,test_accuracy,13,0.5859
+sgd 128,basic,128,seed2,,test_accuracy,14,0.5869
+sgd 128,basic,128,seed2,,test_accuracy,15,0.5865
+sgd 128,basic,128,seed2,,test_accuracy,16,0.5885
+sgd 128,basic,128,seed2,,test_accuracy,17,0.5887
+sgd 128,basic,128,seed2,,test_accuracy,18,0.5896
+sgd 128,basic,128,seed2,,test_accuracy,19,0.5888
+sgd 128,basic,128,seed2,,test_accuracy,20,0.5863
+sgd 128,basic,128,seed2,,test_accuracy,21,0.5886
+sgd 128,basic,128,seed2,,test_accuracy,22,0.5922
+sgd 128,basic,128,seed2,,test_accuracy,23,0.5932
+sgd 128,basic,128,seed2,,test_accuracy,24,0.5877
+sgd 128,basic,128,seed2,,test_accuracy,25,0.5948
+sgd 128,basic,128,seed2,,test_accuracy,26,0.5885
+sgd 128,basic,128,seed2,,test_accuracy,27,0.5932
+sgd 128,basic,128,seed2,,test_accuracy,28,0.5905
+sgd 128,basic,128,seed2,,test_accuracy,29,0.5932
+sgd 128,basic,128,seed2,,test_accuracy,30,0.5924
+sgd 128,basic,128,seed2,,test_accuracy,31,0.5962
+sgd 128,basic,128,seed2,,test_accuracy,32,0.5931
+sgd 128,basic,128,seed2,,test_accuracy,33,0.5959
+sgd 128,basic,128,seed2,,test_accuracy,34,0.5978
+sgd 128,basic,128,seed2,,test_accuracy,35,0.5987
+sgd 128,basic,128,seed2,,test_accuracy,36,0.5981
+sgd 128,basic,128,seed2,,test_accuracy,37,0.5977
+sgd 128,basic,128,seed2,,test_accuracy,38,0.6022
+sgd 128,basic,128,seed2,,test_accuracy,39,0.5994
+sgd 128,basic,128,seed3,,test_accuracy,0,0.4016
+sgd 128,basic,128,seed3,,test_accuracy,1,0.4798
+sgd 128,basic,128,seed3,,test_accuracy,2,0.5088
+sgd 128,basic,128,seed3,,test_accuracy,3,0.53
+sgd 128,basic,128,seed3,,test_accuracy,4,0.55
+sgd 128,basic,128,seed3,,test_accuracy,5,0.5631
+sgd 128,basic,128,seed3,,test_accuracy,6,0.563
+sgd 128,basic,128,seed3,,test_accuracy,7,0.5713
+sgd 128,basic,128,seed3,,test_accuracy,8,0.5708
+sgd 128,basic,128,seed3,,test_accuracy,9,0.5774
+sgd 128,basic,128,seed3,,test_accuracy,10,0.5817
+sgd 128,basic,128,seed3,,test_accuracy,11,0.5829
+sgd 128,basic,128,seed3,,test_accuracy,12,0.5861
+sgd 128,basic,128,seed3,,test_accuracy,13,0.5852
+sgd 128,basic,128,seed3,,test_accuracy,14,0.5874
+sgd 128,basic,128,seed3,,test_accuracy,15,0.5892
+sgd 128,basic,128,seed3,,test_accuracy,16,0.5905
+sgd 128,basic,128,seed3,,test_accuracy,17,0.5915
+sgd 128,basic,128,seed3,,test_accuracy,18,0.5902
+sgd 128,basic,128,seed3,,test_accuracy,19,0.5922
+sgd 128,basic,128,seed3,,test_accuracy,20,0.5945
+sgd 128,basic,128,seed3,,test_accuracy,21,0.5945
+sgd 128,basic,128,seed3,,test_accuracy,22,0.5929
+sgd 128,basic,128,seed3,,test_accuracy,23,0.5944
+sgd 128,basic,128,seed3,,test_accuracy,24,0.5932
+sgd 128,basic,128,seed3,,test_accuracy,25,0.5941
+sgd 128,basic,128,seed3,,test_accuracy,26,0.5959
+sgd 128,basic,128,seed3,,test_accuracy,27,0.5953
+sgd 128,basic,128,seed3,,test_accuracy,28,0.5997
+sgd 128,basic,128,seed3,,test_accuracy,29,0.5971
+sgd 128,basic,128,seed3,,test_accuracy,30,0.6026
+sgd 128,basic,128,seed3,,test_accuracy,31,0.602
+sgd 128,basic,128,seed3,,test_accuracy,32,0.6004
+sgd 128,basic,128,seed3,,test_accuracy,33,0.6023
+sgd 128,basic,128,seed3,,test_accuracy,34,0.6003
+sgd 128,basic,128,seed3,,test_accuracy,35,0.6031
+sgd 128,basic,128,seed3,,test_accuracy,36,0.603
+sgd 128,basic,128,seed3,,test_accuracy,37,0.6003
+sgd 128,basic,128,seed3,,test_accuracy,38,0.6021
+sgd 128,basic,128,seed3,,test_accuracy,39,0.6021
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,0,0.3941
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,1,0.4716
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,2,0.5084
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,3,0.5306
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,4,0.5432
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,5,0.5443
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,6,0.5579
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,7,0.5709
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,8,0.5736
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,9,0.5737
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,10,0.5763
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,11,0.5826
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,12,0.5823
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,13,0.5848
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,14,0.5795
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,15,0.5883
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,16,0.5828
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,17,0.576
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,18,0.5783
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,19,0.5849
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,20,0.5834
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,21,0.5768
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,22,0.5783
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,23,0.582
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,24,0.5787
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,25,0.5792
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,26,0.5812
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,27,0.5995
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,28,0.6001
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,29,0.599
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,30,0.603
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,31,0.6047
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,32,0.6058
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,33,0.6034
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,34,0.6034
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,35,0.6032
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,36,0.6029
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,37,0.6011
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,38,0.6039
+sgd_seesaw 128,seesaw,128,seed1,,test_accuracy,39,0.6052
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,0,0.3913
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,1,0.4688
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,2,0.5106
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,3,0.5313
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,4,0.5427
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,5,0.5502
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,6,0.5598
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,7,0.5578
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,8,0.5672
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,9,0.5707
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,10,0.5655
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,11,0.5794
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,12,0.5816
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,13,0.5834
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,14,0.5755
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,15,0.5763
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,16,0.5799
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,17,0.575
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,18,0.5744
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,19,0.5779
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,20,0.5801
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,21,0.578
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,22,0.5785
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,23,0.5764
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,24,0.5834
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,25,0.5778
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,26,0.5788
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,27,0.5931
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,28,0.5994
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,29,0.5966
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,30,0.5992
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,31,0.6009
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,32,0.6016
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,33,0.6022
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,34,0.6013
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,35,0.604
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,36,0.6026
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,37,0.6028
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,38,0.6037
+sgd_seesaw 128,seesaw,128,seed2,,test_accuracy,39,0.6021
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,0,0.3952
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,1,0.4693
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,2,0.516
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,3,0.5311
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,4,0.5496
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,5,0.5569
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,6,0.5612
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,7,0.5704
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,8,0.5765
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,9,0.5744
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,10,0.5709
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,11,0.5792
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,12,0.5774
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,13,0.5812
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,14,0.5811
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,15,0.5816
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,16,0.5883
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,17,0.585
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,18,0.5765
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,19,0.5791
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,20,0.5827
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,21,0.5783
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,22,0.583
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,23,0.5775
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,24,0.5757
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,25,0.5838
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,26,0.5818
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,27,0.5958
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,28,0.5999
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,29,0.6003
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,30,0.6017
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,31,0.6023
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,32,0.602
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,33,0.6015
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,34,0.602
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,35,0.5982
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,36,0.6008
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,37,0.6015
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,38,0.6006
+sgd_seesaw 128,seesaw,128,seed3,,test_accuracy,39,0.6001
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,0,2.349395670468294
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,1,1.9698574784435803
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,2,1.8079488941385775
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,3,1.7518153794204132
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,4,1.7132589726508418
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,5,1.6843547413620767
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,6,1.6695947435837757
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,7,1.6536290615419798
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,8,1.6574148075490058
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,9,1.6627115886422652
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,10,1.654322148878363
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,11,1.6543284232103372
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,12,1.6619853218899499
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,13,1.6813664572148384
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,14,1.6831597225575508
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,15,1.6988322040702724
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,16,1.7064639933501617
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,17,1.7303924620906008
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,18,1.7404741908930526
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,19,1.7524884727936756
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,20,1.7663749743111525
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,21,1.7709525672695305
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,22,1.7817813520190082
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,23,1.7896650773060472
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,24,1.8032896594156194
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,25,1.812015664728382
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,26,1.8260073601445066
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,27,1.8260566388504416
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,28,1.8312098134922077
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,29,1.8346361540540863
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,30,1.838816623144512
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,31,1.8378106989438021
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,32,1.842858006682577
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,33,1.8440824716906004
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,34,1.847726411457303
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,35,1.8491469304772872
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,36,1.8495010137557983
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,37,1.8498888091195989
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,38,1.851027613953699
+sgboba 128 abm16,aboba,128,seed1,16,test_loss,39,1.8515773785265186
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,0,2.358718410322938
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,1,1.9540773765950263
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,2,1.8080285259439974
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,3,1.7594658287265632
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,4,1.7223344452773468
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,5,1.6897219691095473
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,6,1.6635825769810737
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,7,1.638550705547574
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,8,1.6480045137526114
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,9,1.6413142334056805
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,10,1.632825178436086
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,11,1.6316212521323674
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,12,1.6353557939770855
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,13,1.6428479680532142
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,14,1.6712277690066566
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,15,1.675125838835028
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,16,1.6926832772508453
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,17,1.6950745914555803
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,18,1.709106030343454
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,19,1.7142192759091341
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,20,1.7349950422214557
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,21,1.7569257669811007
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,22,1.7620293837559373
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,23,1.7750810927982572
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,24,1.781197489062442
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,25,1.7899509683440002
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,26,1.7950030097478553
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,27,1.7941711944869803
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,28,1.8004079181936723
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,29,1.8084210187573977
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,30,1.8068985093998005
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,31,1.8147395019289814
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,32,1.8138590975652766
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,33,1.814892032478429
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,34,1.8170685994474194
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,35,1.8170812039435664
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,36,1.818796797643734
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,37,1.8203254606150374
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,38,1.8203830613365657
+sgboba 128 abm16,aboba,128,seed2,16,test_loss,39,1.8207094774970525
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,0,2.3325707308853727
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,1,1.9532907642895663
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,2,1.8130880941318561
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,3,1.7551273620581325
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,4,1.7119237576858908
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,5,1.682460155668138
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,6,1.6631201339673392
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,7,1.6422161075133312
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,8,1.6369552355778367
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,9,1.6346241733695888
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,10,1.6426017827625516
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,11,1.6466048910648008
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,12,1.6499856785882878
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,13,1.6582892454123195
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,14,1.6812136052530022
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,15,1.7003004867819291
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,16,1.7040497803989845
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,17,1.7067670595796802
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,18,1.724676320824442
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,19,1.7482703758191458
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,20,1.7587077074413058
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,21,1.7602467235130599
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,22,1.7727982107597062
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,23,1.7884435442429554
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,24,1.7826478179497054
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,25,1.7889343560496462
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,26,1.8011824511274506
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,27,1.807220839246919
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,28,1.8074057751064059
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,29,1.8096879102006744
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,30,1.81314642067197
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,31,1.812591994865031
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,32,1.8173603845548025
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,33,1.8200916851623148
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,34,1.8209468518631369
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,35,1.8220998244949533
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,36,1.8241631999800476
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,37,1.8248753592937808
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,38,1.825793891013423
+sgboba 128 abm16,aboba,128,seed3,16,test_loss,39,1.827721417704715
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,0,2.352649211883545
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,1,1.9679733152630963
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,2,1.8460180427454695
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,3,1.711588351032402
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,4,1.6704172801367845
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,5,1.6604922919333736
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,6,1.6674105698549295
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,7,1.6590517261360265
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,8,1.6577245811872845
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,9,1.6703166901310789
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,10,1.7035432812533802
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,11,1.707607397550269
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,12,1.7502130239824705
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,13,1.7767538013337534
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,14,1.7960777765587916
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,15,1.826201514352726
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,16,1.865796307974224
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,17,1.8788053868692132
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,18,1.9168322720105135
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,19,1.922952958300144
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,20,1.9384875071199634
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,21,1.9752877618693099
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,22,1.9886408651931375
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,23,1.994586905346641
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,24,2.0072529949719393
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,25,2.0131665664383127
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,26,2.0235160649577275
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,27,2.036216473277611
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,28,2.0439719203152236
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,29,2.0497608878944495
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,30,2.054591770413556
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,31,2.0649005551881428
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,32,2.0625405673739277
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,33,2.0588988110988953
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,34,2.0678988438618333
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,35,2.078992961328241
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,36,2.0761934126479717
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,37,2.0859200199948082
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,38,2.086029295679889
+sgboba 128 abm2,aboba,128,seed1,2,test_loss,39,2.085434225541127
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,0,2.3819424623175514
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,1,1.9637624523307704
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,2,1.8295748445052136
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,3,1.7327884858167624
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,4,1.6496958551527579
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,5,1.6659898742844788
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,6,1.6489476086218147
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,7,1.6402426912814756
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,8,1.658100214185594
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,9,1.6540709522706043
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,10,1.680502704427212
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,11,1.686101652398894
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,12,1.7472873684726185
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,13,1.7604257064529611
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,14,1.7968161649341825
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,15,1.8369665855093846
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,16,1.8604762041116063
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,17,1.917632880090158
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,18,1.9125601038148132
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,19,1.9378578361076644
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,20,1.957578087154823
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,21,1.9690865263154236
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,22,1.9984164388873908
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,23,1.9927723241757742
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,24,2.020609759077241
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,25,2.032075380977196
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,26,2.0328016779090783
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,27,2.052589558347871
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,28,2.0600675616083266
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,29,2.0643878647043734
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,30,2.0721947362151325
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,31,2.0734218464622014
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,32,2.0744415853596943
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,33,2.0800365103950984
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,34,2.0796242107318927
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,35,2.0884659048877183
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,36,2.091594255423244
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,37,2.089318776432472
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,38,2.0902937016909635
+sgboba 128 abm2,aboba,128,seed2,2,test_loss,39,2.0967293585403057
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,0,2.297609148146231
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,1,1.9469689809823338
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,2,1.8372020359280743
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,3,1.723785759527472
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,4,1.6700577947157849
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,5,1.6711333718480943
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,6,1.6751832931856565
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,7,1.6484307307231276
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,8,1.6535844335073158
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,9,1.671493051927301
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,10,1.6899781483638137
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,11,1.7023366418065904
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,12,1.7361819774289675
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,13,1.7811732292175293
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,14,1.7755899625488474
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,15,1.836490477187724
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,16,1.8395916329154485
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,17,1.871733991405632
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,18,1.879537033129342
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,19,1.9348993044865281
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,20,1.9455098864398426
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,21,1.9774684332594086
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,22,1.9805514118339442
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,23,1.9891108138651787
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,24,2.006634395333785
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,25,2.011632711072511
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,26,2.015202881414679
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,27,2.0239751535125925
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,28,2.0447032511988774
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,29,2.038960548895824
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,30,2.044183234625225
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,31,2.0500340190114854
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,32,2.04903013796746
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,33,2.04864097094234
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,34,2.057773894901517
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,35,2.0640012403077717
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,36,2.0717446472071392
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,37,2.0705888392050054
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,38,2.0708662965629676
+sgboba 128 abm2,aboba,128,seed3,2,test_loss,39,2.07604640495928
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,0,2.3367158702657194
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,1,1.957322597503662
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,2,1.807572278795363
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,3,1.7062013360518444
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,4,1.6672998787481574
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,5,1.6611093011083482
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,6,1.6503211063674734
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,7,1.6563386524779886
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,8,1.6528618109377125
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,9,1.6623606998709184
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,10,1.690644473969182
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,11,1.7180612796469579
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,12,1.7383239374885076
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,13,1.7489681681500207
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,14,1.7682049591330034
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,15,1.7988809890384916
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,16,1.8282925313032126
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,17,1.848861190337169
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,18,1.8777052330065378
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,19,1.896613498277302
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,20,1.9164494638201557
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,21,1.9198486442807354
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,22,1.9391705371156525
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,23,1.9482964609242692
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,24,1.9589027664329433
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,25,1.9704501809953134
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,26,1.9737504026557826
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,27,1.9734486100039905
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,28,1.9868597999403748
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,29,2.0113452778586858
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,30,2.009523162358924
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,31,2.0091038202937646
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,32,2.020519833021526
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,33,2.0195016725153865
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,34,2.028839233555371
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,35,2.0265443838095365
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,36,2.029225190983543
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,37,2.0283823330191115
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,38,2.0262224342249615
+sgboba 128 abm4,aboba,128,seed1,4,test_loss,39,2.028007133097588
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,0,2.3301989790759507
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,1,1.957619513137431
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,2,1.8208233706558807
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,3,1.731377363204956
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,4,1.6725015353552903
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,5,1.6413218477104283
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,6,1.636344677285303
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,7,1.647705281837077
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,8,1.64998590493504
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,9,1.6602499032322364
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,10,1.675757227064688
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,11,1.7020565075210379
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,12,1.718670605104181
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,13,1.7308188465577137
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,14,1.7678581129146527
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,15,1.763862751707246
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,16,1.8238758059996594
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,17,1.846107771125021
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,18,1.8692857072323183
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,19,1.8881045625179629
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,20,1.9110123130339611
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,21,1.9452810287475586
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,22,1.9475451647480833
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,23,1.9702021230625202
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,24,1.9685122212277184
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,25,1.9814793595784828
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,26,1.9799844403810138
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,27,1.9953776477258416
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,28,2.0015539836279954
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,29,2.0184720030313805
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,30,2.026179574712922
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,31,2.020109396946581
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,32,2.0148145790341534
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,33,2.024708660343025
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,34,2.021582873561714
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,35,2.0272994011263306
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,36,2.03094579298285
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,37,2.030517283874222
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,38,2.0314271208606187
+sgboba 128 abm4,aboba,128,seed2,4,test_loss,39,2.03330902962745
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,0,2.3339134228380423
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,1,1.9511341943016536
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,2,1.79691676248478
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,3,1.7236136907263646
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,4,1.6901918619493894
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,5,1.6560898083674758
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,6,1.658538195151317
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,7,1.6782643508307542
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,8,1.670285377321364
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,9,1.6830305555198766
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,10,1.6769077083732509
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,11,1.7023282383061662
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,12,1.7293982022925267
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,13,1.7719589517086367
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,14,1.803499214256866
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,15,1.808889328678952
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,16,1.832950779154331
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,17,1.8458460976805868
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,18,1.8735375796692282
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,19,1.8918755250641062
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,20,1.9184418388559847
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,21,1.9284152381027801
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,22,1.9463552538352678
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,23,1.9518785612492622
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,24,1.959205146077313
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,25,1.962876152388657
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,26,1.9932368420347382
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,27,1.9801783275000657
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,28,1.9874634093876127
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,29,1.9932985169978081
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,30,1.9876494679269912
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,31,2.004326892804496
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,32,2.0088530507268785
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,33,2.0100886338873756
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,34,2.014006838013854
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,35,2.0182828752300406
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,36,2.0189004683796363
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,37,2.021442105498495
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,38,2.023444444318361
+sgboba 128 abm4,aboba,128,seed3,4,test_loss,39,2.026661326613607
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,0,2.36014951331706
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,1,1.9616290164899222
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,2,1.7914808550967445
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,3,1.7337438984762263
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,4,1.6787662400475032
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,5,1.6638720624054535
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,6,1.6530661386779593
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,7,1.6451726397381554
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,8,1.65084153036528
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,9,1.6561407182790056
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,10,1.6550263483313066
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,11,1.667419213282911
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,12,1.6883704707592349
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,13,1.7123389742042445
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,14,1.7251736951779715
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,15,1.7433774063858805
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,16,1.7713917388191707
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,17,1.8036285668988772
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,18,1.8221531291551227
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,19,1.8314994483054439
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,20,1.8505253867258
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,21,1.8700573368917537
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,22,1.8659677807288835
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,23,1.879282771786557
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,24,1.8831722691089292
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,25,1.9022038812878765
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,26,1.8986770744565167
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,27,1.9000329926044126
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,28,1.901060674763933
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,29,1.9120360658138613
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,30,1.917833322211157
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,31,1.924533961694452
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,32,1.9232173645043675
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,33,1.9268382682075984
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,34,1.9310125731214691
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,35,1.9295670095878312
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,36,1.9305565327028684
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,37,1.9339221051976652
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,38,1.9350790449335604
+sgboba 128 abm8,aboba,128,seed1,8,test_loss,39,1.936496930786326
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,0,2.375312261943576
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,1,1.969859541216983
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,2,1.8038024374201327
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,3,1.7407353709015665
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,4,1.7068959595281867
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,5,1.680348376684551
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,6,1.6485569477081299
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,7,1.6685269044924387
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,8,1.6773453105854084
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,9,1.6692679577235934
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,10,1.6904302926003179
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,11,1.7053244053562986
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,12,1.7147407577007632
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,13,1.7417518443699125
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,14,1.7636713981628418
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,15,1.7827841073651858
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,16,1.7966412713256064
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,17,1.8257956851886799
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,18,1.845430772515792
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,19,1.8563204928289485
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,20,1.8767023071458069
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,21,1.8888375728945188
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,22,1.895327860795999
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,23,1.9151967069770717
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,24,1.914236965058725
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,25,1.917974669722062
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,26,1.9296867455108255
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,27,1.9418333980101574
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,28,1.9453009231181084
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,29,1.9476543453675281
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,30,1.9573379347595987
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,31,1.9583829897868483
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,32,1.956978120381319
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,33,1.958667083631588
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,34,1.9625457359265677
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,35,1.9642480159107643
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,36,1.962611817106416
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,37,1.9634143853489356
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,38,1.9650225563894343
+sgboba 128 abm8,aboba,128,seed2,8,test_loss,39,1.9665738283833372
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,0,2.3239606694330144
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,1,1.9535492552986629
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,2,1.777330375924895
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,3,1.7166481002976623
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,4,1.6768826804583585
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,5,1.6557146989846532
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,6,1.6546704603146902
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,7,1.645686608326586
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,8,1.6445357920248298
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,9,1.668973276886759
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,10,1.6641013456296316
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,11,1.6873124023027057
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,12,1.712231335760672
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,13,1.7227334915837156
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,14,1.7618512488618683
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,15,1.7665006178843825
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,16,1.7726311819462837
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,17,1.8044366881817202
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,18,1.8156631083428105
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,19,1.8250296281862863
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,20,1.8264737174480776
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,21,1.8385049678102325
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,22,1.830884835388087
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,23,1.8503501958484891
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,24,1.8593161075930051
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,25,1.8729996394507493
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,26,1.87698185594776
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,27,1.8839392375342454
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,28,1.8961213510247725
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,29,1.8917735513252547
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,30,1.8983868269980708
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,31,1.904353457161143
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,32,1.909592607353307
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,33,1.9080632547788983
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,34,1.9121996571746054
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,35,1.9130241599264024
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,36,1.915868558461153
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,37,1.918822762332385
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,38,1.9160979337330106
+sgboba 128 abm8,aboba,128,seed3,8,test_loss,39,1.917956967897053
+sgd 128,basic,128,seed1,,test_loss,0,2.3266671729993216
+sgd 128,basic,128,seed1,,test_loss,1,1.9605832145183901
+sgd 128,basic,128,seed1,,test_loss,2,1.8041650237916391
+sgd 128,basic,128,seed1,,test_loss,3,1.729232603990579
+sgd 128,basic,128,seed1,,test_loss,4,1.6734276662898968
+sgd 128,basic,128,seed1,,test_loss,5,1.6172662384902374
+sgd 128,basic,128,seed1,,test_loss,6,1.6101265089421333
+sgd 128,basic,128,seed1,,test_loss,7,1.6161445092551316
+sgd 128,basic,128,seed1,,test_loss,8,1.6156415562086468
+sgd 128,basic,128,seed1,,test_loss,9,1.586614364310156
+sgd 128,basic,128,seed1,,test_loss,10,1.6025623686705963
+sgd 128,basic,128,seed1,,test_loss,11,1.6693412201314033
+sgd 128,basic,128,seed1,,test_loss,12,1.6717076769357995
+sgd 128,basic,128,seed1,,test_loss,13,1.6682749005812634
+sgd 128,basic,128,seed1,,test_loss,14,1.6817436323890202
+sgd 128,basic,128,seed1,,test_loss,15,1.6969435079188286
+sgd 128,basic,128,seed1,,test_loss,16,1.73042811170409
+sgd 128,basic,128,seed1,,test_loss,17,1.7361203537711614
+sgd 128,basic,128,seed1,,test_loss,18,1.7708300714251362
+sgd 128,basic,128,seed1,,test_loss,19,1.7753801964506317
+sgd 128,basic,128,seed1,,test_loss,20,1.8106050446063657
+sgd 128,basic,128,seed1,,test_loss,21,1.836352141597603
+sgd 128,basic,128,seed1,,test_loss,22,1.822850996934915
+sgd 128,basic,128,seed1,,test_loss,23,1.845277591596676
+sgd 128,basic,128,seed1,,test_loss,24,1.861788203444662
+sgd 128,basic,128,seed1,,test_loss,25,1.874302646781825
+sgd 128,basic,128,seed1,,test_loss,26,1.8924525387679474
+sgd 128,basic,128,seed1,,test_loss,27,1.9138857624198817
+sgd 128,basic,128,seed1,,test_loss,28,1.9242869585375242
+sgd 128,basic,128,seed1,,test_loss,29,1.924881010115901
+sgd 128,basic,128,seed1,,test_loss,30,1.9351202611681781
+sgd 128,basic,128,seed1,,test_loss,31,1.9313435765761364
+sgd 128,basic,128,seed1,,test_loss,32,1.9305747521074512
+sgd 128,basic,128,seed1,,test_loss,33,1.9439243093321594
+sgd 128,basic,128,seed1,,test_loss,34,1.9453874298288851
+sgd 128,basic,128,seed1,,test_loss,35,1.9601238015331799
+sgd 128,basic,128,seed1,,test_loss,36,1.9510851917387564
+sgd 128,basic,128,seed1,,test_loss,37,1.9607600954514515
+sgd 128,basic,128,seed1,,test_loss,38,1.967039484011976
+sgd 128,basic,128,seed1,,test_loss,39,1.9635349315933035
+sgd 128,basic,128,seed2,,test_loss,0,2.365925432760504
+sgd 128,basic,128,seed2,,test_loss,1,1.9749357730527468
+sgd 128,basic,128,seed2,,test_loss,2,1.8117685091646412
+sgd 128,basic,128,seed2,,test_loss,3,1.7492700754841672
+sgd 128,basic,128,seed2,,test_loss,4,1.6688289597064634
+sgd 128,basic,128,seed2,,test_loss,5,1.635313618032238
+sgd 128,basic,128,seed2,,test_loss,6,1.6392218598836585
+sgd 128,basic,128,seed2,,test_loss,7,1.6032810030104239
+sgd 128,basic,128,seed2,,test_loss,8,1.592500016659121
+sgd 128,basic,128,seed2,,test_loss,9,1.591903970211367
+sgd 128,basic,128,seed2,,test_loss,10,1.6201289514952069
+sgd 128,basic,128,seed2,,test_loss,11,1.6390159914765177
+sgd 128,basic,128,seed2,,test_loss,12,1.6416197411621674
+sgd 128,basic,128,seed2,,test_loss,13,1.6487569371356239
+sgd 128,basic,128,seed2,,test_loss,14,1.6632664716696437
+sgd 128,basic,128,seed2,,test_loss,15,1.6882944152325015
+sgd 128,basic,128,seed2,,test_loss,16,1.728806132002722
+sgd 128,basic,128,seed2,,test_loss,17,1.7194522347631334
+sgd 128,basic,128,seed2,,test_loss,18,1.750429314903066
+sgd 128,basic,128,seed2,,test_loss,19,1.7812801856028884
+sgd 128,basic,128,seed2,,test_loss,20,1.8063991341409804
+sgd 128,basic,128,seed2,,test_loss,21,1.8239528287815143
+sgd 128,basic,128,seed2,,test_loss,22,1.8427930527095553
+sgd 128,basic,128,seed2,,test_loss,23,1.8463510350336003
+sgd 128,basic,128,seed2,,test_loss,24,1.8707636292976668
+sgd 128,basic,128,seed2,,test_loss,25,1.8808084107652496
+sgd 128,basic,128,seed2,,test_loss,26,1.9174382399909105
+sgd 128,basic,128,seed2,,test_loss,27,1.9111027959026867
+sgd 128,basic,128,seed2,,test_loss,28,1.9327578152282328
+sgd 128,basic,128,seed2,,test_loss,29,1.9283322669282745
+sgd 128,basic,128,seed2,,test_loss,30,1.940265706822842
+sgd 128,basic,128,seed2,,test_loss,31,1.9590022639383244
+sgd 128,basic,128,seed2,,test_loss,32,1.9425012446657013
+sgd 128,basic,128,seed2,,test_loss,33,1.961279099500632
+sgd 128,basic,128,seed2,,test_loss,34,1.9525186713737777
+sgd 128,basic,128,seed2,,test_loss,35,1.9618042918700207
+sgd 128,basic,128,seed2,,test_loss,36,1.9707918061485774
+sgd 128,basic,128,seed2,,test_loss,37,1.9814532723607896
+sgd 128,basic,128,seed2,,test_loss,38,1.977510336079175
+sgd 128,basic,128,seed2,,test_loss,39,1.9927139402944831
+sgd 128,basic,128,seed3,,test_loss,0,2.310063531127157
+sgd 128,basic,128,seed3,,test_loss,1,1.94808177253868
+sgd 128,basic,128,seed3,,test_loss,2,1.8152018091346644
+sgd 128,basic,128,seed3,,test_loss,3,1.709247424632688
+sgd 128,basic,128,seed3,,test_loss,4,1.6459977581531187
+sgd 128,basic,128,seed3,,test_loss,5,1.6178020359594611
+sgd 128,basic,128,seed3,,test_loss,6,1.5934202686140808
+sgd 128,basic,128,seed3,,test_loss,7,1.6009945628009266
+sgd 128,basic,128,seed3,,test_loss,8,1.608949035028868
+sgd 128,basic,128,seed3,,test_loss,9,1.604758520669575
+sgd 128,basic,128,seed3,,test_loss,10,1.6049176333825799
+sgd 128,basic,128,seed3,,test_loss,11,1.6322032152851926
+sgd 128,basic,128,seed3,,test_loss,12,1.6265465685083895
+sgd 128,basic,128,seed3,,test_loss,13,1.650987736786468
+sgd 128,basic,128,seed3,,test_loss,14,1.6656211871135085
+sgd 128,basic,128,seed3,,test_loss,15,1.6779353694070744
+sgd 128,basic,128,seed3,,test_loss,16,1.6907386206373383
+sgd 128,basic,128,seed3,,test_loss,17,1.7153489167177225
+sgd 128,basic,128,seed3,,test_loss,18,1.7559768776350384
+sgd 128,basic,128,seed3,,test_loss,19,1.7627596236482452
+sgd 128,basic,128,seed3,,test_loss,20,1.7816033393521853
+sgd 128,basic,128,seed3,,test_loss,21,1.7876267584064338
+sgd 128,basic,128,seed3,,test_loss,22,1.813858471339262
+sgd 128,basic,128,seed3,,test_loss,23,1.807577825799773
+sgd 128,basic,128,seed3,,test_loss,24,1.842704587344882
+sgd 128,basic,128,seed3,,test_loss,25,1.8654253663896005
+sgd 128,basic,128,seed3,,test_loss,26,1.8707196010818965
+sgd 128,basic,128,seed3,,test_loss,27,1.8664164158362377
+sgd 128,basic,128,seed3,,test_loss,28,1.8750214953965778
+sgd 128,basic,128,seed3,,test_loss,29,1.8823801301702667
+sgd 128,basic,128,seed3,,test_loss,30,1.9021097451825686
+sgd 128,basic,128,seed3,,test_loss,31,1.900853759125818
+sgd 128,basic,128,seed3,,test_loss,32,1.9088152911089644
+sgd 128,basic,128,seed3,,test_loss,33,1.9305599362035342
+sgd 128,basic,128,seed3,,test_loss,34,1.9388409498371655
+sgd 128,basic,128,seed3,,test_loss,35,1.928662675090983
+sgd 128,basic,128,seed3,,test_loss,36,1.940010537075091
+sgd 128,basic,128,seed3,,test_loss,37,1.951819826530505
+sgd 128,basic,128,seed3,,test_loss,38,1.9554093102865582
+sgd 128,basic,128,seed3,,test_loss,39,1.9585655112809772
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,0,2.335707794261884
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,1,1.961397327954256
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,2,1.8187401445606086
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,3,1.718458682675905
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,4,1.6844343520418
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,5,1.6730553575708895
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,6,1.6386412442484988
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,7,1.6240446537355833
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,8,1.6165235389637043
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,9,1.6208854642095445
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,10,1.6394814132135125
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,11,1.6510548817960522
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,12,1.6739555023893524
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,13,1.6710874310022668
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,14,1.7016629222073132
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,15,1.7139533607265618
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,16,1.7376397470884686
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,17,1.8012632252294807
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,18,1.8234886247900468
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,19,1.8323777023750016
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,20,1.8614269495010376
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,21,1.921636848510066
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,22,1.9238353982756409
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,23,1.9318954778622976
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,24,1.9557849395124218
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,25,2.002576305896421
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,26,1.979475541959835
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,27,1.8986011004146142
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,28,1.9031534013868887
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,29,1.9054369398310214
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,30,1.9228858057456681
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,31,1.91784259488311
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,32,1.9247094920918912
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,33,1.9371989618373822
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,34,1.952281043499331
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,35,1.9618204681179192
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,36,1.9669700091398215
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,37,1.9783893008775348
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,38,1.9730833376510233
+sgd_seesaw 128,seesaw,128,seed1,,test_loss,39,1.9672033092643642
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,0,2.3500873861433584
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,1,1.9763995982423614
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,2,1.7861982372742664
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,3,1.719240427017212
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,4,1.6760618762124944
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,5,1.6355157909514029
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,6,1.616995960851259
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,7,1.624843206586717
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,8,1.605248523663871
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,9,1.6258221155480495
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,10,1.6419845653485647
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,11,1.6508902930006195
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,12,1.66475835027574
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,13,1.6865995835654344
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,14,1.714533412003819
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,15,1.7411268979688235
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,16,1.7441845241981218
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,17,1.807844033724145
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,18,1.837607815295835
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,19,1.8655003475237497
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,20,1.8684669733047485
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,21,1.8944408184365382
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,22,1.9084974180293988
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,23,1.9438192950019353
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,24,1.9469473195981375
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,25,1.9592014566252502
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,26,2.0196796142602267
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,27,1.9098632335662842
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,28,1.8919593759729891
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,29,1.905661412432224
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,30,1.9070285543610779
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,31,1.9151936030086083
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,32,1.9198904037475586
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,33,1.9259924662264087
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,34,1.951035409034053
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,35,1.9461643907088269
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,36,1.9594840671442733
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,37,1.9631771317011193
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,38,1.9534280677384968
+sgd_seesaw 128,seesaw,128,seed2,,test_loss,39,1.9549586953996103
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,0,2.3209099166000944
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,1,1.9694468024410778
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,2,1.784229867066009
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,3,1.7118257601049882
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,4,1.648840324788154
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,5,1.633101873759982
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,6,1.6190357178072385
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,7,1.6027143559878385
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,8,1.6049870131890984
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,9,1.6300467569616777
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,10,1.6462538076352469
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,11,1.6411004066467285
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,12,1.6704478791997404
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,13,1.6793108605131317
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,14,1.6899135520186606
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,15,1.7014623880386353
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,16,1.7389979920809782
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,17,1.7498155304148226
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,18,1.8077552529829968
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,19,1.8270689098140862
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,20,1.8418461959573287
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,21,1.8860034097599079
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,22,1.9052846069577374
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,23,1.9435638626919518
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,24,1.9838816697084452
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,25,1.9423110515256472
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,26,1.9982706172556817
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,27,1.9167108535766602
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,28,1.9068132125878636
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,29,1.9227430805375305
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,30,1.9126755587662323
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,31,1.927880533133881
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,32,1.9232113421717776
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,33,1.9368445707272879
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,34,1.954360527328298
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,35,1.9562523168853567
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,36,1.9629518744311756
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,37,1.979443276984782
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,38,1.9715759754180908
+sgd_seesaw 128,seesaw,128,seed3,,test_loss,39,1.9704270423213137
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,0,3.311654851078606
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,1,2.159606614432777
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,2,1.732858722722983
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,3,1.6002168784970823
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,4,1.4787523255628698
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,5,1.3883108218510947
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,6,1.3001754065995574
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,7,1.218946539728265
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,8,1.1287065434212586
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,9,1.0487582780876938
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,10,0.9673526154624091
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,11,0.8860845614452751
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,12,0.813401480515798
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,13,0.7373967490698162
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,14,0.669334955189539
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,15,0.6003634532292684
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,16,0.5461450222579912
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,17,0.49028572085357847
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,18,0.4391913318339689
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,19,0.40461022693377274
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,20,0.35587169766426086
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,21,0.3250017522926062
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,22,0.2970579156980795
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,23,0.27408857666887343
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,24,0.2530976819698928
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,25,0.22943673923350216
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,26,0.21497902077323985
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,27,0.20710181385278703
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,28,0.19271877440421478
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,29,0.1860244841802688
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,30,0.1729067262066038
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,31,0.169068723478738
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,32,0.16162226373149502
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,33,0.1582168032016073
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,34,0.1564830094575882
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,35,0.15140090137720108
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,36,0.15107003524899482
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,37,0.14874861783841076
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,38,0.14962436631321907
+sgboba 128 abm16,aboba,128,seed1,16,train_loss,39,0.14849953672715596
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,0,3.298440080100355
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,1,2.1694453314851265
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,2,1.7380996973086627
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,3,1.6039795940336974
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,4,1.4900842706362407
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,5,1.3989995176141912
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,6,1.3056724425200577
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,7,1.2298599280809102
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,8,1.1324161750574906
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,9,1.0659399652967647
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,10,0.9717783669835514
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,11,0.9035462546594364
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,12,0.8133876714855433
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,13,0.7515156307119004
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,14,0.6806490887766299
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,15,0.6133877146110106
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,16,0.5631321213026156
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,17,0.5006374856793737
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,18,0.45788182189435134
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,19,0.4067006908453904
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,20,0.37404140988985696
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,21,0.3366823302847998
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,22,0.3073691454003839
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,23,0.2791876697447151
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,24,0.2610768484572569
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,25,0.24360322795416178
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,26,0.23108336301344745
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,27,0.2110070707846661
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,28,0.201911561191082
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,29,0.19085338640780675
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,30,0.18177784508780429
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,31,0.17431695715469472
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,32,0.16886040039600864
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,33,0.1615394987165928
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,34,0.16601942658424376
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,35,0.16166199472817508
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,36,0.15684272721409798
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,37,0.1561256839948542
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,38,0.15643859008948008
+sgboba 128 abm16,aboba,128,seed2,16,train_loss,39,0.1524762213230133
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,0,3.299306218997358
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,1,2.15290182581344
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,2,1.7319240004588397
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,3,1.589135012319011
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,4,1.4797260929556455
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,5,1.3888376196225485
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,6,1.3017070639518
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,7,1.209313044945399
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,8,1.1283342309144078
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,9,1.041188684105873
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,10,0.9686728896516742
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,11,0.88663894058478
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,12,0.8053023622681698
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,13,0.736579544293253
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,14,0.6662060214627173
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,15,0.60363137655788
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,16,0.5514352335171266
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,17,0.4909772469716914
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,18,0.4420998140617653
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,19,0.39930877547997695
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,20,0.3579201233386993
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,21,0.3282805159687996
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,22,0.30053045754047003
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,23,0.27574038551403923
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,24,0.2484684102847928
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,25,0.23852323226887603
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,26,0.21507607850263705
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,27,0.20328141391277313
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,28,0.19499299480863239
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,29,0.18222990419183457
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,30,0.17175847095878502
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,31,0.17036744611603874
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,32,0.16246495083455118
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,33,0.1540458287511553
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,34,0.15434516072273255
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,35,0.15292893688787113
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,36,0.1509876721783688
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,37,0.1520507028874229
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,38,0.15196529310196638
+sgboba 128 abm16,aboba,128,seed3,16,train_loss,39,0.15091760257879894
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,0,3.3211677318182997
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,1,2.1616122916864513
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,2,2.006149452003395
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,3,1.6310637355092572
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,4,1.443198087113969
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,5,1.3133806222762905
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,6,1.1701176538912326
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,7,1.0437075370880613
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,8,0.9496794310775963
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,9,0.8269208696928431
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,10,0.7135257268205603
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,11,0.6642839663168963
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,12,0.5688860874186765
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,13,0.5024477883418035
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,14,0.43476757147732903
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,15,0.37455640050124667
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,16,0.3284294986549546
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,17,0.281985694431875
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,18,0.24109521803606038
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,19,0.21586559272448844
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,20,0.18202897141638555
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,21,0.16510066589785005
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,22,0.14179680407170422
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,23,0.1253450042317508
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,24,0.10697071282166225
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,25,0.09822214725205586
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,26,0.08536572015629365
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,27,0.07595237379129498
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,28,0.06879574962255389
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,29,0.058923892931718576
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,30,0.05299548969506572
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,31,0.04927823065142883
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,32,0.044962965334828194
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,33,0.04376441677164097
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,34,0.04006788992458372
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,35,0.0368109269717405
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,36,0.036591003727705324
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,37,0.032646371242835336
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,38,0.03197473185938052
+sgboba 128 abm2,aboba,128,seed1,2,train_loss,39,0.030668634363542217
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,0,3.2941523786550895
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,1,2.1848535145433567
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,2,2.017425435256958
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,3,1.6519535779953003
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,4,1.4573469795599705
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,5,1.3173753974645666
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,6,1.1640164696178863
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,7,1.0295723991026502
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,8,0.9566546855746089
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,9,0.8448871319033519
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,10,0.7417862254939568
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,11,0.6532962696405235
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,12,0.57117953060199
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,13,0.4959233597195643
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,14,0.43206944476155673
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,15,0.3851076536535367
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,16,0.32463667855835426
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,17,0.2813447415091024
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,18,0.25239175537394154
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,19,0.21248114206052074
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,20,0.18932163007853833
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,21,0.16701346194076408
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,22,0.14394275928950973
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,23,0.12335161128214428
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,24,0.11056455356940147
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,25,0.0997983981091697
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,26,0.08723759596808726
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,27,0.07634492419683972
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,28,0.06804037457332016
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,29,0.0620649331784726
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,30,0.054008341002049466
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,31,0.0501788047216691
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,32,0.048080550096929076
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,33,0.04267744958208866
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,34,0.039775065395848026
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,35,0.03675882421577206
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,36,0.03537503205705434
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,37,0.03283415207678967
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,38,0.031331524298445365
+sgboba 128 abm2,aboba,128,seed2,2,train_loss,39,0.030659695750930242
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,0,3.288709672495199
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,1,2.146566458784353
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,2,1.996565665732423
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,3,1.6333488736152648
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,4,1.4398391313711472
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,5,1.3049612464817735
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,6,1.1626834198236466
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,7,1.0418520521440564
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,8,0.9398614723824378
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,9,0.8297371038097017
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,10,0.7197992274735836
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,11,0.6499922755367096
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,12,0.5730900203993728
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,13,0.4868498476144905
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,14,0.43071707098983053
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,15,0.3710790262369532
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,16,0.32247318966569855
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,17,0.27784016901756275
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,18,0.23787380440743885
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,19,0.21408428101963603
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,20,0.18798057308110097
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,21,0.16263241758295421
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,22,0.13908696408606758
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,23,0.12374715916495822
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,24,0.10773545951295312
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,25,0.09849958336867747
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,26,0.08561572421695296
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,27,0.07062480513860656
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,28,0.06935062799297395
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,29,0.060156170938074384
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,30,0.054190754302940916
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,31,0.049743015644894806
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,32,0.04679465648375834
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,33,0.040798340380160496
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,34,0.03861341533567091
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,35,0.03699546977701896
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,36,0.035704309586435556
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,37,0.03161783286286567
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,38,0.03096105792229214
+sgboba 128 abm2,aboba,128,seed3,2,train_loss,39,0.030103482219957463
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,0,3.3115520294481953
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,1,2.154946724446818
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,2,1.8362193904840607
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,3,1.5984932168324788
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,4,1.4221732302291974
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,5,1.2783864906570255
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,6,1.144172888674192
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,7,1.0250572771639437
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,8,0.9166251550726339
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,9,0.8255270632301889
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,10,0.7181596491896809
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,11,0.6368204114239139
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,12,0.5516215669575022
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,13,0.4885634282095866
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,14,0.4247926626094552
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,15,0.3689296313307502
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,16,0.308747963207524
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,17,0.2739236575882297
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,18,0.23845258190276775
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,19,0.20612771828453264
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,20,0.18160087648365233
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,21,0.15601725664434082
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,22,0.13608392520409796
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,23,0.12440025295990591
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,24,0.1097731833990237
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,25,0.09910241243336837
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,26,0.08728900649410518
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,27,0.07773880186594195
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,28,0.07024159507285914
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,29,0.06547020226257083
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,30,0.06003543635291096
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,31,0.05494460411783722
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,32,0.04919936720419813
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,33,0.046992465361952784
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,34,0.0452742880242395
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,35,0.04134493909293303
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,36,0.041088355139043985
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,37,0.03966413716736593
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,38,0.03871111201352618
+sgboba 128 abm4,aboba,128,seed1,4,train_loss,39,0.03729267928495326
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,0,3.297606073629361
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,1,2.1832467667972697
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,2,1.849018652592936
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,3,1.6171974364916484
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,4,1.433381530481416
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,5,1.2983679639413053
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,6,1.163311969666254
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,7,1.0401533171027697
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,8,0.9320061936001598
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,9,0.8277772577797494
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,10,0.7382274876634982
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,11,0.6401742834476788
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,12,0.5641489350133472
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,13,0.4869184727451194
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,14,0.43257809430360794
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,15,0.3720453493148682
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,16,0.3190760515569671
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,17,0.280049597552
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,18,0.2473637210561874
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,19,0.2154047289608859
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,20,0.18285463603355426
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,21,0.16172074322422889
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,22,0.14594021618787972
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,23,0.12261369744840178
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,24,0.11495647940671805
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,25,0.1000822166965894
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,26,0.09012239347841289
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,27,0.08039054867218841
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,28,0.07325761672109365
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,29,0.06690932576311752
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,30,0.059783544652163984
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,31,0.05488861500160069
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,32,0.052974652414294804
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,33,0.04912481468915939
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,34,0.04654787291355174
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,35,0.04526616496689342
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,36,0.0423415622830686
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,37,0.04279567659782466
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,38,0.03819692642479153
+sgboba 128 abm4,aboba,128,seed2,4,train_loss,39,0.038337170799401986
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,0,3.3002134915738823
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,1,2.1536078277868205
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,2,1.829012467658106
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,3,1.5943241056435966
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,4,1.4065141363112446
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,5,1.2690610710779826
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,6,1.130957708954811
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,7,1.0052520769834519
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,8,0.9129507340289451
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,9,0.803921446461991
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,10,0.711127795094736
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,11,0.6195672299645164
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,12,0.5409682049795433
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,13,0.4718371024637511
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,14,0.4134345277566318
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,15,0.3566695936465923
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,16,0.3073629837242826
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,17,0.2692924485285096
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,18,0.23130886801401107
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,19,0.20219540522144785
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,20,0.17737188259147862
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,21,0.14835064939848364
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,22,0.13678673047074524
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,23,0.12362997233867645
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,24,0.10739236818024175
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,25,0.09391924819952466
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,26,0.08516957906094637
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,27,0.07797617590829228
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,28,0.07029989515157307
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,29,0.05895121435583369
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,30,0.057338746639524964
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,31,0.05370774750822577
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,32,0.048260930113326335
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,33,0.044739858078675004
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,34,0.043364416034418644
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,35,0.04113315320056346
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,36,0.040531247708142974
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,37,0.038761315656077
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,38,0.038264645493767235
+sgboba 128 abm4,aboba,128,seed3,4,train_loss,39,0.03636647097431542
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,0,3.322229229223233
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,1,2.1644536725248393
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,2,1.7515768378595762
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,3,1.5786130291042906
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,4,1.4369556997761581
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,5,1.3180744426195012
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,6,1.207670551132072
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,7,1.100495995445685
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,8,0.99096299640157
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,9,0.888518386148993
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,10,0.790782746146707
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,11,0.7090993314271882
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,12,0.624508663920537
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,13,0.5559582948684693
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,14,0.488718817058282
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,15,0.4275842591335899
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,16,0.3730830754958043
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,17,0.3213082743240586
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,18,0.2767035483882047
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,19,0.24357566147818602
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,20,0.21935368753396547
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,21,0.19195366390640772
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,22,0.16866874316188155
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,23,0.15479705457029672
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,24,0.14072436658111778
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,25,0.12479035978047352
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,26,0.11083481276389395
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,27,0.10189576948943892
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,28,0.09427841572781627
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,29,0.08537843654907885
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,30,0.0844165494140142
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,31,0.07799191700501575
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,32,0.0738686489371153
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,33,0.07191672108945299
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,34,0.07159650413827463
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,35,0.06521903231739998
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,36,0.0635503685062236
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,37,0.0627781558959257
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,38,0.0605704131989907
+sgboba 128 abm8,aboba,128,seed1,8,train_loss,39,0.0600648829461755
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,0,3.3127100063969914
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,1,2.1748140265766422
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,2,1.751731147368749
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,3,1.5908238606019454
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,4,1.443055375512824
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,5,1.3276217995687973
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,6,1.2086145942923667
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,7,1.0977622151374817
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,8,0.9849031814213457
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,9,0.8974082893718874
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,10,0.793985244064104
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,11,0.7128881663987131
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,12,0.6320525389394642
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,13,0.5520962412190286
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,14,0.48627108296537713
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,15,0.42909732421239216
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,16,0.3749991412820487
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,17,0.3281128134735873
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,18,0.28848850085352457
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,19,0.24810432368203214
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,20,0.2213254893055329
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,21,0.2049888663291931
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,22,0.17782676846039394
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,23,0.15489106400516525
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,24,0.13839808634736323
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,25,0.12688970938324928
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,26,0.11513961332313942
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,27,0.10285815549524206
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,28,0.09754750325103824
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,29,0.09092894223768537
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,30,0.0833973747182202
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,31,0.07818773095036896
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,32,0.07610332277236563
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,33,0.0719949666221263
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,34,0.07099256400357593
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,35,0.06597998510209882
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,36,0.0637249799238311
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,37,0.06412044485531203
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,38,0.06504575741526328
+sgboba 128 abm8,aboba,128,seed2,8,train_loss,39,0.06420730675260226
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,0,3.3031572069222936
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,1,2.147017744402535
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,2,1.7381598783444754
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,3,1.5720697584942247
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,4,1.426808963102453
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,5,1.308667648244988
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,6,1.1864781652466725
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,7,1.0796329759889178
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,8,0.967611367756364
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,9,0.8718990966074729
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,10,0.779236777923828
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,11,0.7019020805697469
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,12,0.625628733996189
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,13,0.5447558576241136
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,14,0.46685056587693036
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,15,0.4162922361317803
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,16,0.3667660499545368
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,17,0.3213717756378982
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,18,0.2827471884233611
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,19,0.24796915771784606
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,20,0.2180285739307185
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,21,0.19116785939014147
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,22,0.17191243116728594
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,23,0.15168938499230605
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,24,0.1358038265524166
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,25,0.12347164398656701
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,26,0.11282039286181478
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,27,0.1015736559111821
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,28,0.09308733948402935
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,29,0.08756981200228135
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,30,0.08450453088451655
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,31,0.07847658849098313
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,32,0.07298820595623869
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,33,0.07120557300380019
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,34,0.07048217417164282
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,35,0.06718700474091605
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,36,0.064885114133358
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,37,0.06384794768832978
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,38,0.06398271368100093
+sgboba 128 abm8,aboba,128,seed3,8,train_loss,39,0.06100622796126314
+sgd 128,basic,128,seed1,,train_loss,0,3.316294344088521
+sgd 128,basic,128,seed1,,train_loss,1,2.160851877718307
+sgd 128,basic,128,seed1,,train_loss,2,1.8401470919386647
+sgd 128,basic,128,seed1,,train_loss,3,1.6317369088578149
+sgd 128,basic,128,seed1,,train_loss,4,1.4662660253695405
+sgd 128,basic,128,seed1,,train_loss,5,1.3363525852227744
+sgd 128,basic,128,seed1,,train_loss,6,1.217254530888396
+sgd 128,basic,128,seed1,,train_loss,7,1.1189350828576012
+sgd 128,basic,128,seed1,,train_loss,8,1.028039312591187
+sgd 128,basic,128,seed1,,train_loss,9,0.930939655524854
+sgd 128,basic,128,seed1,,train_loss,10,0.8478246967251689
+sgd 128,basic,128,seed1,,train_loss,11,0.7719084662370408
+sgd 128,basic,128,seed1,,train_loss,12,0.6985348586838085
+sgd 128,basic,128,seed1,,train_loss,13,0.6301700675639862
+sgd 128,basic,128,seed1,,train_loss,14,0.5752656676898749
+sgd 128,basic,128,seed1,,train_loss,15,0.5108267489713602
+sgd 128,basic,128,seed1,,train_loss,16,0.46503277227710993
+sgd 128,basic,128,seed1,,train_loss,17,0.4162395545088064
+sgd 128,basic,128,seed1,,train_loss,18,0.3711946699946833
+sgd 128,basic,128,seed1,,train_loss,19,0.3325635640385052
+sgd 128,basic,128,seed1,,train_loss,20,0.302322229352622
+sgd 128,basic,128,seed1,,train_loss,21,0.27405280926928355
+sgd 128,basic,128,seed1,,train_loss,22,0.24834631066828872
+sgd 128,basic,128,seed1,,train_loss,23,0.21715102416162674
+sgd 128,basic,128,seed1,,train_loss,24,0.19428255718451337
+sgd 128,basic,128,seed1,,train_loss,25,0.17846609628238616
+sgd 128,basic,128,seed1,,train_loss,26,0.16271915779517482
+sgd 128,basic,128,seed1,,train_loss,27,0.15398138500869082
+sgd 128,basic,128,seed1,,train_loss,28,0.13334462933313732
+sgd 128,basic,128,seed1,,train_loss,29,0.1244771433785891
+sgd 128,basic,128,seed1,,train_loss,30,0.11609941200850109
+sgd 128,basic,128,seed1,,train_loss,31,0.10614056428210042
+sgd 128,basic,128,seed1,,train_loss,32,0.10062523720601496
+sgd 128,basic,128,seed1,,train_loss,33,0.09556506176630909
+sgd 128,basic,128,seed1,,train_loss,34,0.08768069696502563
+sgd 128,basic,128,seed1,,train_loss,35,0.08304345855316796
+sgd 128,basic,128,seed1,,train_loss,36,0.07891280404009378
+sgd 128,basic,128,seed1,,train_loss,37,0.07543300346920666
+sgd 128,basic,128,seed1,,train_loss,38,0.07340528849310006
+sgd 128,basic,128,seed1,,train_loss,39,0.06909115056688793
+sgd 128,basic,128,seed2,,train_loss,0,3.3090841252202043
+sgd 128,basic,128,seed2,,train_loss,1,2.1852354211167406
+sgd 128,basic,128,seed2,,train_loss,2,1.8586686198322917
+sgd 128,basic,128,seed2,,train_loss,3,1.6339151703130703
+sgd 128,basic,128,seed2,,train_loss,4,1.4810654096329174
+sgd 128,basic,128,seed2,,train_loss,5,1.342417342213396
+sgd 128,basic,128,seed2,,train_loss,6,1.2265061176242158
+sgd 128,basic,128,seed2,,train_loss,7,1.125122057172818
+sgd 128,basic,128,seed2,,train_loss,8,1.0276992168670265
+sgd 128,basic,128,seed2,,train_loss,9,0.9347569713958155
+sgd 128,basic,128,seed2,,train_loss,10,0.8631356444221716
+sgd 128,basic,128,seed2,,train_loss,11,0.7715163129968003
+sgd 128,basic,128,seed2,,train_loss,12,0.7027182844690621
+sgd 128,basic,128,seed2,,train_loss,13,0.6346588071923667
+sgd 128,basic,128,seed2,,train_loss,14,0.5779989014227931
+sgd 128,basic,128,seed2,,train_loss,15,0.512738151386523
+sgd 128,basic,128,seed2,,train_loss,16,0.4676239282940142
+sgd 128,basic,128,seed2,,train_loss,17,0.4235989011514682
+sgd 128,basic,128,seed2,,train_loss,18,0.3828873709082223
+sgd 128,basic,128,seed2,,train_loss,19,0.3365625106393339
+sgd 128,basic,128,seed2,,train_loss,20,0.3025241115222724
+sgd 128,basic,128,seed2,,train_loss,21,0.2659780611626256
+sgd 128,basic,128,seed2,,train_loss,22,0.24600985898567845
+sgd 128,basic,128,seed2,,train_loss,23,0.2209919129316799
+sgd 128,basic,128,seed2,,train_loss,24,0.20386379707259492
+sgd 128,basic,128,seed2,,train_loss,25,0.18233196799176188
+sgd 128,basic,128,seed2,,train_loss,26,0.17093075100130167
+sgd 128,basic,128,seed2,,train_loss,27,0.15266427366783064
+sgd 128,basic,128,seed2,,train_loss,28,0.13913030684375152
+sgd 128,basic,128,seed2,,train_loss,29,0.12883412432127866
+sgd 128,basic,128,seed2,,train_loss,30,0.11579295531058083
+sgd 128,basic,128,seed2,,train_loss,31,0.10930488942958676
+sgd 128,basic,128,seed2,,train_loss,32,0.10052853593001732
+sgd 128,basic,128,seed2,,train_loss,33,0.10025932248265218
+sgd 128,basic,128,seed2,,train_loss,34,0.09089156748435367
+sgd 128,basic,128,seed2,,train_loss,35,0.0887622179957434
+sgd 128,basic,128,seed2,,train_loss,36,0.08343094949143383
+sgd 128,basic,128,seed2,,train_loss,37,0.07825765445138129
+sgd 128,basic,128,seed2,,train_loss,38,0.07286290513774077
+sgd 128,basic,128,seed2,,train_loss,39,0.06963014350341151
+sgd 128,basic,128,seed3,,train_loss,0,3.3043688379537564
+sgd 128,basic,128,seed3,,train_loss,1,2.1484087252388364
+sgd 128,basic,128,seed3,,train_loss,2,1.8261434605327278
+sgd 128,basic,128,seed3,,train_loss,3,1.6177446248051457
+sgd 128,basic,128,seed3,,train_loss,4,1.4628141276752606
+sgd 128,basic,128,seed3,,train_loss,5,1.3231561260101514
+sgd 128,basic,128,seed3,,train_loss,6,1.215696531553238
+sgd 128,basic,128,seed3,,train_loss,7,1.1058673493016642
+sgd 128,basic,128,seed3,,train_loss,8,1.01866551729056
+sgd 128,basic,128,seed3,,train_loss,9,0.9241888054643577
+sgd 128,basic,128,seed3,,train_loss,10,0.8411318244644628
+sgd 128,basic,128,seed3,,train_loss,11,0.7661181318874176
+sgd 128,basic,128,seed3,,train_loss,12,0.704220576217761
+sgd 128,basic,128,seed3,,train_loss,13,0.6283912862451694
+sgd 128,basic,128,seed3,,train_loss,14,0.5733582969671621
+sgd 128,basic,128,seed3,,train_loss,15,0.5115737746508358
+sgd 128,basic,128,seed3,,train_loss,16,0.45304016031015415
+sgd 128,basic,128,seed3,,train_loss,17,0.4103171279826484
+sgd 128,basic,128,seed3,,train_loss,18,0.3761175769015242
+sgd 128,basic,128,seed3,,train_loss,19,0.33260255399793864
+sgd 128,basic,128,seed3,,train_loss,20,0.3080965918473923
+sgd 128,basic,128,seed3,,train_loss,21,0.27388317511675836
+sgd 128,basic,128,seed3,,train_loss,22,0.24325473463763825
+sgd 128,basic,128,seed3,,train_loss,23,0.21857618390561673
+sgd 128,basic,128,seed3,,train_loss,24,0.19692611011167685
+sgd 128,basic,128,seed3,,train_loss,25,0.187129820807102
+sgd 128,basic,128,seed3,,train_loss,26,0.16510585755014573
+sgd 128,basic,128,seed3,,train_loss,27,0.15328106109183817
+sgd 128,basic,128,seed3,,train_loss,28,0.13580388338944782
+sgd 128,basic,128,seed3,,train_loss,29,0.12723242353421813
+sgd 128,basic,128,seed3,,train_loss,30,0.11527264165802124
+sgd 128,basic,128,seed3,,train_loss,31,0.10648063310799888
+sgd 128,basic,128,seed3,,train_loss,32,0.10184142137535464
+sgd 128,basic,128,seed3,,train_loss,33,0.09520068708747721
+sgd 128,basic,128,seed3,,train_loss,34,0.08851036393699555
+sgd 128,basic,128,seed3,,train_loss,35,0.08501770774039408
+sgd 128,basic,128,seed3,,train_loss,36,0.0778676519116845
+sgd 128,basic,128,seed3,,train_loss,37,0.07678611130236437
+sgd 128,basic,128,seed3,,train_loss,38,0.07479446620558397
+sgd 128,basic,128,seed3,,train_loss,39,0.07080327593885101
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,0,3.307204383630722
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,1,2.1677359769138667
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,2,1.8401813766065116
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,3,1.6279507342238015
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,4,1.469758279026507
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,5,1.3442924923409287
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,6,1.2260013782559112
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,7,1.134969034514869
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,8,1.0370720145039665
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,9,0.9578073327533734
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,10,0.8863185493709942
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,11,0.8094833377070321
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,12,0.7355678179583991
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,13,0.6880802439805418
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,14,0.6289807639944668
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,15,0.5692195432445112
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,16,0.5272082309372509
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,17,0.482267934483842
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,18,0.4518599147423388
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,19,0.41496776544247954
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,20,0.3840042052748866
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,21,0.36789669886755105
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,22,0.3451482030435111
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,23,0.31819849530348
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,24,0.30390739707520215
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,25,0.2891160805766194
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,26,0.2687467996971295
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,27,0.14080374985933303
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,28,0.10270132578554608
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,29,0.08440601190640813
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,30,0.07793935228671346
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,31,0.06894315076725824
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,32,0.062243356520221345
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,33,0.059260079016288124
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,34,0.05510426199152356
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,35,0.05284136271192914
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,36,0.05033899160722891
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,37,0.04745171183631534
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,38,0.035041900564517295
+sgd_seesaw 128,seesaw,128,seed1,,train_loss,39,0.03179097340575286
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,0,3.303755107398231
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,1,2.1756906848365127
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,2,1.85628892133792
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,3,1.6384273028602234
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,4,1.4852802262138636
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,5,1.3434880577718107
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,6,1.2335180329819457
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,7,1.1394298653633068
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,8,1.0396189295445768
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,9,0.9570610879328304
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,10,0.8783411029428719
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,11,0.8022959810285903
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,12,0.7437535139699333
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,13,0.6837516060462013
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,14,0.6254219843175846
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,15,0.5735459988490461
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,16,0.523088888047983
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,17,0.4930817067813569
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,18,0.4540029841299636
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,19,0.419301412785396
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,20,0.3933525235412982
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,21,0.35391441263710727
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,22,0.3397871988554732
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,23,0.3208262764226895
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,24,0.30240420130685497
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,25,0.285156745118455
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,26,0.2668183380708146
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,27,0.14325192492632638
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,28,0.09982254611594336
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,29,0.08247060853810538
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,30,0.0756750082685834
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,31,0.06941838214794795
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,32,0.06338052554499535
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,33,0.06031344992419084
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,34,0.056646746538934256
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,35,0.05225031492965562
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,36,0.049901586096911206
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,37,0.04736029500407832
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,38,0.0361477080732584
+sgd_seesaw 128,seesaw,128,seed2,,train_loss,39,0.03206298973943506
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,0,3.3145967634341207
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,1,2.1601707946759063
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,2,1.8413326165165764
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,3,1.6296529716577013
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,4,1.4741521734780016
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,5,1.3337795622051714
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,6,1.219689976293058
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,7,1.115868794651458
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,8,1.0225904829585895
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,9,0.9380128217962223
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,10,0.8731379720349662
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,11,0.7900755146440988
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,12,0.7287974521374931
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,13,0.6749486978442524
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,14,0.6133769229768564
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,15,0.5618874189762262
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,16,0.5181156863419774
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,17,0.48053894560938826
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,18,0.444399361221935
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,19,0.41490755275415536
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,20,0.39097957055980026
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,21,0.3652035895342263
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,22,0.3291175126934204
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,23,0.31827046210392596
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,24,0.3014407975795551
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,25,0.27955291184563985
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,26,0.2685132004296818
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,27,0.1387995461622874
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,28,0.09759570906559627
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,29,0.08602194959918658
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,30,0.07419081422544661
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,31,0.07118806831893466
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,32,0.06331080900771277
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,33,0.057796779771645865
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,34,0.05631632393314725
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,35,0.05281494364497207
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,36,0.05068058298812026
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,37,0.04930244976920741
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,38,0.034609380311199596
+sgd_seesaw 128,seesaw,128,seed3,,train_loss,39,0.033226766437292096
