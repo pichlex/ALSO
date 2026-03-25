@@ -83,13 +83,13 @@ def test_epoch_start_metrics_match_bruteforce() -> None:
     per_sample_grads = _manual_per_sample_grads(model, inputs, targets)
     grad_matrix = torch.stack(per_sample_grads)
     grad_mean = grad_matrix.mean(dim=0)
-    first_batch_mean = grad_matrix[:2].mean(dim=0)
+    first_batch_sum = grad_matrix[:2].sum(dim=0)
     flat_reference = _flatten_named_grads(reference_grad)
 
     expected_metric_1 = ((grad_matrix - grad_mean).pow(2).sum(dim=1)).mean().item()
-    expected_metric_2 = torch.sum((first_batch_mean - grad_mean) ** 2).item()
+    expected_metric_2 = torch.sum((first_batch_sum - 2.0 * grad_mean) ** 2).item()
     expected_metric_4 = ((grad_matrix - flat_reference) ** 2).sum(dim=1).mean().item()
-    expected_metric_5 = torch.sum((first_batch_mean - flat_reference) ** 2).item()
+    expected_metric_5 = torch.sum((first_batch_sum - 2.0 * flat_reference) ** 2).item()
 
     assert metrics.metric_1 == pytest.approx(expected_metric_1)
     assert metrics.metric_2 == pytest.approx(expected_metric_2)
