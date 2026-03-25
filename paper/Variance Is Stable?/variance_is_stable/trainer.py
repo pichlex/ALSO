@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import math
 import logging
+import time
 from collections import OrderedDict
 from typing import Any
 
@@ -73,12 +75,11 @@ def evaluate(
     return total_loss / max(1, total_examples), total_correct / max(1, total_examples)
 
 
-def _collect_batch_mean_grads(model: torch.nn.Module) -> NamedTensorDict:
-    return OrderedDict(
-        (name, parameter.grad.detach().clone())
-        for name, parameter in model.named_parameters()
-        if parameter.grad is not None
-    )
+def _synchronize_device(device: torch.device) -> None:
+    if device.type == "cuda":
+        torch.cuda.synchronize(device)
+    elif device.type == "mps" and hasattr(torch, "mps"):
+        torch.mps.synchronize()
 
 
 def train_one_epoch(
@@ -88,16 +89,22 @@ def train_one_epoch(
     device: torch.device,
     epoch_index: int,
     total_epochs: int,
-) -> tuple[float, NamedTensorDict]:
+    non_blocking_transfers: bool,
+    profile_timing: bool,
+) -> tuple[float, NamedTensorDict, dict[str, float]]:
     model.train()
-    total_loss = 0.0
     total_examples = 0
     total_steps = 0
+    total_loss = torch.zeros((), device=device, dtype=torch.float32)
 
     grad_accumulator = zeros_like_named_tensors(
         OrderedDict((name, parameter.detach()) for name, parameter in model.named_parameters()),
-        device=torch.device("cpu"),
+        device=device,
     )
+    transfer_time = 0.0
+    forward_backward_time = 0.0
+    optimizer_step_time = 0.0
+    epoch_start_time = time.perf_counter()
 
     progress = tqdm(
         train_loader,
@@ -105,29 +112,57 @@ def train_one_epoch(
         leave=False,
     )
     for inputs, targets, _ in progress:
-        inputs = inputs.to(device)
-        targets = targets.to(device)
+        if profile_timing:
+            transfer_start = time.perf_counter()
+        inputs = inputs.to(device, non_blocking=non_blocking_transfers)
+        targets = targets.to(device, non_blocking=non_blocking_transfers)
+        if profile_timing:
+            _synchronize_device(device)
+            transfer_time += time.perf_counter() - transfer_start
 
         optimizer.zero_grad(set_to_none=True)
+        if profile_timing:
+            forward_backward_start = time.perf_counter()
         logits = model(inputs)
         loss = F.cross_entropy(logits, targets, reduction="mean")
         loss.backward()
+        if profile_timing:
+            _synchronize_device(device)
+            forward_backward_time += time.perf_counter() - forward_backward_start
 
-        batch_mean_grads = _collect_batch_mean_grads(model)
-        for name, grad_tensor in batch_mean_grads.items():
-            grad_accumulator[name].add_(grad_tensor.detach().cpu())
+        for name, parameter in model.named_parameters():
+            if parameter.grad is not None:
+                grad_accumulator[name].add_(parameter.grad.detach())
 
+        if profile_timing:
+            optimizer_step_start = time.perf_counter()
         optimizer.step()
+        if profile_timing:
+            _synchronize_device(device)
+            optimizer_step_time += time.perf_counter() - optimizer_step_start
 
         batch_size = targets.numel()
-        total_loss += loss.item() * batch_size
+        total_loss += loss.detach() * batch_size
         total_examples += batch_size
         total_steps += 1
 
+    _synchronize_device(device)
+    train_time = time.perf_counter() - epoch_start_time
     hat_grad = OrderedDict(
-        (name, tensor / float(total_steps)) for name, tensor in grad_accumulator.items()
+        (name, (tensor / float(total_steps)).detach().cpu())
+        for name, tensor in grad_accumulator.items()
     )
-    return total_loss / max(1, total_examples), hat_grad
+    timing = {
+        "train_time_sec": train_time,
+        "data_to_device_time_sec": transfer_time if profile_timing else float("nan"),
+        "forward_backward_time_sec": forward_backward_time if profile_timing else float("nan"),
+        "optimizer_step_time_sec": optimizer_step_time if profile_timing else float("nan"),
+        "train_steps": float(total_steps),
+        "samples_per_sec": (
+            float(total_examples) / train_time if train_time > 0 else float("nan")
+        ),
+    }
+    return total_loss.div(max(1, total_examples)).item(), hat_grad, timing
 
 
 def build_epoch_record(
@@ -137,6 +172,10 @@ def build_epoch_record(
     train_loss: float,
     val_loss: float,
     val_acc: float,
+    metrics_time_sec: float,
+    train_timing: dict[str, float],
+    eval_time_sec: float,
+    cuda_memory_stats: dict[str, float],
 ) -> dict[str, Any]:
     return {
         "epoch": epoch,
@@ -148,6 +187,16 @@ def build_epoch_record(
         "train_loss": train_loss,
         "val_loss": val_loss,
         "val_acc": val_acc,
+        "metrics_time_sec": metrics_time_sec,
+        "train_time_sec": train_timing["train_time_sec"],
+        "eval_time_sec": eval_time_sec,
+        "data_to_device_time_sec": train_timing["data_to_device_time_sec"],
+        "forward_backward_time_sec": train_timing["forward_backward_time_sec"],
+        "optimizer_step_time_sec": train_timing["optimizer_step_time_sec"],
+        "train_steps": train_timing["train_steps"],
+        "samples_per_sec": train_timing["samples_per_sec"],
+        "cuda_mem_alloc_mb": cuda_memory_stats["cuda_mem_alloc_mb"],
+        "cuda_mem_peak_mb": cuda_memory_stats["cuda_mem_peak_mb"],
     }
 
 
@@ -157,21 +206,31 @@ def log_epoch_summary(
     total_epochs: int,
     epoch_record: dict[str, Any],
 ) -> None:
+    metric_4 = epoch_record["metric_4"]
+    metric_5 = epoch_record["metric_5"]
     logger.info(
         (
             "Epoch %s/%s | m1=%.6f | m2=%.6f | m3=%.6f | m4=%s | m5=%s | "
-            "train_loss=%.6f | val_loss=%.6f | val_acc=%.4f"
+            "train_loss=%.6f | val_loss=%.6f | val_acc=%.4f | "
+            "metrics=%.2fs | train=%.2fs | eval=%.2fs | samples/s=%.2f | "
+            "cuda_mem=%.1fMB | cuda_peak=%.1fMB"
         ),
         epoch + 1,
         total_epochs,
         epoch_record["metric_1"],
         epoch_record["metric_2"],
         epoch_record["metric_3"],
-        f"{epoch_record['metric_4']:.6f}" if not torch.isnan(torch.tensor(epoch_record["metric_4"])) else "nan",
-        f"{epoch_record['metric_5']:.6f}" if not torch.isnan(torch.tensor(epoch_record["metric_5"])) else "nan",
+        f"{metric_4:.6f}" if not math.isnan(metric_4) else "nan",
+        f"{metric_5:.6f}" if not math.isnan(metric_5) else "nan",
         epoch_record["train_loss"],
         epoch_record["val_loss"],
         epoch_record["val_acc"],
+        epoch_record["metrics_time_sec"],
+        epoch_record["train_time_sec"],
+        epoch_record["eval_time_sec"],
+        epoch_record["samples_per_sec"],
+        epoch_record["cuda_mem_alloc_mb"],
+        epoch_record["cuda_mem_peak_mb"],
     )
 
 

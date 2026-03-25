@@ -30,6 +30,11 @@ class ExperimentConfig:
     run_name: str | None = None
     metric_microbatch_size: int = 16
     eval_every: int = 1
+    persistent_workers: bool = True
+    prefetch_factor: int = 2
+    non_blocking_transfers: bool = True
+    cudnn_benchmark: bool = True
+    profile_timing: bool = True
 
     def validate(self) -> "ExperimentConfig":
         if self.dataset != "cifar10":
@@ -52,6 +57,8 @@ class ExperimentConfig:
             raise ValueError("eval_every must be positive.")
         if self.num_workers < 0:
             raise ValueError("num_workers must be non-negative.")
+        if self.prefetch_factor <= 0:
+            raise ValueError("prefetch_factor must be positive.")
         return self
 
     def to_dict(self) -> dict[str, Any]:

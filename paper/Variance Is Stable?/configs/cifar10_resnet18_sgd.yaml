@@ -15,3 +15,8 @@ device: auto
 output_dir: paper/Variance Is Stable?/runs/initial_run/
 metric_microbatch_size: 16
 eval_every: 1
+persistent_workers: true
+prefetch_factor: 2
+non_blocking_transfers: true
+cudnn_benchmark: true
+profile_timing: true

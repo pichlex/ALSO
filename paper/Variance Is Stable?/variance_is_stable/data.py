@@ -161,27 +161,30 @@ def build_experiment_data(config: ExperimentConfig, device: torch.device) -> Exp
     generator = torch.Generator()
     generator.manual_seed(config.seed)
     pin_memory = device.type == "cuda"
+    use_persistent_workers = config.num_workers > 0 and config.persistent_workers
+    loader_kwargs = {
+        "num_workers": config.num_workers,
+        "pin_memory": pin_memory,
+        "worker_init_fn": _seed_worker,
+        "generator": generator,
+        "drop_last": False,
+    }
+    if config.num_workers > 0:
+        loader_kwargs["persistent_workers"] = use_persistent_workers
+        loader_kwargs["prefetch_factor"] = config.prefetch_factor
 
     train_loader = DataLoader(
         train_dataset,
         batch_size=config.batch_size,
         sampler=train_sampler,
         shuffle=False,
-        num_workers=config.num_workers,
-        pin_memory=pin_memory,
-        worker_init_fn=_seed_worker,
-        generator=generator,
-        drop_last=False,
+        **loader_kwargs,
     )
     val_loader = DataLoader(
         val_dataset,
         batch_size=config.batch_size,
         shuffle=False,
-        num_workers=config.num_workers,
-        pin_memory=pin_memory,
-        worker_init_fn=_seed_worker,
-        generator=generator,
-        drop_last=False,
+        **loader_kwargs,
     )
 
     return ExperimentData(

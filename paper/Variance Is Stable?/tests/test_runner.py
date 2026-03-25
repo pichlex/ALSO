@@ -93,12 +93,36 @@ def test_runner_smoke_saves_expected_artifacts(tmp_path: Path, monkeypatch: pyte
     assert log_path.exists()
 
     wide_df = pd.read_csv(wide_path)
-    assert set(["epoch", "metric_1", "metric_2", "metric_3", "metric_4", "metric_5", "train_loss", "val_loss", "val_acc"]).issubset(wide_df.columns)
+    assert set(
+        [
+            "epoch",
+            "metric_1",
+            "metric_2",
+            "metric_3",
+            "metric_4",
+            "metric_5",
+            "train_loss",
+            "val_loss",
+            "val_acc",
+            "metrics_time_sec",
+            "train_time_sec",
+            "eval_time_sec",
+            "data_to_device_time_sec",
+            "forward_backward_time_sec",
+            "optimizer_step_time_sec",
+            "train_steps",
+            "samples_per_sec",
+            "cuda_mem_alloc_mb",
+            "cuda_mem_peak_mb",
+        ]
+    ).issubset(wide_df.columns)
     assert len(wide_df) == 2
     assert pd.isna(wide_df.loc[0, "metric_4"])
     assert pd.isna(wide_df.loc[0, "metric_5"])
     assert not pd.isna(wide_df.loc[1, "metric_4"])
     assert not pd.isna(wide_df.loc[1, "metric_5"])
+    assert (wide_df["train_time_sec"] > 0).all()
+    assert (wide_df["metrics_time_sec"] > 0).all()
 
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA is unavailable.")
