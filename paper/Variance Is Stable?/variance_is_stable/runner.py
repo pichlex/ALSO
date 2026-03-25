@@ -9,7 +9,7 @@ import torch
 
 from .data import build_experiment_data, seed_everything
 from .experiment_config import ExperimentConfig
-from .metrics import clone_named_parameters, compute_epoch_start_metrics
+from .metrics import compute_epoch_start_metrics
 from .modeling import build_model, resolve_device
 from .results import save_run_artifacts
 from .trainer import (
@@ -18,7 +18,6 @@ from .trainer import (
     build_scheduler,
     evaluate,
     log_epoch_summary,
-    parameter_shift_sq,
     train_one_epoch,
 )
 
@@ -67,7 +66,6 @@ def run_experiment(
     scheduler = build_scheduler(optimizer, config)
 
     epoch_records: list[dict[str, float]] = []
-    previous_epoch_start = None
     previous_hat_grad = None
 
     for epoch in range(config.epochs):
@@ -75,8 +73,6 @@ def run_experiment(
             torch.cuda.reset_peak_memory_stats(device)
 
         logger.info("Epoch %s/%s: computing epoch-start metrics.", epoch + 1, config.epochs)
-        current_epoch_start = clone_named_parameters(model)
-        metric_3 = parameter_shift_sq(previous_epoch_start, current_epoch_start)
         metrics_start = time.perf_counter()
         epoch_metrics = compute_epoch_start_metrics(
             model=model,
@@ -97,14 +93,14 @@ def run_experiment(
             config.epochs,
             epoch_metrics.metric_1,
             epoch_metrics.metric_2,
-            f"{metric_3:.6f}" if not math.isnan(metric_3) else "nan",
+            "pending-first-train-step",
             f"{epoch_metrics.metric_4:.6f}" if not math.isnan(epoch_metrics.metric_4) else "nan",
             f"{epoch_metrics.metric_5:.6f}" if not math.isnan(epoch_metrics.metric_5) else "nan",
             metrics_time_sec,
         )
 
         logger.info("Epoch %s/%s: training.", epoch + 1, config.epochs)
-        train_loss, current_hat_grad, train_timing = train_one_epoch(
+        train_loss, current_hat_grad, train_timing, metric_3 = train_one_epoch(
             model=model,
             optimizer=optimizer,
             train_loader=data.train_loader,
@@ -113,6 +109,12 @@ def run_experiment(
             total_epochs=config.epochs,
             non_blocking_transfers=config.non_blocking_transfers,
             profile_timing=config.profile_timing,
+        )
+        logger.info(
+            "Epoch %s/%s: first-step metric computed | m3=%.6f",
+            epoch + 1,
+            config.epochs,
+            metric_3,
         )
 
         eval_start = time.perf_counter()
@@ -143,7 +145,6 @@ def run_experiment(
         epoch_records.append(epoch_record)
         log_epoch_summary(logger, epoch, config.epochs, epoch_record)
 
-        previous_epoch_start = current_epoch_start
         previous_hat_grad = current_hat_grad
 
     save_run_artifacts(output_dir=output_dir, config=config, epoch_records=epoch_records)

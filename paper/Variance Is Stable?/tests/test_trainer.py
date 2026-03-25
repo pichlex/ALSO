@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections import OrderedDict
 
+import pytest
 import torch
 import torch.nn.functional as F
 from torch.utils.data import DataLoader, Dataset
@@ -74,7 +75,7 @@ def test_train_one_epoch_keeps_hat_grad_semantics() -> None:
     optimizer = build_optimizer(model_for_train, config)
     manual_optimizer = build_optimizer(model_for_manual, config)
 
-    _, hat_grad, timing = train_one_epoch(
+    train_loss, hat_grad, timing, metric_3 = train_one_epoch(
         model=model_for_train,
         optimizer=optimizer,
         train_loader=loader,
@@ -95,4 +96,61 @@ def test_train_one_epoch_keeps_hat_grad_semantics() -> None:
     for name in expected_hat_grad:
         assert torch.allclose(hat_grad[name], expected_hat_grad[name], atol=1e-6)
         assert hat_grad[name].device.type == "cpu"
+    assert train_loss > 0
     assert timing["train_time_sec"] > 0
+    assert metric_3 >= 0
+
+
+def test_train_one_epoch_returns_first_step_parameter_shift() -> None:
+    torch.manual_seed(11)
+    inputs = torch.randn(4, 3)
+    targets = torch.tensor([0, 1, 0, 1], dtype=torch.long)
+    dataset = IndexedTensorDataset(inputs, targets)
+    loader = DataLoader(dataset, batch_size=2, shuffle=False)
+
+    model = torch.nn.Linear(3, 2)
+    manual_model = torch.nn.Linear(3, 2)
+    manual_model.load_state_dict(model.state_dict())
+
+    config = ExperimentConfig(
+        batch_size=2,
+        epochs=1,
+        scheduler="none",
+        transform_mode="none",
+        lr=0.05,
+        momentum=0.9,
+        weight_decay=0.01,
+    )
+    optimizer = build_optimizer(model, config)
+    manual_optimizer = build_optimizer(manual_model, config)
+
+    _, _, _, metric_3 = train_one_epoch(
+        model=model,
+        optimizer=optimizer,
+        train_loader=loader,
+        device=torch.device("cpu"),
+        epoch_index=0,
+        total_epochs=1,
+        non_blocking_transfers=False,
+        profile_timing=False,
+    )
+
+    start_params = OrderedDict(
+        (name, parameter.detach().clone())
+        for name, parameter in manual_model.named_parameters()
+    )
+    batch_inputs, batch_targets, _ = next(iter(loader))
+    manual_optimizer.zero_grad(set_to_none=True)
+    loss = F.cross_entropy(manual_model(batch_inputs), batch_targets, reduction="mean")
+    loss.backward()
+    manual_optimizer.step()
+    end_params = OrderedDict(
+        (name, parameter.detach().clone())
+        for name, parameter in manual_model.named_parameters()
+    )
+    expected_metric_3 = sum(
+        ((end_params[name] - start_params[name]) ** 2).sum().item()
+        for name in start_params
+    )
+
+    assert metric_3 == pytest.approx(expected_metric_3)

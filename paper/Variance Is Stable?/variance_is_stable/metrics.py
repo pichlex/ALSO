@@ -148,7 +148,8 @@ def compute_epoch_start_metrics(
 
     metric_2 = 0.0
     for name, batch_sum in first_batch_sum.items():
-        diff = batch_sum - mean_grads[name] * float(first_batch_size)
+        batch_mean = batch_sum / float(first_batch_size)
+        diff = batch_mean - mean_grads[name]
         metric_2 += torch.sum(diff * diff).item()
     metric_2 = float(metric_2)
 
@@ -158,7 +159,8 @@ def compute_epoch_start_metrics(
         metric_4 = reference_var_sum / float(dataset_size)
         metric_5 = 0.0
         for name, batch_sum in first_batch_sum.items():
-            diff = batch_sum - reference_on_device[name] * float(first_batch_size)
+            batch_mean = batch_sum / float(first_batch_size)
+            diff = batch_mean - reference_on_device[name]
             metric_5 += torch.sum(diff * diff).item()
         metric_5 = float(metric_5)
 

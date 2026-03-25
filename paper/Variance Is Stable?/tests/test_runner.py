@@ -117,6 +117,7 @@ def test_runner_smoke_saves_expected_artifacts(tmp_path: Path, monkeypatch: pyte
         ]
     ).issubset(wide_df.columns)
     assert len(wide_df) == 2
+    assert wide_df.loc[0, "metric_3"] >= 0
     assert pd.isna(wide_df.loc[0, "metric_4"])
     assert pd.isna(wide_df.loc[0, "metric_5"])
     assert not pd.isna(wide_df.loc[1, "metric_4"])

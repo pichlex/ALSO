@@ -91,11 +91,13 @@ def train_one_epoch(
     total_epochs: int,
     non_blocking_transfers: bool,
     profile_timing: bool,
-) -> tuple[float, NamedTensorDict, dict[str, float]]:
+) -> tuple[float, NamedTensorDict, dict[str, float], float]:
     model.train()
     total_examples = 0
     total_steps = 0
     total_loss = torch.zeros((), device=device, dtype=torch.float32)
+    first_step_shift_sq = float("nan")
+    first_step_start_params = None
 
     grad_accumulator = zeros_like_named_tensors(
         OrderedDict((name, parameter.detach()) for name, parameter in model.named_parameters()),
@@ -112,6 +114,11 @@ def train_one_epoch(
         leave=False,
     )
     for inputs, targets, _ in progress:
+        if total_steps == 0:
+            first_step_start_params = OrderedDict(
+                (name, parameter.detach().clone())
+                for name, parameter in model.named_parameters()
+            )
         if profile_timing:
             transfer_start = time.perf_counter()
         inputs = inputs.to(device, non_blocking=non_blocking_transfers)
@@ -140,6 +147,15 @@ def train_one_epoch(
         if profile_timing:
             _synchronize_device(device)
             optimizer_step_time += time.perf_counter() - optimizer_step_start
+        if total_steps == 0 and first_step_start_params is not None:
+            first_step_end_params = OrderedDict(
+                (name, parameter.detach().clone())
+                for name, parameter in model.named_parameters()
+            )
+            first_step_shift_sq = named_tensor_distance_sq(
+                first_step_start_params,
+                first_step_end_params,
+            )
 
         batch_size = targets.numel()
         total_loss += loss.detach() * batch_size
@@ -162,7 +178,7 @@ def train_one_epoch(
             float(total_examples) / train_time if train_time > 0 else float("nan")
         ),
     }
-    return total_loss.div(max(1, total_examples)).item(), hat_grad, timing
+    return total_loss.div(max(1, total_examples)).item(), hat_grad, timing, first_step_shift_sq
 
 
 def build_epoch_record(
