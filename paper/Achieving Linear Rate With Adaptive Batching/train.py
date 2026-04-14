@@ -16,7 +16,12 @@ from adabatchgrad import (
 )
 from adaptive_batch import (
     AdaptiveBatchTracker,
+    DynamicFixedOrderBatchSampler,
+    clone_optional_tensors,
     compute_adamw_adaptive_update_signal,
+    compute_signal_reference_variance,
+    compute_step_theta_diff_norm_sq,
+    compute_variance_ratio_iter_batch_size,
     ensure_preconditioned_strategy_compat,
 )
 from data import get_device, set_seed, IndexedDataset
@@ -115,6 +120,23 @@ def _make_shuffled_loader(
     )
 
 
+def _make_dynamic_fixed_order_loader(
+    train_dataset: IndexedDataset,
+    batch_sampler: DynamicFixedOrderBatchSampler,
+    num_workers: int,
+    seed_worker,
+    generator: torch.Generator,
+) -> DataLoader:
+    return DataLoader(
+        train_dataset,
+        batch_sampler=batch_sampler,
+        num_workers=num_workers,
+        worker_init_fn=seed_worker,
+        generator=generator,
+        pin_memory=True,
+    )
+
+
 def _set_optimizer_lr(optimizer: torch.optim.Optimizer, lr: float) -> None:
     for group in optimizer.param_groups:
         group["lr"] = lr
@@ -151,6 +173,20 @@ def _compute_seesaw_cut_epochs(alpha: float, lr0: float, lr_schedule: List[float
 def _clone_model_params(params: List[torch.Tensor]) -> List[torch.Tensor]:
     # Snapshot parameters to CPU to measure cross-epoch movement without holding extra GPU memory.
     return [p.detach().clone().cpu() for p in params]
+
+
+def _get_adaptive_signal(
+    adaptive_strategy: str,
+    optimizer_name: str,
+    optimizer: torch.optim.Optimizer,
+    param_list: List[torch.Tensor],
+) -> List[Optional[torch.Tensor]]:
+    uses_preconditioned_signal = adaptive_strategy == "variance_ratio_preconditioned" or (
+        adaptive_strategy == "variance_ratio_iter" and optimizer_name == "adamw"
+    )
+    if uses_preconditioned_signal:
+        return compute_adamw_adaptive_update_signal(optimizer, param_list)
+    return [p.grad for p in param_list]
 
 
 def train_model(
@@ -212,7 +248,13 @@ def train_model(
     train_dataset: IndexedDataset = train_loader.dataset
     use_adabatchgrad_strategy = adaptive_enabled and adaptive_strategy == "adabatchgrad"
     use_seesaw_strategy = adaptive_enabled and adaptive_strategy == "seesaw"
-    use_variance_strategy = adaptive_enabled and adaptive_strategy not in ("adabatchgrad", "seesaw")
+    use_variance_iter_strategy = adaptive_enabled and adaptive_strategy == "variance_ratio_iter"
+    use_epoch_variance_strategy = adaptive_enabled and adaptive_strategy not in (
+        "adabatchgrad",
+        "seesaw",
+        "variance_ratio_iter",
+    )
+    use_variance_strategy = use_variance_iter_strategy or use_epoch_variance_strategy
     if use_seesaw_strategy:
         scheduler = None
 
@@ -235,6 +277,17 @@ def train_model(
     fixed_indices = (
         torch.randperm(len(train_dataset), generator=g).tolist() if use_variance_strategy else []
     )
+    iter_batch_sampler: Optional[DynamicFixedOrderBatchSampler] = None
+    iter_train_loader: Optional[DataLoader] = None
+    if use_variance_iter_strategy:
+        iter_batch_sampler = DynamicFixedOrderBatchSampler(fixed_indices, batch_size_init)
+        iter_train_loader = _make_dynamic_fixed_order_loader(
+            train_dataset,
+            iter_batch_sampler,
+            int(config.get("num_workers", 2)),
+            seed_worker,
+            g,
+        )
 
     optimizer_name = str(config.get("optimizer", "sgd")).lower()
     seesaw_alpha = float(config.get("seesaw_alpha", 2.0))
@@ -250,9 +303,10 @@ def train_model(
     var_history: List[float] = []
     prev_hat_grad: Optional[List[Optional[torch.Tensor]]] = None
     prev_batch_size: Optional[float] = batch_size_init
-    prev_ratio_ema: Optional[float] = None
     prev_params: Optional[List[torch.Tensor]] = None
     prev_prev_params: Optional[List[torch.Tensor]] = None
+    last_iter_signal: Optional[List[Optional[torch.Tensor]]] = None
+    last_iter_theta_diff_norm_sq: Optional[float] = None
 
     best_val_f1 = -1.0
     best_val_acc = -1.0
@@ -300,7 +354,50 @@ def train_model(
                 mlflow.log_metric("seesaw/batch_size", batch_size_epoch, step=epoch)
                 if current_lr is not None:
                     mlflow.log_metric("seesaw/lr", current_lr, step=epoch)
-        elif use_variance_strategy and epoch >= epoch_start_ab:
+        elif use_variance_iter_strategy:
+            batch_size_epoch = batch_size_init
+            numerator_iter = None
+            theta_diff_norm_sq_iter = None
+            ratio_raw_iter = None
+            if (
+                epoch >= epoch_start_ab
+                and prev_hat_grad is not None
+                and last_iter_signal is not None
+                and last_iter_theta_diff_norm_sq is not None
+            ):
+                numerator_iter = compute_signal_reference_variance(
+                    last_iter_signal, prev_hat_grad
+                )
+                theta_diff_norm_sq_iter = last_iter_theta_diff_norm_sq
+                batch_size_epoch, ratio_raw_iter, _ = compute_variance_ratio_iter_batch_size(
+                    numerator_iter,
+                    theta_diff_norm_sq_iter,
+                    batch_size_multiplier,
+                    batch_size_min,
+                    batch_size_max,
+                )
+            batch_size_epoch = max(1, min(batch_size_epoch, len(train_dataset)))
+            prev_batch_size = batch_size_epoch
+            if iter_batch_sampler is not None:
+                iter_batch_sampler.set_batch_size(batch_size_epoch)
+            current_loader = iter_train_loader
+            if log_to_mlflow and epoch >= epoch_start_ab:
+                mlflow.log_metric("adaptive_batch/batch_size_epoch_start", batch_size_epoch, step=epoch)
+                if numerator_iter is not None:
+                    mlflow.log_metric("adaptive_batch/var_iter_start", numerator_iter, step=epoch)
+                if theta_diff_norm_sq_iter is not None:
+                    mlflow.log_metric(
+                        "adaptive_batch/theta_diff_norm_sq_iter_start",
+                        theta_diff_norm_sq_iter,
+                        step=epoch,
+                    )
+                if ratio_raw_iter is not None:
+                    mlflow.log_metric(
+                        "adaptive_batch/ratio_raw_iter_start",
+                        ratio_raw_iter,
+                        step=epoch,
+                    )
+        elif use_epoch_variance_strategy and epoch >= epoch_start_ab:
             var_used = var_history[epoch - 1] if (epoch - 1) < len(var_history) else None
             theta_diff_norm_sq = None
             if prev_params is not None and prev_prev_params is not None:
@@ -450,6 +547,97 @@ def train_model(
                 mlflow.log_metric(
                     "adaptive_batch/batch_size_epoch", epoch_batch_size, step=epoch
                 )
+        elif use_variance_iter_strategy:
+            pbar = tqdm(desc=f"Epoch {epoch + 1}/{epochs}", leave=False)
+            batch_iter = iter(current_loader)
+            while True:
+                try:
+                    (X, y), _ = next(batch_iter)
+                except StopIteration:
+                    break
+
+                X = X.to(device)
+                y = y.to(device)
+                batch_size_used = int(y.shape[0])
+                params_before_step = _clone_model_params(param_list)
+
+                optimizer.zero_grad()
+                logits = model(X)
+                losses = loss_fn(logits, y)
+                loss = losses.mean()
+                loss.backward()
+                optimizer.step()
+
+                total_loss += loss.item()
+                steps += 1
+
+                signal_now = _get_adaptive_signal(
+                    adaptive_strategy,
+                    optimizer_name,
+                    optimizer,
+                    param_list,
+                )
+                if tracker is not None:
+                    tracker.update(signal_now)
+
+                theta_diff_norm_sq = compute_step_theta_diff_norm_sq(
+                    params_before_step,
+                    param_list,
+                )
+                last_iter_signal = clone_optional_tensors(signal_now)
+                last_iter_theta_diff_norm_sq = theta_diff_norm_sq
+
+                next_batch_size = batch_size_used
+                numerator_iter = None
+                ratio_raw_iter = None
+                if epoch >= epoch_start_ab and prev_hat_grad is not None:
+                    numerator_iter = compute_signal_reference_variance(
+                        signal_now, prev_hat_grad
+                    )
+                    next_batch_size, ratio_raw_iter, _ = compute_variance_ratio_iter_batch_size(
+                        numerator_iter,
+                        theta_diff_norm_sq,
+                        batch_size_multiplier,
+                        batch_size_min,
+                        batch_size_max,
+                    )
+                    next_batch_size = max(1, min(next_batch_size, len(train_dataset)))
+
+                prev_batch_size = next_batch_size
+                if iter_batch_sampler is not None:
+                    iter_batch_sampler.update_batch_size(next_batch_size)
+
+                if log_to_mlflow:
+                    mlflow.log_metric("adaptive_batch/batch_size", batch_size_used, step=train_step)
+                    mlflow.log_metric(
+                        "adaptive_batch/batch_size_next", next_batch_size, step=train_step
+                    )
+                    mlflow.log_metric(
+                        "adaptive_batch/theta_diff_norm_sq_iter",
+                        theta_diff_norm_sq,
+                        step=train_step,
+                    )
+                    if numerator_iter is not None:
+                        mlflow.log_metric("adaptive_batch/var_iter", numerator_iter, step=train_step)
+                    if ratio_raw_iter is not None:
+                        mlflow.log_metric(
+                            "adaptive_batch/ratio_raw_iter", ratio_raw_iter, step=train_step
+                        )
+
+                train_step += 1
+                pbar.update(1)
+            pbar.close()
+            if tracker is not None:
+                hat_grad, hat_norm_sq, var_sum = tracker.finalize()
+                prev_hat_grad = hat_grad
+                hat_norm_history.append(hat_norm_sq)
+                var_history.append(var_sum)
+                if log_to_mlflow:
+                    mlflow.log_metric("adaptive_batch/F_hat_norm_sq", hat_norm_sq, step=epoch)
+                    mlflow.log_metric("adaptive_batch/var_sum", var_sum, step=epoch)
+                    if hat_norm_sq > 0:
+                        ratio_now = var_sum / hat_norm_sq
+                        mlflow.log_metric("adaptive_batch/ratio_raw", ratio_now, step=epoch)
         else:
             batch_iter = tqdm(
                 current_loader,
@@ -471,12 +659,12 @@ def train_model(
                 train_step += 1
 
                 if tracker is not None:
-                    if adaptive_strategy == "variance_ratio_preconditioned":
-                        signal_now = compute_adamw_adaptive_update_signal(
-                            optimizer, param_list
-                        )
-                    else:
-                        signal_now = [p.grad for p in param_list]
+                    signal_now = _get_adaptive_signal(
+                        adaptive_strategy,
+                        optimizer_name,
+                        optimizer,
+                        param_list,
+                    )
                     tracker.update(signal_now)
 
             if tracker is not None:

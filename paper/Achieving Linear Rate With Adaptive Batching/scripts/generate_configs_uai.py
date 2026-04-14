@@ -65,7 +65,14 @@ def parse_args() -> argparse.Namespace:
         help="Multiplier kept for completeness; Seesaw ignores it in training.",
     )
 
-    parser.add_argument("--aboba-strategy", default="variance_ratio_preconditioned")
+    parser.add_argument(
+        "--aboba-strategy",
+        default="variance_ratio_preconditioned",
+        help=(
+            "ABOBA strategy to write into configs "
+            "(e.g. variance_ratio, variance_ratio_preconditioned, variance_ratio_iter)."
+        ),
+    )
     parser.add_argument(
         "--aboba-batch-multipliers",
         type=float,

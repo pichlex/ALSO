@@ -1,5 +1,5 @@
 import math
-from typing import List, Optional, Tuple
+from typing import Iterable, List, Optional, Sequence, Tuple
 
 import torch
 
@@ -26,9 +26,7 @@ class AdaptiveBatchTracker:
 
     def _accumulate_grads(self, grads: List[Optional[torch.Tensor]]) -> None:
         if self.grad_sums is None:
-            self.grad_sums = [
-                g.detach().clone() if g is not None else None for g in grads
-            ]
+            self.grad_sums = clone_optional_tensors(grads)
             return
         for idx, g in enumerate(grads):
             if g is None:
@@ -68,6 +66,94 @@ class AdaptiveBatchTracker:
             hat_grad_norm_sq += torch.sum(g_hat * g_hat).item()
         hat_norm_sq = hat_grad_norm_sq
         return hat_grad, hat_norm_sq, self.var_sum
+
+
+def clone_optional_tensors(
+    tensors: Sequence[Optional[torch.Tensor]],
+) -> List[Optional[torch.Tensor]]:
+    return [tensor.detach().clone() if tensor is not None else None for tensor in tensors]
+
+
+def compute_signal_reference_variance(
+    signal: Sequence[Optional[torch.Tensor]],
+    hat_ref_grad: Optional[Sequence[Optional[torch.Tensor]]],
+) -> float:
+    if hat_ref_grad is None:
+        return 0.0
+
+    variance = 0.0
+    for current, reference in zip(signal, hat_ref_grad):
+        if current is None or reference is None:
+            continue
+        diff = current.detach() - reference
+        variance += torch.sum(diff * diff).item()
+    return variance
+
+
+def compute_step_theta_diff_norm_sq(
+    previous_params: Sequence[torch.Tensor],
+    current_params: Sequence[torch.Tensor],
+) -> float:
+    theta_diff_norm_sq = 0.0
+    for previous, current in zip(previous_params, current_params):
+        diff = current.detach().cpu() - previous
+        theta_diff_norm_sq += torch.sum(diff * diff).item()
+    return theta_diff_norm_sq
+
+
+def compute_variance_ratio_iter_batch_size(
+    numerator: float,
+    denominator: float,
+    batch_size_multiplier: float,
+    batch_size_min: int,
+    batch_size_max: int,
+) -> Tuple[int, Optional[float], Optional[float]]:
+    if (
+        not math.isfinite(numerator)
+        or not math.isfinite(denominator)
+        or numerator < 0.0
+        or denominator <= 0.0
+    ):
+        return int(batch_size_max), None, None
+
+    ratio_raw = math.sqrt(numerator / denominator)
+    raw_batch = batch_size_multiplier * ratio_raw
+    if not math.isfinite(raw_batch):
+        return int(batch_size_max), ratio_raw, None
+
+    batch_size = int(math.floor(raw_batch))
+    batch_size = max(int(batch_size_min), min(int(batch_size_max), batch_size))
+    return batch_size, ratio_raw, raw_batch
+
+
+class DynamicFixedOrderBatchSampler(torch.utils.data.Sampler[List[int]]):
+    """
+    Fixed-order sampler with per-step batch-size updates for ABOBA variants.
+
+    Updates apply to the next batch in the same epoch, and incomplete tails are
+    dropped to match the existing BatchSampler(drop_last=True) behaviour.
+    """
+
+    def __init__(self, fixed_indices: Iterable[int], initial_batch_size: int):
+        self.indices = [int(idx) for idx in fixed_indices]
+        self.batch_size = max(1, int(initial_batch_size))
+        self.id = 0
+
+    def __iter__(self):
+        self.id = 0
+        while self.id + self.batch_size <= len(self.indices):
+            start_id = self.id
+            self.id += self.batch_size
+            yield self.indices[start_id : self.id]
+
+    def __len__(self) -> int:
+        return len(self.indices) // max(1, int(self.batch_size))
+
+    def set_batch_size(self, new_batch_size: int) -> None:
+        self.batch_size = max(1, int(new_batch_size))
+
+    def update_batch_size(self, new_batch_size: int) -> None:
+        self.set_batch_size(new_batch_size)
 
 
 def ensure_preconditioned_strategy_compat(
@@ -164,4 +250,3 @@ def compute_adamw_adaptive_update_signal(
             signal[idx] = u_t
 
     return signal
-
