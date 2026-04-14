@@ -42,6 +42,44 @@ class FixedOrderSampler(torch.utils.data.Sampler[int]):
         return len(self.indices)
 
 
+SMALL_IMAGE_DATASETS = {"cifar10", "cifar100", "svhn"}
+SUPPORTED_RESNET_MODELS = {"resnet18", "resnet34"}
+
+
+def _get_num_classes(dataset_name: str) -> int:
+    return 100 if dataset_name == "cifar100" else 10
+
+
+def _uses_small_image_resnet(dataset_name: str, model_name: str) -> bool:
+    return dataset_name in SMALL_IMAGE_DATASETS and model_name in SUPPORTED_RESNET_MODELS
+
+
+def _build_resnet_model(dataset_name: str, model_name: str) -> torch.nn.Module:
+    use_small_image_stem = _uses_small_image_resnet(dataset_name, model_name)
+    if model_name == "resnet18":
+        weights = None if use_small_image_stem else torchvision.models.ResNet18_Weights.IMAGENET1K_V1
+        model = torchvision.models.resnet18(weights=weights)
+    elif model_name == "resnet34":
+        weights = None if use_small_image_stem else torchvision.models.ResNet34_Weights.IMAGENET1K_V1
+        model = torchvision.models.resnet34(weights=weights)
+    else:
+        raise ValueError(f"Unsupported model: {model_name}")
+
+    if use_small_image_stem:
+        model.conv1 = torch.nn.Conv2d(
+            in_channels=3,
+            out_channels=64,
+            kernel_size=3,
+            stride=1,
+            padding=1,
+            bias=False,
+        )
+        model.maxpool = torch.nn.Identity()
+
+    model.fc = torch.nn.Linear(model.fc.in_features, _get_num_classes(dataset_name))
+    return model
+
+
 def _get_param_list(optimizer: torch.optim.Optimizer):
     return [p for group in optimizer.param_groups for p in group["params"]]
 
@@ -201,15 +239,9 @@ def train_model(
     if preferred_device and preferred_device.startswith("cuda") and not torch.cuda.is_available():
         # Fall back gracefully if CUDA requested but unavailable.
         device = "cpu"
+    dataset_name = config.get("dataset", "cifar10").lower()
     model_name = config.get("model", "resnet18").lower()
-    num_classes = 100 if config.get("dataset", "cifar10").lower() == "cifar100" else 10
-    if model_name == "resnet18":
-        model = torchvision.models.resnet18(weights=torchvision.models.ResNet18_Weights.IMAGENET1K_V1)
-    elif model_name == "resnet34":
-        model = torchvision.models.resnet34(weights=torchvision.models.ResNet34_Weights.IMAGENET1K_V1)
-    else:
-        raise ValueError(f"Unsupported model: {model_name}")
-    model.fc = torch.nn.Linear(model.fc.in_features, num_classes)
+    model = _build_resnet_model(dataset_name, model_name)
     model.to(device)
 
     loss_fn = torch.nn.CrossEntropyLoss(reduction="none")
