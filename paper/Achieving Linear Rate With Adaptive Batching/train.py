@@ -19,6 +19,7 @@ from adaptive_batch import (
     DynamicFixedOrderBatchSampler,
     clone_optional_tensors,
     compute_adamw_adaptive_update_signal,
+    compute_optimizer_step_norm_sq,
     compute_signal_reference_variance,
     compute_step_theta_diff_norm_sq,
     compute_variance_ratio_iter_batch_size,
@@ -130,6 +131,10 @@ def _make_adaptive_loader(
 ) -> DataLoader:
     sampler = FixedOrderSampler(fixed_indices)
     batch_sampler = BatchSampler(sampler, batch_size=batch_size, drop_last=True)
+    loader_kwargs = {}
+    if num_workers > 0:
+        loader_kwargs["persistent_workers"] = True
+        loader_kwargs["prefetch_factor"] = 2
     return DataLoader(
         train_dataset,
         batch_sampler=batch_sampler,
@@ -137,6 +142,7 @@ def _make_adaptive_loader(
         worker_init_fn=seed_worker,
         generator=generator,
         pin_memory=True,
+        **loader_kwargs,
     )
 
 
@@ -147,6 +153,10 @@ def _make_shuffled_loader(
     seed_worker,
     generator: torch.Generator,
 ) -> DataLoader:
+    loader_kwargs = {}
+    if num_workers > 0:
+        loader_kwargs["persistent_workers"] = True
+        loader_kwargs["prefetch_factor"] = 2
     return DataLoader(
         train_dataset,
         batch_size=batch_size,
@@ -155,6 +165,7 @@ def _make_shuffled_loader(
         worker_init_fn=seed_worker,
         generator=generator,
         pin_memory=True,
+        **loader_kwargs,
     )
 
 
@@ -165,6 +176,10 @@ def _make_dynamic_fixed_order_loader(
     seed_worker,
     generator: torch.Generator,
 ) -> DataLoader:
+    loader_kwargs = {}
+    if num_workers > 0:
+        loader_kwargs["persistent_workers"] = True
+        loader_kwargs["prefetch_factor"] = 2
     return DataLoader(
         train_dataset,
         batch_sampler=batch_sampler,
@@ -172,6 +187,7 @@ def _make_dynamic_fixed_order_loader(
         worker_init_fn=seed_worker,
         generator=generator,
         pin_memory=True,
+        **loader_kwargs,
     )
 
 
@@ -591,13 +607,16 @@ def train_model(
                 X = X.to(device)
                 y = y.to(device)
                 batch_size_used = int(y.shape[0])
-                params_before_step = _clone_model_params(param_list)
-
                 optimizer.zero_grad()
                 logits = model(X)
                 losses = loss_fn(logits, y)
                 loss = losses.mean()
                 loss.backward()
+                theta_diff_norm_sq = compute_optimizer_step_norm_sq(
+                    optimizer,
+                    optimizer_name,
+                    param_list,
+                )
                 optimizer.step()
 
                 total_loss += loss.item()
@@ -612,10 +631,6 @@ def train_model(
                 if tracker is not None:
                     tracker.update(signal_now)
 
-                theta_diff_norm_sq = compute_step_theta_diff_norm_sq(
-                    params_before_step,
-                    param_list,
-                )
                 last_iter_signal = clone_optional_tensors(signal_now)
                 last_iter_theta_diff_norm_sq = theta_diff_norm_sq
 

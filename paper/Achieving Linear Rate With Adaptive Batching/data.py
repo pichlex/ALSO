@@ -131,6 +131,10 @@ def get_dataloaders(config: Dict[str, Any]):
     train_ds = IndexedDataset(train_subset, transform=transform_train)
     val_ds = IndexedDataset(val_subset, transform=transform_test)
     test_ds = IndexedDataset(test_base, transform=transform_test)
+    loader_kwargs = {}
+    if num_workers > 0:
+        loader_kwargs["persistent_workers"] = True
+        loader_kwargs["prefetch_factor"] = 2
 
     train_loader = DataLoader(
         train_ds,
@@ -140,6 +144,7 @@ def get_dataloaders(config: Dict[str, Any]):
         generator=g,
         num_workers=num_workers,
         pin_memory=True,
+        **loader_kwargs,
     )
     val_loader = DataLoader(
         val_ds,
@@ -149,6 +154,7 @@ def get_dataloaders(config: Dict[str, Any]):
         generator=g,
         num_workers=num_workers,
         pin_memory=True,
+        **loader_kwargs,
     )
     test_loader = DataLoader(
         test_ds,
@@ -158,6 +164,7 @@ def get_dataloaders(config: Dict[str, Any]):
         generator=g,
         num_workers=num_workers,
         pin_memory=True,
+        **loader_kwargs,
     )
 
     return train_loader, val_loader, test_loader

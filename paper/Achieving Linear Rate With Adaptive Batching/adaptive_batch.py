@@ -101,6 +101,125 @@ def compute_step_theta_diff_norm_sq(
     return theta_diff_norm_sq
 
 
+def _compute_sgd_step_norm_sq(optimizer: torch.optim.SGD) -> float:
+    step_norm_sq = 0.0
+    for group in optimizer.param_groups:
+        lr = float(group.get("lr", 0.0))
+        momentum = float(group.get("momentum", 0.0))
+        dampening = float(group.get("dampening", 0.0))
+        weight_decay = float(group.get("weight_decay", 0.0))
+        nesterov = bool(group.get("nesterov", False))
+        if lr == 0.0:
+            continue
+
+        for p in group["params"]:
+            grad = p.grad
+            if grad is None:
+                continue
+            grad_to_use = grad.detach()
+            if weight_decay != 0.0:
+                grad_to_use = grad_to_use.add(p.detach(), alpha=weight_decay)
+
+            if momentum != 0.0:
+                state = optimizer.state.get(p, {})
+                momentum_buffer = state.get("momentum_buffer")
+                if momentum_buffer is None:
+                    buf = grad_to_use.clone()
+                else:
+                    buf = momentum_buffer.detach().mul(momentum).add(
+                        grad_to_use, alpha=1.0 - dampening
+                    )
+                if nesterov:
+                    grad_to_use = grad_to_use.add(buf, alpha=momentum)
+                else:
+                    grad_to_use = buf
+
+            step_norm_sq += (lr * lr) * torch.sum(grad_to_use * grad_to_use).item()
+    return step_norm_sq
+
+
+def _compute_adamw_step_norm_sq(optimizer: torch.optim.AdamW) -> float:
+    step_norm_sq = 0.0
+    for group in optimizer.param_groups:
+        lr = float(group.get("lr", 0.0))
+        beta1, beta2 = group.get("betas", (0.9, 0.999))
+        beta1 = float(beta1)
+        beta2 = float(beta2)
+        eps = float(group.get("eps", 1e-8))
+        weight_decay = float(group.get("weight_decay", 0.0))
+        amsgrad = bool(group.get("amsgrad", False))
+        if amsgrad:
+            raise ValueError(
+                "adaptive_batch_strategy='variance_ratio_iter' does not support AdamW with amsgrad=True."
+            )
+        if lr == 0.0:
+            continue
+
+        for p in group["params"]:
+            grad = p.grad
+            if grad is None:
+                continue
+            state = optimizer.state.get(p, {})
+            exp_avg = state.get("exp_avg")
+            exp_avg_sq = state.get("exp_avg_sq")
+            step_t = state.get("step", 0)
+
+            if exp_avg is None:
+                exp_avg = torch.zeros_like(p, memory_format=torch.preserve_format)
+            else:
+                exp_avg = exp_avg.detach()
+            if exp_avg_sq is None:
+                exp_avg_sq = torch.zeros_like(p, memory_format=torch.preserve_format)
+            else:
+                exp_avg_sq = exp_avg_sq.detach()
+
+            if torch.is_tensor(step_t):
+                step = float(step_t.detach().item())
+            else:
+                step = float(step_t)
+            next_step = step + 1.0
+
+            grad_to_use = grad.detach()
+            exp_avg_new = exp_avg.mul(beta1).add(grad_to_use, alpha=1.0 - beta1)
+            exp_avg_sq_new = exp_avg_sq.mul(beta2).addcmul(
+                grad_to_use, grad_to_use, value=1.0 - beta2
+            )
+
+            bias_correction1 = 1.0 - beta1**next_step
+            bias_correction2 = 1.0 - beta2**next_step
+            if bias_correction1 <= 0.0 or bias_correction2 <= 0.0:
+                continue
+
+            step_size = lr / bias_correction1
+            denom = exp_avg_sq_new.sqrt().div(math.sqrt(bias_correction2)).add_(eps)
+            adaptive_update = exp_avg_new / denom
+            total_update = adaptive_update.mul(-step_size)
+            if weight_decay != 0.0:
+                total_update = total_update.add(p.detach(), alpha=-lr * weight_decay)
+            step_norm_sq += torch.sum(total_update * total_update).item()
+    return step_norm_sq
+
+
+def compute_optimizer_step_norm_sq(
+    optimizer: torch.optim.Optimizer,
+    optimizer_name: str,
+    optimizer_params: Sequence[torch.Tensor],
+) -> float:
+    del optimizer_params
+    optimizer_name = optimizer_name.lower()
+    if optimizer_name == "sgd":
+        if not isinstance(optimizer, torch.optim.SGD):
+            raise ValueError("optimizer_name='sgd' requires torch.optim.SGD.")
+        return _compute_sgd_step_norm_sq(optimizer)
+    if optimizer_name == "adamw":
+        if not isinstance(optimizer, torch.optim.AdamW):
+            raise ValueError("optimizer_name='adamw' requires torch.optim.AdamW.")
+        return _compute_adamw_step_norm_sq(optimizer)
+    raise ValueError(
+        "adaptive_batch_strategy='variance_ratio_iter' only supports exact step norms for optimizer='sgd' or 'adamw'."
+    )
+
+
 def compute_variance_ratio_iter_batch_size(
     numerator: float,
     denominator: float,
