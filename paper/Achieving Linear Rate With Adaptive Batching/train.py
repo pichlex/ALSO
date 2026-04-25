@@ -121,6 +121,11 @@ def _evaluate(
     return total_loss / max(1, len(dataloader)), metrics
 
 
+def _log_train_loss_iter(log_to_mlflow: bool, loss_value: float, train_step: int) -> None:
+    if log_to_mlflow:
+        mlflow.log_metric("train_loss_iter", loss_value, step=train_step)
+
+
 def _make_adaptive_loader(
     train_dataset: IndexedDataset,
     batch_size: int,
@@ -581,8 +586,10 @@ def train_model(
                 loss.backward()
                 optimizer.step()
 
-                total_loss += loss.item()
+                loss_value = loss.item()
+                total_loss += loss_value
                 steps += 1
+                _log_train_loss_iter(log_to_mlflow, loss_value, train_step)
                 train_step += 1
                 pbar.update(1)
             pbar.close()
@@ -619,7 +626,8 @@ def train_model(
                 )
                 optimizer.step()
 
-                total_loss += loss.item()
+                loss_value = loss.item()
+                total_loss += loss_value
                 steps += 1
 
                 signal_now = _get_adaptive_signal(
@@ -671,6 +679,7 @@ def train_model(
                             "adaptive_batch/ratio_raw_iter", ratio_raw_iter, step=train_step
                         )
 
+                _log_train_loss_iter(log_to_mlflow, loss_value, train_step)
                 train_step += 1
                 pbar.update(1)
             pbar.close()
@@ -701,8 +710,10 @@ def train_model(
                 loss.backward()
                 optimizer.step()
 
-                total_loss += loss.item()
+                loss_value = loss.item()
+                total_loss += loss_value
                 steps += 1
+                _log_train_loss_iter(log_to_mlflow, loss_value, train_step)
                 train_step += 1
 
                 if tracker is not None:

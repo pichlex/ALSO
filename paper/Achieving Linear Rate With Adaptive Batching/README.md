@@ -13,8 +13,9 @@ Experiments on CIFAR10 and SVHN with two modes:
 - `variance_ratio_iter`: ABOBA step-level variant. `hat_ref_grad` is still computed as the epoch mean signal, but the next batch is chosen from the last available step via `batch_{t+1} = floor(batch_size_multiplier * sqrt(var_t / ||theta_t - theta_{t-1}||^2))`, where `var_t = ||s_t - hat_ref_grad_epoch||^2`; invalid or infinite ratios clamp to `adaptive_batch_max`, the first adaptive batch of a new epoch reuses the previous epoch's last-step statistics instead of resetting to the config batch size, and the step denominator is computed from the exact optimizer update norm without CPU parameter snapshots.
 - `cifar10`, `cifar100`, and `svhn` with `resnet18`/`resnet34` use a CIFAR-style ResNet stem automatically: `conv1` becomes `3x3, stride=1, padding=1`, `maxpool` is removed, and these runs use `weights=None` instead of ImageNet pretrained weights.
 - CIFAR10/SVHN, 10 classes, no imbalance or class aggregation. Augmentation optional via `augment` flag (default on).
-- MLflow logging (default experiment `Achieving Linear Rate`): batch size, numerator/denominator, train/val/test loss, precision/recall/f1/accuracy.
+- MLflow logging (default experiment `Achieving Linear Rate`): batch size, numerator/denominator, epoch-level train/val/test loss, precision/recall/f1/accuracy, plus step-level `train_loss_iter`.
 - Hyperparameter tuning (fixed batch only) with Optuna: 5 epochs, 100 trials by default; tuned params saved under `tuned_params/{dataset}/{tune_name}.json` and can be reused.
+- `scripts/generate_configs_nips.py` generates the NIPS SGD CIFAR10 config tree under `configs-nips/sgd/cifar10` and keeps `configs-nips/test_config.json` as the manual reference profile.
 
 ## Usage Example
 ```bash
