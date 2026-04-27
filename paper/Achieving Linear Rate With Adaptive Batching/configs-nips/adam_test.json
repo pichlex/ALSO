@@ -19,7 +19,7 @@
   "adaptive_batch_max": 4096,
   "batch_size_multiplier": 0.03,
   "epoch_start_ab": 1,
-  "mlflow_experiment": "ADAMW ABOBITER TEST 5e-4",
+  "mlflow_experiment": "ADAMW ABOBITER TEST 5e-4 2",
   "report_to": "mlflow",
   "tune_runs": 100,
   "n_epoches_tune": 10,
