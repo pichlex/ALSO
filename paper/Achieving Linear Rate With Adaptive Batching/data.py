@@ -38,6 +38,26 @@ class PerImageStandardize:
         return (image - mean) / torch.clamp(std, min=min_std)
 
 
+class RandomBrightness:
+    def __init__(self, max_delta: float):
+        self.max_delta = float(max_delta)
+
+    def __call__(self, image: torch.Tensor) -> torch.Tensor:
+        delta = torch.empty(1).uniform_(-self.max_delta, self.max_delta).item()
+        return image + delta
+
+
+class RandomContrast:
+    def __init__(self, lower: float, upper: float):
+        self.lower = float(lower)
+        self.upper = float(upper)
+
+    def __call__(self, image: torch.Tensor) -> torch.Tensor:
+        factor = torch.empty(1).uniform_(self.lower, self.upper).item()
+        channel_mean = image.mean(dim=(-2, -1), keepdim=True)
+        return (image - channel_mean) * factor + channel_mean
+
+
 def set_seed(seed: int) -> Tuple[torch.Generator, Any]:
     """Seed python, numpy, torch; return torch.Generator and worker_init_fn."""
 
@@ -54,7 +74,41 @@ def set_seed(seed: int) -> Tuple[torch.Generator, Any]:
     return g, seed_worker
 
 
-def _build_transforms(dataset: str, augment: bool, preprocessing: str = "default"):
+def _build_cabs_reference_transforms():
+    transform_train = transforms.Compose(
+        [
+            transforms.RandomCrop(24),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            transforms.Lambda(lambda image: image * 255.0),
+            RandomBrightness(max_delta=63.0),
+            RandomContrast(lower=0.2, upper=1.8),
+            PerImageStandardize(),
+        ]
+    )
+    transform_test = transforms.Compose(
+        [
+            transforms.CenterCrop(24),
+            transforms.ToTensor(),
+            transforms.Lambda(lambda image: image * 255.0),
+            PerImageStandardize(),
+        ]
+    )
+    return transform_train, transform_test
+
+
+def _build_transforms(
+    dataset: str,
+    augment: bool,
+    preprocessing: str = "default",
+    model: str = "resnet18",
+):
+    model = str(model or "").lower()
+    if model == "cabs_2conv_3dense":
+        if dataset != "cifar10":
+            raise ValueError("model='cabs_2conv_3dense' is only supported for CIFAR-10.")
+        return _build_cabs_reference_transforms()
+
     preprocessing = str(preprocessing or "default").lower()
     if preprocessing == "cabs":
         if dataset != "cifar10":
@@ -140,7 +194,13 @@ def get_dataloaders(config: Dict[str, Any]):
 
     g, seed_worker = set_seed(seed)
     preprocessing = str(config.get("preprocessing", "default")).lower()
-    transform_train, transform_test = _build_transforms(dataset, augment, preprocessing)
+    model = str(config.get("model", "")).lower()
+    transform_train, transform_test = _build_transforms(
+        dataset,
+        augment,
+        preprocessing,
+        model,
+    )
     train_base, test_base, targets = _load_dataset(dataset, transform=None)
 
     # train/val split with stratification on original labels

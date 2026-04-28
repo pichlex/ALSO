@@ -19,7 +19,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--max-train-steps", type=int, default=8000)
     parser.add_argument("--lr", type=float, default=0.1)
-    parser.add_argument("--eta-min", type=float, default=0.0)
+    parser.add_argument("--eta-min", type=float, default=0.001)
     parser.add_argument("--adaptive-min", type=int, default=16)
     parser.add_argument("--adaptive-max", type=int, default=2048)
     parser.add_argument("--seesaw-alpha", type=float, default=2.0)
@@ -35,8 +35,8 @@ def _base_config(args: argparse.Namespace) -> Dict:
         "dataset": "cifar10",
         "model": "cabs_2conv_3dense",
         "seed": args.seed,
-        "augment": False,
-        "preprocessing": "cabs",
+        "augment": True,
+        "preprocessing": "cabs_reference",
         "batch_size": args.batch_size,
         "epochs": args.max_train_steps,
         "max_train_steps": args.max_train_steps,
@@ -77,6 +77,7 @@ def _variant_config(base: Dict, variant: str, args: argparse.Namespace) -> Dict:
         cfg["cabs_running_avg_constant"] = 0.95
         cfg["cabs_eps"] = 0.0
         cfg["cabs_c"] = 1.0
+        cfg["cabs_batch_lr"] = args.lr
         cfg["batch_size_multiplier"] = 1.0
     elif variant == "variance_ratio_iter":
         cfg["adaptive_batch"] = True

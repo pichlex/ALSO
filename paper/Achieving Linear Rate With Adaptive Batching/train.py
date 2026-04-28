@@ -164,9 +164,17 @@ def _evaluate(
     return total_loss / max(1, len(dataloader)), metrics
 
 
-def _log_train_loss_iter(log_to_mlflow: bool, loss_value: float, train_step: int) -> None:
+def _log_train_loss_iter(log_to_mlflow: bool, loss_value: float, step: int) -> None:
     if log_to_mlflow:
-        mlflow.log_metric("train_loss_iter", loss_value, step=train_step)
+        mlflow.log_metric("train_loss_iter", loss_value, step=step)
+
+
+def _metric_step(
+    use_examples_accessed: bool,
+    examples_accessed: int,
+    fallback_step: int,
+) -> int:
+    return examples_accessed if use_examples_accessed else fallback_step
 
 
 def _make_adaptive_loader(
@@ -313,6 +321,7 @@ def train_model(
         device = "cpu"
     dataset_name = config.get("dataset", "cifar10").lower()
     model_name = config.get("model", "resnet18").lower()
+    use_examples_accessed_steps = model_name == "cabs_2conv_3dense"
     model = _build_resnet_model(dataset_name, model_name)
     model.to(device)
 
@@ -342,6 +351,7 @@ def train_model(
     cabs_running_avg_constant = float(config.get("cabs_running_avg_constant", 0.95))
     cabs_eps = float(config.get("cabs_eps", 0.0))
     cabs_c = float(config.get("cabs_c", 1.0))
+    cabs_batch_lr = float(config.get("cabs_batch_lr", config.get("lr", 0.1)))
     ensure_preconditioned_strategy_compat(adaptive_enabled, adaptive_strategy, optimizer)
 
     log_to_mlflow = config.get("report_to") == "mlflow"
@@ -438,22 +448,28 @@ def train_model(
     best_test = {}
     best_test_acc = {}
     train_step = 0
+    examples_accessed = 0
 
     for epoch in range(epochs):
         if max_train_steps is not None and train_step >= max_train_steps:
             break
 
         current_lr = optimizer.param_groups[0].get("lr")
+        epoch_metric_step = _metric_step(
+            use_examples_accessed_steps,
+            examples_accessed,
+            epoch,
+        )
         # For AdaBatchGrad, log the current step size instead of lr (lr is undefined).
         if log_to_mlflow:
             if current_lr is not None:
-                mlflow.log_metric("lr", current_lr, step=epoch)
+                mlflow.log_metric("lr", current_lr, step=epoch_metric_step)
             else:
                 # Use the shared step size from the optimizer state if present.
                 first_param = next(iter(model.parameters()))
                 step_size = optimizer.state.get(first_param, {}).get("step_size")
                 if step_size is not None:
-                    mlflow.log_metric("lr", float(step_size), step=epoch)
+                    mlflow.log_metric("lr", float(step_size), step=epoch_metric_step)
 
         if use_adabatchgrad_strategy:
             if adaptive_sampler is not None:
@@ -504,9 +520,13 @@ def train_model(
                 g,
             )
             if log_to_mlflow:
-                mlflow.log_metric("seesaw/batch_size", batch_size_epoch, step=epoch)
+                mlflow.log_metric(
+                    "seesaw/batch_size",
+                    batch_size_epoch,
+                    step=epoch_metric_step,
+                )
                 if current_lr is not None:
-                    mlflow.log_metric("seesaw/lr", current_lr, step=epoch)
+                    mlflow.log_metric("seesaw/lr", current_lr, step=epoch_metric_step)
         elif use_variance_iter_strategy:
             batch_size_epoch = batch_size_init
             numerator_iter = None
@@ -535,20 +555,28 @@ def train_model(
                 iter_batch_sampler.set_batch_size(batch_size_epoch)
             current_loader = iter_train_loader
             if log_to_mlflow and epoch >= epoch_start_ab:
-                mlflow.log_metric("adaptive_batch/batch_size_epoch_start", batch_size_epoch, step=epoch)
+                mlflow.log_metric(
+                    "adaptive_batch/batch_size_epoch_start",
+                    batch_size_epoch,
+                    step=epoch_metric_step,
+                )
                 if numerator_iter is not None:
-                    mlflow.log_metric("adaptive_batch/var_iter_start", numerator_iter, step=epoch)
+                    mlflow.log_metric(
+                        "adaptive_batch/var_iter_start",
+                        numerator_iter,
+                        step=epoch_metric_step,
+                    )
                 if theta_diff_norm_sq_iter is not None:
                     mlflow.log_metric(
                         "adaptive_batch/theta_diff_norm_sq_iter_start",
                         theta_diff_norm_sq_iter,
-                        step=epoch,
+                        step=epoch_metric_step,
                     )
                 if ratio_raw_iter is not None:
                     mlflow.log_metric(
                         "adaptive_batch/ratio_raw_iter_start",
                         ratio_raw_iter,
-                        step=epoch,
+                        step=epoch_metric_step,
                     )
         elif use_epoch_variance_strategy and epoch >= epoch_start_ab:
             var_used = var_history[epoch - 1] if (epoch - 1) < len(var_history) else None
@@ -592,22 +620,46 @@ def train_model(
                 g,
             )
             if log_to_mlflow:
-                mlflow.log_metric("adaptive_batch/batch_size", batch_size_epoch, step=epoch)
+                mlflow.log_metric(
+                    "adaptive_batch/batch_size",
+                    batch_size_epoch,
+                    step=epoch_metric_step,
+                )
                 if var_used is not None and theta_diff_norm_sq is not None:
-                    mlflow.log_metric("adaptive_batch/var_sum", var_used, step=epoch)
-                    if adaptive_strategy == "variance_ratio_preconditioned":
-                        mlflow.log_metric("adaptive_batch/var_sum_update", var_used, step=epoch)
                     mlflow.log_metric(
-                        "adaptive_batch/theta_diff_norm_sq", theta_diff_norm_sq, step=epoch
+                        "adaptive_batch/var_sum",
+                        var_used,
+                        step=epoch_metric_step,
                     )
-                if ratio_raw is not None:
-                    mlflow.log_metric("adaptive_batch/ratio_raw", ratio_raw, step=epoch)
                     if adaptive_strategy == "variance_ratio_preconditioned":
                         mlflow.log_metric(
-                            "adaptive_batch/ratio_raw_preconditioned", ratio_raw, step=epoch
+                            "adaptive_batch/var_sum_update",
+                            var_used,
+                            step=epoch_metric_step,
+                        )
+                    mlflow.log_metric(
+                        "adaptive_batch/theta_diff_norm_sq",
+                        theta_diff_norm_sq,
+                        step=epoch_metric_step,
+                    )
+                if ratio_raw is not None:
+                    mlflow.log_metric(
+                        "adaptive_batch/ratio_raw",
+                        ratio_raw,
+                        step=epoch_metric_step,
+                    )
+                    if adaptive_strategy == "variance_ratio_preconditioned":
+                        mlflow.log_metric(
+                            "adaptive_batch/ratio_raw_preconditioned",
+                            ratio_raw,
+                            step=epoch_metric_step,
                         )
                 if ratio_smoothed is not None:
-                    mlflow.log_metric("adaptive_batch/ratio_ema", ratio_smoothed, step=epoch)
+                    mlflow.log_metric(
+                        "adaptive_batch/ratio_ema",
+                        ratio_smoothed,
+                        step=epoch_metric_step,
+                    )
         else:
             current_loader = train_loader
             prev_batch_size = batch_size_init
@@ -638,6 +690,7 @@ def train_model(
 
                 X = X.to(device)
                 y = y.to(device)
+                batch_size_used = int(y.shape[0])
 
                 if epoch >= epoch_start_ab and adaptive_sampler is not None:
                     prev_mode = model.training
@@ -667,18 +720,24 @@ def train_model(
                             break
                         X = X.to(device)
                         y = y.to(device)
+                        batch_size_used = int(y.shape[0])
+                    metric_step = _metric_step(
+                        use_examples_accessed_steps,
+                        examples_accessed,
+                        train_step,
+                    )
                     if log_to_mlflow:
-                        mlflow.log_metric("adaptive_batch/batch_size_candidate", new_batch_size, step=train_step)
-                        mlflow.log_metric("adaptive_batch/batch_size", adaptive_sampler.batch_size, step=train_step)
+                        mlflow.log_metric("adaptive_batch/batch_size_candidate", new_batch_size, step=metric_step)
+                        mlflow.log_metric("adaptive_batch/batch_size", adaptive_sampler.batch_size, step=metric_step)
                         inner_bs = adaptive_sampler.state.get("inner_batch_size")
                         ortho_bs = adaptive_sampler.state.get("ortho_batch_size")
                         if inner_bs is not None:
                             mlflow.log_metric(
-                                "adaptive_batch/inner_batch_size", inner_bs, step=train_step
+                                "adaptive_batch/inner_batch_size", inner_bs, step=metric_step
                             )
                         if ortho_bs is not None:
                             mlflow.log_metric(
-                                "adaptive_batch/ortho_batch_size", ortho_bs, step=train_step
+                                "adaptive_batch/ortho_batch_size", ortho_bs, step=metric_step
                             )
 
                 optimizer.zero_grad()
@@ -692,7 +751,13 @@ def train_model(
                 loss_value = loss.item()
                 total_loss += loss_value
                 steps += 1
-                _log_train_loss_iter(log_to_mlflow, loss_value, train_step)
+                examples_accessed += batch_size_used
+                metric_step = _metric_step(
+                    use_examples_accessed_steps,
+                    examples_accessed,
+                    train_step,
+                )
+                _log_train_loss_iter(log_to_mlflow, loss_value, metric_step)
                 train_step += 1
                 pbar.update(1)
             pbar.close()
@@ -703,7 +768,9 @@ def train_model(
                     else batch_size_init
                 )
                 mlflow.log_metric(
-                    "adaptive_batch/batch_size_epoch", epoch_batch_size, step=epoch
+                    "adaptive_batch/batch_size_epoch",
+                    epoch_batch_size,
+                    step=_metric_step(use_examples_accessed_steps, examples_accessed, epoch),
                 )
         elif use_cabs_strategy:
             pbar = tqdm(desc=f"Epoch {epoch + 1}/{epochs}", leave=False)
@@ -719,8 +786,6 @@ def train_model(
                 X = X.to(device)
                 y = y.to(device)
                 batch_size_used = int(y.shape[0])
-                current_step_lr = float(optimizer.param_groups[0].get("lr", 0.0))
-
                 optimizer.zero_grad()
                 logits = model(X)
                 losses = loss_fn(logits, y)
@@ -737,32 +802,41 @@ def train_model(
                 next_batch_size, raw_batch, loss_avg, xi_avg = cabs_controller.update(
                     loss=loss_value,
                     xi=xi,
-                    learning_rate=current_step_lr,
+                    learning_rate=cabs_batch_lr,
                     batch_size_min=batch_size_min,
                     batch_size_max=batch_size_max,
                 )
                 next_batch_size = max(1, min(next_batch_size, len(train_dataset)))
                 prev_batch_size = next_batch_size
                 cabs_batch_sampler.update_batch_size(next_batch_size)
+                examples_accessed += batch_size_used
+                metric_step = _metric_step(
+                    use_examples_accessed_steps,
+                    examples_accessed,
+                    train_step,
+                )
 
                 if log_to_mlflow:
-                    mlflow.log_metric("adaptive_batch/batch_size", batch_size_used, step=train_step)
+                    mlflow.log_metric("adaptive_batch/batch_size", batch_size_used, step=metric_step)
                     mlflow.log_metric(
-                        "adaptive_batch/batch_size_next", next_batch_size, step=train_step
+                        "adaptive_batch/batch_size_next", next_batch_size, step=metric_step
                     )
-                    mlflow.log_metric("adaptive_batch/cabs_xi", xi, step=train_step)
-                    mlflow.log_metric("adaptive_batch/cabs_xi_avg", xi_avg, step=train_step)
-                    mlflow.log_metric("adaptive_batch/cabs_loss_avg", loss_avg, step=train_step)
+                    mlflow.log_metric("adaptive_batch/cabs_xi", xi, step=metric_step)
+                    mlflow.log_metric("adaptive_batch/cabs_xi_avg", xi_avg, step=metric_step)
+                    mlflow.log_metric("adaptive_batch/cabs_loss_avg", loss_avg, step=metric_step)
+                    mlflow.log_metric(
+                        "adaptive_batch/cabs_batch_lr", cabs_batch_lr, step=metric_step
+                    )
                     if raw_batch is not None:
                         mlflow.log_metric(
-                            "adaptive_batch/cabs_raw_batch", raw_batch, step=train_step
+                            "adaptive_batch/cabs_raw_batch", raw_batch, step=metric_step
                         )
 
                 _step_scheduler_if_needed(scheduler, scheduler_step_unit)
 
                 total_loss += loss_value
                 steps += 1
-                _log_train_loss_iter(log_to_mlflow, loss_value, train_step)
+                _log_train_loss_iter(log_to_mlflow, loss_value, metric_step)
                 train_step += 1
                 pbar.update(1)
             pbar.close()
@@ -808,6 +882,12 @@ def train_model(
 
                 last_iter_signal = clone_optional_tensors(signal_now)
                 last_iter_theta_diff_norm_sq = theta_diff_norm_sq
+                examples_accessed += batch_size_used
+                metric_step = _metric_step(
+                    use_examples_accessed_steps,
+                    examples_accessed,
+                    train_step,
+                )
 
                 next_batch_size = batch_size_used
                 numerator_iter = None
@@ -830,23 +910,23 @@ def train_model(
                     iter_batch_sampler.update_batch_size(next_batch_size)
 
                 if log_to_mlflow:
-                    mlflow.log_metric("adaptive_batch/batch_size", batch_size_used, step=train_step)
+                    mlflow.log_metric("adaptive_batch/batch_size", batch_size_used, step=metric_step)
                     mlflow.log_metric(
-                        "adaptive_batch/batch_size_next", next_batch_size, step=train_step
+                        "adaptive_batch/batch_size_next", next_batch_size, step=metric_step
                     )
                     mlflow.log_metric(
                         "adaptive_batch/theta_diff_norm_sq_iter",
                         theta_diff_norm_sq,
-                        step=train_step,
+                        step=metric_step,
                     )
                     if numerator_iter is not None:
-                        mlflow.log_metric("adaptive_batch/var_iter", numerator_iter, step=train_step)
+                        mlflow.log_metric("adaptive_batch/var_iter", numerator_iter, step=metric_step)
                     if ratio_raw_iter is not None:
                         mlflow.log_metric(
-                            "adaptive_batch/ratio_raw_iter", ratio_raw_iter, step=train_step
+                            "adaptive_batch/ratio_raw_iter", ratio_raw_iter, step=metric_step
                         )
 
-                _log_train_loss_iter(log_to_mlflow, loss_value, train_step)
+                _log_train_loss_iter(log_to_mlflow, loss_value, metric_step)
                 train_step += 1
                 pbar.update(1)
             pbar.close()
@@ -856,11 +936,16 @@ def train_model(
                 hat_norm_history.append(hat_norm_sq)
                 var_history.append(var_sum)
                 if log_to_mlflow:
-                    mlflow.log_metric("adaptive_batch/F_hat_norm_sq", hat_norm_sq, step=epoch)
-                    mlflow.log_metric("adaptive_batch/var_sum", var_sum, step=epoch)
+                    epoch_end_step = _metric_step(
+                        use_examples_accessed_steps,
+                        examples_accessed,
+                        epoch,
+                    )
+                    mlflow.log_metric("adaptive_batch/F_hat_norm_sq", hat_norm_sq, step=epoch_end_step)
+                    mlflow.log_metric("adaptive_batch/var_sum", var_sum, step=epoch_end_step)
                     if hat_norm_sq > 0:
                         ratio_now = var_sum / hat_norm_sq
-                        mlflow.log_metric("adaptive_batch/ratio_raw", ratio_now, step=epoch)
+                        mlflow.log_metric("adaptive_batch/ratio_raw", ratio_now, step=epoch_end_step)
         else:
             batch_iter = tqdm(
                 current_loader,
@@ -902,14 +987,26 @@ def train_model(
                             prev_batch_size = next_batch_size
                             seesaw_next_lr_threshold /= seesaw_alpha
                             if log_to_mlflow:
+                                metric_step = _metric_step(
+                                    use_examples_accessed_steps,
+                                    examples_accessed + int(y.shape[0]),
+                                    train_step,
+                                )
                                 mlflow.log_metric(
-                                    "seesaw/batch_size_next", next_batch_size, step=train_step
+                                    "seesaw/batch_size_next", next_batch_size, step=metric_step
                                 )
 
                 loss_value = loss.item()
                 total_loss += loss_value
                 steps += 1
-                _log_train_loss_iter(log_to_mlflow, loss_value, train_step)
+                batch_size_used = int(y.shape[0])
+                examples_accessed += batch_size_used
+                metric_step = _metric_step(
+                    use_examples_accessed_steps,
+                    examples_accessed,
+                    train_step,
+                )
+                _log_train_loss_iter(log_to_mlflow, loss_value, metric_step)
                 train_step += 1
 
                 if tracker is not None:
@@ -927,13 +1024,22 @@ def train_model(
                 hat_norm_history.append(hat_norm_sq)
                 var_history.append(var_sum)
                 if log_to_mlflow:
-                    mlflow.log_metric("adaptive_batch/F_hat_norm_sq", hat_norm_sq, step=epoch)
-                    mlflow.log_metric("adaptive_batch/var_sum", var_sum, step=epoch)
+                    epoch_end_step = _metric_step(
+                        use_examples_accessed_steps,
+                        examples_accessed,
+                        epoch,
+                    )
+                    mlflow.log_metric("adaptive_batch/F_hat_norm_sq", hat_norm_sq, step=epoch_end_step)
+                    mlflow.log_metric("adaptive_batch/var_sum", var_sum, step=epoch_end_step)
                     if adaptive_strategy == "variance_ratio_preconditioned":
-                        mlflow.log_metric("adaptive_batch/var_sum_update", var_sum, step=epoch)
+                        mlflow.log_metric(
+                            "adaptive_batch/var_sum_update",
+                            var_sum,
+                            step=epoch_end_step,
+                        )
                     if hat_norm_sq > 0:
                         ratio_now = var_sum / hat_norm_sq
-                        mlflow.log_metric("adaptive_batch/ratio_raw", ratio_now, step=epoch)
+                        mlflow.log_metric("adaptive_batch/ratio_raw", ratio_now, step=epoch_end_step)
 
             # Snapshot model parameters at the end of the epoch to measure movement between epochs.
             prev_prev_params = prev_params
@@ -944,13 +1050,14 @@ def train_model(
         test_loss, test_metrics = _evaluate(model, test_loader, loss_fn, device)
 
         if log_to_mlflow:
-            mlflow.log_metric("train_loss", train_loss_epoch, step=epoch)
-            mlflow.log_metric("val_loss", val_loss, step=epoch)
-            mlflow.log_metric("test_loss", test_loss, step=epoch)
+            eval_step = _metric_step(use_examples_accessed_steps, examples_accessed, epoch)
+            mlflow.log_metric("train_loss", train_loss_epoch, step=eval_step)
+            mlflow.log_metric("val_loss", val_loss, step=eval_step)
+            mlflow.log_metric("test_loss", test_loss, step=eval_step)
             for k, v in val_metrics.items():
-                mlflow.log_metric(f"val_{k}", v, step=epoch)
+                mlflow.log_metric(f"val_{k}", v, step=eval_step)
             for k, v in test_metrics.items():
-                mlflow.log_metric(f"test_{k}", v, step=epoch)
+                mlflow.log_metric(f"test_{k}", v, step=eval_step)
 
         if val_metrics["f1"] > best_val_f1:
             best_val_f1 = val_metrics["f1"]

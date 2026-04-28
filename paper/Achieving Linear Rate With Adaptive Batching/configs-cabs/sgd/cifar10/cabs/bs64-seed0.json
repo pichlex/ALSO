@@ -2,8 +2,8 @@
   "dataset": "cifar10",
   "model": "cabs_2conv_3dense",
   "seed": 0,
-  "augment": false,
-  "preprocessing": "cabs",
+  "augment": true,
+  "preprocessing": "cabs_reference",
   "batch_size": 64,
   "epochs": 8000,
   "max_train_steps": 8000,
@@ -32,5 +32,6 @@
   "cabs_running_avg_constant": 0.95,
   "cabs_eps": 0.0,
   "cabs_c": 1.0,
+  "cabs_batch_lr": 0.1,
   "batch_size_multiplier": 1.0
 }
