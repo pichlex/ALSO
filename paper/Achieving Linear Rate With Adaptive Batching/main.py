@@ -50,8 +50,14 @@ def apply_defaults(cfg: Dict[str, Any]) -> Dict[str, Any]:
         "tune_name": "study",
         "use_old_tune_params": True,
         "scheduler": None,
+        "scheduler_step_unit": "epoch",
         "scheduler_milestones": [30, 60],
         "scheduler_gamma": 0.1,
+        "max_train_steps": None,
+        "preprocessing": "default",
+        "cabs_running_avg_constant": 0.95,
+        "cabs_eps": 0.0,
+        "cabs_c": 1.0,
     }
     merged = defaults.copy()
     merged.update(cfg)

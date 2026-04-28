@@ -1,7 +1,87 @@
 import math
-from typing import Iterable, List, Optional, Sequence, Tuple
+from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 import torch
+
+
+def compute_cabs_gradient_variance(
+    param_grad_per_sample: Dict[str, torch.Tensor],
+) -> float:
+    """
+    Compute CABS xi = sum_j(E[g_j^2] - E[g_j]^2) from per-sample gradients.
+    """
+    xi = 0.0
+    for grad_per_sample in param_grad_per_sample.values():
+        if grad_per_sample.numel() == 0:
+            continue
+        second_moment = grad_per_sample.pow(2).mean(dim=0)
+        mean_grad_sq = grad_per_sample.mean(dim=0).pow(2)
+        xi += torch.clamp(second_moment - mean_grad_sq, min=0.0).sum().item()
+    return float(max(0.0, xi))
+
+
+def compute_cabs_batch_size(
+    learning_rate: float,
+    xi_avg: float,
+    loss_avg: float,
+    batch_size_min: int,
+    batch_size_max: int,
+    eps: float = 0.0,
+    c: float = 1.0,
+) -> Tuple[int, Optional[float]]:
+    denominator = loss_avg + eps
+    if (
+        not math.isfinite(learning_rate)
+        or not math.isfinite(xi_avg)
+        or not math.isfinite(denominator)
+        or denominator <= 0.0
+    ):
+        return int(batch_size_max), None
+
+    raw_batch = c * learning_rate * xi_avg / denominator
+    if not math.isfinite(raw_batch):
+        return int(batch_size_max), None
+
+    batch_size = int(round(raw_batch))
+    batch_size = max(int(batch_size_min), min(int(batch_size_max), batch_size))
+    return batch_size, raw_batch
+
+
+class CABSBatchSizeController:
+    """Stateful CABS running averages and next-batch-size rule."""
+
+    def __init__(
+        self,
+        running_avg_constant: float = 0.95,
+        eps: float = 0.0,
+        c: float = 1.0,
+    ) -> None:
+        self.mu = float(running_avg_constant)
+        self.eps = float(eps)
+        self.c = float(c)
+        self.loss_avg = 1.0
+        self.xi_avg = 0.0
+
+    def update(
+        self,
+        loss: float,
+        xi: float,
+        learning_rate: float,
+        batch_size_min: int,
+        batch_size_max: int,
+    ) -> Tuple[int, Optional[float], float, float]:
+        self.loss_avg = self.mu * self.loss_avg + (1.0 - self.mu) * float(loss)
+        self.xi_avg = self.mu * self.xi_avg + (1.0 - self.mu) * float(xi)
+        batch_size, raw_batch = compute_cabs_batch_size(
+            learning_rate=learning_rate,
+            xi_avg=self.xi_avg,
+            loss_avg=self.loss_avg,
+            batch_size_min=batch_size_min,
+            batch_size_max=batch_size_max,
+            eps=self.eps,
+            c=self.c,
+        )
+        return batch_size, raw_batch, self.loss_avg, self.xi_avg
 
 
 class AdaptiveBatchTracker:

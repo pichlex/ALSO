@@ -1,3 +1,4 @@
+import math
 import os
 import random
 from typing import Tuple, Dict, Any
@@ -27,6 +28,16 @@ class IndexedDataset(torch.utils.data.Dataset):
         return (x, y), idx
 
 
+class PerImageStandardize:
+    """TensorFlow CIFAR example style per-image standardization."""
+
+    def __call__(self, image: torch.Tensor) -> torch.Tensor:
+        mean = image.mean()
+        std = image.std(unbiased=False)
+        min_std = 1.0 / math.sqrt(float(image.numel()))
+        return (image - mean) / torch.clamp(std, min=min_std)
+
+
 def set_seed(seed: int) -> Tuple[torch.Generator, Any]:
     """Seed python, numpy, torch; return torch.Generator and worker_init_fn."""
 
@@ -43,7 +54,20 @@ def set_seed(seed: int) -> Tuple[torch.Generator, Any]:
     return g, seed_worker
 
 
-def _build_transforms(dataset: str, augment: bool):
+def _build_transforms(dataset: str, augment: bool, preprocessing: str = "default"):
+    preprocessing = str(preprocessing or "default").lower()
+    if preprocessing == "cabs":
+        if dataset != "cifar10":
+            raise ValueError("preprocessing='cabs' is only supported for CIFAR-10.")
+        transform = transforms.Compose(
+            [
+                transforms.CenterCrop(24),
+                transforms.ToTensor(),
+                PerImageStandardize(),
+            ]
+        )
+        return transform, transform
+
     if dataset == "cifar10":
         mean = (0.4914, 0.4822, 0.4465)
         std = (0.2023, 0.1994, 0.2010)
@@ -115,7 +139,8 @@ def get_dataloaders(config: Dict[str, Any]):
     seed = int(config.get("seed", 42))
 
     g, seed_worker = set_seed(seed)
-    transform_train, transform_test = _build_transforms(dataset, augment)
+    preprocessing = str(config.get("preprocessing", "default")).lower()
+    transform_train, transform_test = _build_transforms(dataset, augment, preprocessing)
     train_base, test_base, targets = _load_dataset(dataset, transform=None)
 
     # train/val split with stratification on original labels

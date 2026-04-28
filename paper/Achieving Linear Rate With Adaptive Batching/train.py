@@ -16,9 +16,11 @@ from adabatchgrad import (
 )
 from adaptive_batch import (
     AdaptiveBatchTracker,
+    CABSBatchSizeController,
     DynamicFixedOrderBatchSampler,
     clone_optional_tensors,
     compute_adamw_adaptive_update_signal,
+    compute_cabs_gradient_variance,
     compute_optimizer_step_norm_sq,
     compute_signal_reference_variance,
     compute_step_theta_diff_norm_sq,
@@ -47,6 +49,42 @@ SMALL_IMAGE_DATASETS = {"cifar10", "cifar100", "svhn"}
 SUPPORTED_RESNET_MODELS = {"resnet18", "resnet34"}
 
 
+class CABS2Conv3Dense(torch.nn.Module):
+    """CIFAR-10 model used by the reference CABS example."""
+
+    def __init__(self, num_classes: int = 10):
+        super().__init__()
+        self.conv1 = torch.nn.Conv2d(3, 64, kernel_size=5, padding=2)
+        self.conv2 = torch.nn.Conv2d(64, 64, kernel_size=5, padding=2)
+        self.pool = torch.nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+        self.fc1 = torch.nn.Linear(2304, 384)
+        self.fc2 = torch.nn.Linear(384, 192)
+        self.fc3 = torch.nn.Linear(192, num_classes)
+        self._reset_parameters()
+
+    def _reset_parameters(self) -> None:
+        torch.nn.init.trunc_normal_(self.conv1.weight, std=5e-2)
+        torch.nn.init.zeros_(self.conv1.bias)
+        torch.nn.init.trunc_normal_(self.conv2.weight, std=5e-2)
+        torch.nn.init.constant_(self.conv2.bias, 0.1)
+        torch.nn.init.trunc_normal_(self.fc1.weight, std=0.04)
+        torch.nn.init.constant_(self.fc1.bias, 0.1)
+        torch.nn.init.trunc_normal_(self.fc2.weight, std=0.04)
+        torch.nn.init.constant_(self.fc2.bias, 0.1)
+        torch.nn.init.trunc_normal_(self.fc3.weight, std=1.0 / 192.0)
+        torch.nn.init.zeros_(self.fc3.bias)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = torch.relu(self.conv1(x))
+        x = self.pool(x)
+        x = torch.relu(self.conv2(x))
+        x = self.pool(x)
+        x = torch.flatten(x, 1)
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        return self.fc3(x)
+
+
 def _get_num_classes(dataset_name: str) -> int:
     return 100 if dataset_name == "cifar100" else 10
 
@@ -56,6 +94,11 @@ def _uses_small_image_resnet(dataset_name: str, model_name: str) -> bool:
 
 
 def _build_resnet_model(dataset_name: str, model_name: str) -> torch.nn.Module:
+    if model_name == "cabs_2conv_3dense":
+        if dataset_name != "cifar10":
+            raise ValueError("model='cabs_2conv_3dense' is only supported for CIFAR-10.")
+        return CABS2Conv3Dense(num_classes=10)
+
     use_small_image_stem = _uses_small_image_resnet(dataset_name, model_name)
     if model_name == "resnet18":
         weights = None if use_small_image_stem else torchvision.models.ResNet18_Weights.IMAGENET1K_V1
@@ -201,6 +244,14 @@ def _set_optimizer_lr(optimizer: torch.optim.Optimizer, lr: float) -> None:
         group["lr"] = lr
 
 
+def _step_scheduler_if_needed(
+    scheduler,
+    scheduler_step_unit: str,
+) -> None:
+    if scheduler is not None and scheduler_step_unit == "step":
+        scheduler.step()
+
+
 def _simulate_cosine_lrs(
     base_lr: float, eta_min: float, T_max: int, epochs: int
 ) -> List[float]:
@@ -283,6 +334,14 @@ def train_model(
     adabatchgrad_prob_new = float(config.get("adabatchgrad_prob_new", 0.005))
     adabatchgrad_k = int(config.get("adabatchgrad_k", 5))
     epochs = int(config.get("epochs", 20))
+    max_train_steps_config = config.get("max_train_steps")
+    max_train_steps = (
+        int(max_train_steps_config) if max_train_steps_config is not None else None
+    )
+    scheduler_step_unit = str(config.get("scheduler_step_unit", "epoch")).lower()
+    cabs_running_avg_constant = float(config.get("cabs_running_avg_constant", 0.95))
+    cabs_eps = float(config.get("cabs_eps", 0.0))
+    cabs_c = float(config.get("cabs_c", 1.0))
     ensure_preconditioned_strategy_compat(adaptive_enabled, adaptive_strategy, optimizer)
 
     log_to_mlflow = config.get("report_to") == "mlflow"
@@ -300,15 +359,17 @@ def train_model(
     g, seed_worker = set_seed(int(config.get("seed", 42)))
     train_dataset: IndexedDataset = train_loader.dataset
     use_adabatchgrad_strategy = adaptive_enabled and adaptive_strategy == "adabatchgrad"
+    use_cabs_strategy = adaptive_enabled and adaptive_strategy == "cabs"
     use_seesaw_strategy = adaptive_enabled and adaptive_strategy == "seesaw"
     use_variance_iter_strategy = adaptive_enabled and adaptive_strategy == "variance_ratio_iter"
     use_epoch_variance_strategy = adaptive_enabled and adaptive_strategy not in (
         "adabatchgrad",
+        "cabs",
         "seesaw",
         "variance_ratio_iter",
     )
     use_variance_strategy = use_variance_iter_strategy or use_epoch_variance_strategy
-    if use_seesaw_strategy:
+    if use_seesaw_strategy and scheduler_step_unit != "step":
         scheduler = None
 
     adaptive_sampler: Optional[DynamicBatchSampler] = None
@@ -346,11 +407,22 @@ def train_model(
     seesaw_alpha = float(config.get("seesaw_alpha", 2.0))
     seesaw_cut_epochs: List[int] = []
     current_lr = float(config.get("lr", 0.1))
+    seesaw_next_lr_threshold = current_lr / seesaw_alpha if seesaw_alpha > 1.0 else None
     if use_seesaw_strategy:
         eta_min = float(config.get("scheduler_eta_min", 0.0))
         T_max = int(config.get("scheduler_T_max", config.get("epochs", 20)))
         lr_schedule = _simulate_cosine_lrs(current_lr, eta_min, T_max, epochs)
         seesaw_cut_epochs = _compute_seesaw_cut_epochs(seesaw_alpha, current_lr, lr_schedule)
+
+    cabs_controller = (
+        CABSBatchSizeController(
+            running_avg_constant=cabs_running_avg_constant,
+            eps=cabs_eps,
+            c=cabs_c,
+        )
+        if use_cabs_strategy
+        else None
+    )
 
     hat_norm_history: List[float] = []
     var_history: List[float] = []
@@ -368,6 +440,9 @@ def train_model(
     train_step = 0
 
     for epoch in range(epochs):
+        if max_train_steps is not None and train_step >= max_train_steps:
+            break
+
         current_lr = optimizer.param_groups[0].get("lr")
         # For AdaBatchGrad, log the current step size instead of lr (lr is undefined).
         if log_to_mlflow:
@@ -384,9 +459,34 @@ def train_model(
             if adaptive_sampler is not None:
                 adaptive_sampler.reset_epoch_state()
             current_loader = train_loader
-        elif use_seesaw_strategy:
+        elif use_cabs_strategy:
             batch_size_epoch = int(prev_batch_size) if prev_batch_size is not None else batch_size_init
-            if epoch in seesaw_cut_epochs:
+            batch_size_epoch = max(batch_size_min, min(batch_size_max, batch_size_epoch))
+            batch_size_epoch = max(1, min(batch_size_epoch, len(train_dataset)))
+            prev_batch_size = batch_size_epoch
+            cabs_indices = torch.randperm(len(train_dataset), generator=g).tolist()
+            cabs_batch_sampler = DynamicFixedOrderBatchSampler(cabs_indices, batch_size_epoch)
+            current_loader = _make_dynamic_fixed_order_loader(
+                train_dataset,
+                cabs_batch_sampler,
+                int(config.get("num_workers", 2)),
+                seed_worker,
+                g,
+            )
+        elif use_seesaw_strategy:
+            if scheduler_step_unit == "step" and seesaw_next_lr_threshold is not None:
+                current_lr_for_threshold = optimizer.param_groups[0].get("lr")
+                while (
+                    seesaw_next_lr_threshold is not None
+                    and seesaw_next_lr_threshold > 0.0
+                    and current_lr_for_threshold is not None
+                    and current_lr_for_threshold <= seesaw_next_lr_threshold
+                ):
+                    prev = int(prev_batch_size) if prev_batch_size is not None else batch_size_init
+                    prev_batch_size = int(math.ceil(prev * seesaw_alpha))
+                    seesaw_next_lr_threshold /= seesaw_alpha
+            batch_size_epoch = int(prev_batch_size) if prev_batch_size is not None else batch_size_init
+            if scheduler_step_unit != "step" and epoch in seesaw_cut_epochs:
                 lr_divisor = seesaw_alpha if optimizer_name == "sgd" else math.sqrt(seesaw_alpha)
                 if lr_divisor > 0:
                     current_lr = current_lr / lr_divisor if current_lr is not None else None
@@ -529,6 +629,8 @@ def train_model(
             )
             batch_iter = iter(current_loader)
             while True:
+                if max_train_steps is not None and train_step >= max_train_steps:
+                    break
                 try:
                     (X, y), _ = next(batch_iter)
                 except StopIteration:
@@ -585,6 +687,7 @@ def train_model(
                 loss = losses.mean()
                 loss.backward()
                 optimizer.step()
+                _step_scheduler_if_needed(scheduler, scheduler_step_unit)
 
                 loss_value = loss.item()
                 total_loss += loss_value
@@ -602,10 +705,73 @@ def train_model(
                 mlflow.log_metric(
                     "adaptive_batch/batch_size_epoch", epoch_batch_size, step=epoch
                 )
+        elif use_cabs_strategy:
+            pbar = tqdm(desc=f"Epoch {epoch + 1}/{epochs}", leave=False)
+            batch_iter = iter(current_loader)
+            while True:
+                if max_train_steps is not None and train_step >= max_train_steps:
+                    break
+                try:
+                    (X, y), _ = next(batch_iter)
+                except StopIteration:
+                    break
+
+                X = X.to(device)
+                y = y.to(device)
+                batch_size_used = int(y.shape[0])
+                current_step_lr = float(optimizer.param_groups[0].get("lr", 0.0))
+
+                optimizer.zero_grad()
+                logits = model(X)
+                losses = loss_fn(logits, y)
+                loss = losses.mean()
+                loss.backward()
+
+                grads_per_sample = per_sample_cross_entropy_grads(model, X, y)
+                xi = compute_cabs_gradient_variance(grads_per_sample)
+
+                optimizer.step()
+
+                loss_value = loss.item()
+                assert cabs_controller is not None
+                next_batch_size, raw_batch, loss_avg, xi_avg = cabs_controller.update(
+                    loss=loss_value,
+                    xi=xi,
+                    learning_rate=current_step_lr,
+                    batch_size_min=batch_size_min,
+                    batch_size_max=batch_size_max,
+                )
+                next_batch_size = max(1, min(next_batch_size, len(train_dataset)))
+                prev_batch_size = next_batch_size
+                cabs_batch_sampler.update_batch_size(next_batch_size)
+
+                if log_to_mlflow:
+                    mlflow.log_metric("adaptive_batch/batch_size", batch_size_used, step=train_step)
+                    mlflow.log_metric(
+                        "adaptive_batch/batch_size_next", next_batch_size, step=train_step
+                    )
+                    mlflow.log_metric("adaptive_batch/cabs_xi", xi, step=train_step)
+                    mlflow.log_metric("adaptive_batch/cabs_xi_avg", xi_avg, step=train_step)
+                    mlflow.log_metric("adaptive_batch/cabs_loss_avg", loss_avg, step=train_step)
+                    if raw_batch is not None:
+                        mlflow.log_metric(
+                            "adaptive_batch/cabs_raw_batch", raw_batch, step=train_step
+                        )
+
+                _step_scheduler_if_needed(scheduler, scheduler_step_unit)
+
+                total_loss += loss_value
+                steps += 1
+                _log_train_loss_iter(log_to_mlflow, loss_value, train_step)
+                train_step += 1
+                pbar.update(1)
+            pbar.close()
         elif use_variance_iter_strategy:
             pbar = tqdm(desc=f"Epoch {epoch + 1}/{epochs}", leave=False)
             batch_iter = iter(current_loader)
             while True:
+                if max_train_steps is not None and train_step >= max_train_steps:
+                    break
                 try:
                     (X, y), _ = next(batch_iter)
                 except StopIteration:
@@ -625,6 +791,7 @@ def train_model(
                     param_list,
                 )
                 optimizer.step()
+                _step_scheduler_if_needed(scheduler, scheduler_step_unit)
 
                 loss_value = loss.item()
                 total_loss += loss_value
@@ -701,6 +868,8 @@ def train_model(
                 leave=False,
             )
             for (X, y), _ in batch_iter:
+                if max_train_steps is not None and train_step >= max_train_steps:
+                    break
                 X = X.to(device)
                 y = y.to(device)
                 optimizer.zero_grad()
@@ -709,6 +878,33 @@ def train_model(
                 loss = losses.mean()
                 loss.backward()
                 optimizer.step()
+                _step_scheduler_if_needed(scheduler, scheduler_step_unit)
+
+                if use_seesaw_strategy and scheduler_step_unit == "step":
+                    current_lr_after_step = optimizer.param_groups[0].get("lr")
+                    if (
+                        seesaw_next_lr_threshold is not None
+                        and current_lr_after_step is not None
+                    ):
+                        while (
+                            seesaw_next_lr_threshold > 0.0
+                            and current_lr_after_step <= seesaw_next_lr_threshold
+                        ):
+                            next_batch_size = int(
+                                math.ceil(
+                                    (int(prev_batch_size) if prev_batch_size is not None else batch_size_init)
+                                    * seesaw_alpha
+                                )
+                            )
+                            next_batch_size = max(
+                                batch_size_min, min(batch_size_max, next_batch_size)
+                            )
+                            prev_batch_size = next_batch_size
+                            seesaw_next_lr_threshold /= seesaw_alpha
+                            if log_to_mlflow:
+                                mlflow.log_metric(
+                                    "seesaw/batch_size_next", next_batch_size, step=train_step
+                                )
 
                 loss_value = loss.item()
                 total_loss += loss_value
@@ -771,7 +967,7 @@ def train_model(
                 "epoch": epoch,
             }
 
-        if scheduler is not None:
+        if scheduler is not None and scheduler_step_unit != "step":
             scheduler.step()
 
     if log_to_mlflow:
