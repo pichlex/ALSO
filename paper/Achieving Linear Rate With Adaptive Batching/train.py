@@ -169,12 +169,37 @@ def _log_train_loss_iter(log_to_mlflow: bool, loss_value: float, step: int) -> N
         mlflow.log_metric("train_loss_iter", loss_value, step=step)
 
 
+def _log_examples_progress(
+    log_to_mlflow: bool,
+    use_examples_accessed_steps: bool,
+    examples_accessed: int,
+    train_step: int,
+    metric_step: int,
+) -> None:
+    if log_to_mlflow and use_examples_accessed_steps:
+        mlflow.log_metric("examples_accessed", examples_accessed, step=metric_step)
+        mlflow.log_metric("train_step", train_step, step=metric_step)
+
+
 def _metric_step(
     use_examples_accessed: bool,
     examples_accessed: int,
     fallback_step: int,
 ) -> int:
     return examples_accessed if use_examples_accessed else fallback_step
+
+
+def _budget_reached(
+    train_step: int,
+    examples_accessed: int,
+    max_train_steps: Optional[int],
+    max_examples_accessed: Optional[int],
+) -> bool:
+    if max_train_steps is not None and train_step >= max_train_steps:
+        return True
+    if max_examples_accessed is not None and examples_accessed >= max_examples_accessed:
+        return True
+    return False
 
 
 def _make_adaptive_loader(
@@ -258,6 +283,32 @@ def _step_scheduler_if_needed(
 ) -> None:
     if scheduler is not None and scheduler_step_unit == "step":
         scheduler.step()
+
+
+def _cosine_lr_at_examples(
+    base_lr: float,
+    eta_min: float,
+    examples_accessed: int,
+    t_max_examples: int,
+) -> float:
+    t_max_examples = max(1, int(t_max_examples))
+    progress = min(max(float(examples_accessed) / float(t_max_examples), 0.0), 1.0)
+    return eta_min + 0.5 * (base_lr - eta_min) * (1.0 + math.cos(math.pi * progress))
+
+
+def _set_examples_scheduler_lr_if_needed(
+    optimizer: torch.optim.Optimizer,
+    enabled: bool,
+    base_lr: float,
+    eta_min: float,
+    examples_accessed: int,
+    t_max_examples: int,
+) -> Optional[float]:
+    if not enabled:
+        return None
+    lr = _cosine_lr_at_examples(base_lr, eta_min, examples_accessed, t_max_examples)
+    _set_optimizer_lr(optimizer, lr)
+    return lr
 
 
 def _simulate_cosine_lrs(
@@ -347,7 +398,25 @@ def train_model(
     max_train_steps = (
         int(max_train_steps_config) if max_train_steps_config is not None else None
     )
+    max_examples_accessed_config = config.get("max_examples_accessed")
+    max_examples_accessed = (
+        int(max_examples_accessed_config)
+        if max_examples_accessed_config is not None
+        else None
+    )
     scheduler_step_unit = str(config.get("scheduler_step_unit", "epoch")).lower()
+    examples_scheduler_enabled = (
+        scheduler_step_unit == "examples"
+        and str(config.get("scheduler", "")).lower() == "cosine"
+    )
+    scheduler_t_max_examples = int(
+        config.get(
+            "scheduler_T_max_examples",
+            max_examples_accessed if max_examples_accessed is not None else 1,
+        )
+    )
+    scheduler_examples_eta_min = float(config.get("scheduler_eta_min", 0.0))
+    scheduler_examples_base_lr = float(config.get("lr", 0.1))
     cabs_running_avg_constant = float(config.get("cabs_running_avg_constant", 0.95))
     cabs_eps = float(config.get("cabs_eps", 0.0))
     cabs_c = float(config.get("cabs_c", 1.0))
@@ -451,7 +520,12 @@ def train_model(
     examples_accessed = 0
 
     for epoch in range(epochs):
-        if max_train_steps is not None and train_step >= max_train_steps:
+        if _budget_reached(
+            train_step,
+            examples_accessed,
+            max_train_steps,
+            max_examples_accessed,
+        ):
             break
 
         current_lr = optimizer.param_groups[0].get("lr")
@@ -681,7 +755,12 @@ def train_model(
             )
             batch_iter = iter(current_loader)
             while True:
-                if max_train_steps is not None and train_step >= max_train_steps:
+                if _budget_reached(
+                    train_step,
+                    examples_accessed,
+                    max_train_steps,
+                    max_examples_accessed,
+                ):
                     break
                 try:
                     (X, y), _ = next(batch_iter)
@@ -741,6 +820,14 @@ def train_model(
                             )
 
                 optimizer.zero_grad()
+                current_step_lr = _set_examples_scheduler_lr_if_needed(
+                    optimizer,
+                    examples_scheduler_enabled,
+                    scheduler_examples_base_lr,
+                    scheduler_examples_eta_min,
+                    examples_accessed,
+                    scheduler_t_max_examples,
+                )
                 logits = model(X)
                 losses = loss_fn(logits, y)
                 loss = losses.mean()
@@ -756,6 +843,44 @@ def train_model(
                     use_examples_accessed_steps,
                     examples_accessed,
                     train_step,
+                )
+                if use_seesaw_strategy and scheduler_step_unit == "examples":
+                    current_lr_after_step = _cosine_lr_at_examples(
+                        scheduler_examples_base_lr,
+                        scheduler_examples_eta_min,
+                        examples_accessed,
+                        scheduler_t_max_examples,
+                    )
+                    if seesaw_next_lr_threshold is not None:
+                        while (
+                            seesaw_next_lr_threshold > 0.0
+                            and current_lr_after_step <= seesaw_next_lr_threshold
+                        ):
+                            next_batch_size = int(
+                                math.ceil(
+                                    (int(prev_batch_size) if prev_batch_size is not None else batch_size_init)
+                                    * seesaw_alpha
+                                )
+                            )
+                            next_batch_size = max(
+                                batch_size_min, min(batch_size_max, next_batch_size)
+                            )
+                            prev_batch_size = next_batch_size
+                            seesaw_next_lr_threshold /= seesaw_alpha
+                            if log_to_mlflow:
+                                mlflow.log_metric(
+                                    "seesaw/batch_size_next",
+                                    next_batch_size,
+                                    step=metric_step,
+                                )
+                if log_to_mlflow and current_step_lr is not None:
+                    mlflow.log_metric("lr", current_step_lr, step=metric_step)
+                _log_examples_progress(
+                    log_to_mlflow,
+                    use_examples_accessed_steps,
+                    examples_accessed,
+                    train_step + 1,
+                    metric_step,
                 )
                 _log_train_loss_iter(log_to_mlflow, loss_value, metric_step)
                 train_step += 1
@@ -776,7 +901,12 @@ def train_model(
             pbar = tqdm(desc=f"Epoch {epoch + 1}/{epochs}", leave=False)
             batch_iter = iter(current_loader)
             while True:
-                if max_train_steps is not None and train_step >= max_train_steps:
+                if _budget_reached(
+                    train_step,
+                    examples_accessed,
+                    max_train_steps,
+                    max_examples_accessed,
+                ):
                     break
                 try:
                     (X, y), _ = next(batch_iter)
@@ -787,6 +917,14 @@ def train_model(
                 y = y.to(device)
                 batch_size_used = int(y.shape[0])
                 optimizer.zero_grad()
+                current_step_lr = _set_examples_scheduler_lr_if_needed(
+                    optimizer,
+                    examples_scheduler_enabled,
+                    scheduler_examples_base_lr,
+                    scheduler_examples_eta_min,
+                    examples_accessed,
+                    scheduler_t_max_examples,
+                )
                 logits = model(X)
                 losses = loss_fn(logits, y)
                 loss = losses.mean()
@@ -817,6 +955,8 @@ def train_model(
                 )
 
                 if log_to_mlflow:
+                    if current_step_lr is not None:
+                        mlflow.log_metric("lr", current_step_lr, step=metric_step)
                     mlflow.log_metric("adaptive_batch/batch_size", batch_size_used, step=metric_step)
                     mlflow.log_metric(
                         "adaptive_batch/batch_size_next", next_batch_size, step=metric_step
@@ -836,6 +976,13 @@ def train_model(
 
                 total_loss += loss_value
                 steps += 1
+                _log_examples_progress(
+                    log_to_mlflow,
+                    use_examples_accessed_steps,
+                    examples_accessed,
+                    train_step + 1,
+                    metric_step,
+                )
                 _log_train_loss_iter(log_to_mlflow, loss_value, metric_step)
                 train_step += 1
                 pbar.update(1)
@@ -844,7 +991,12 @@ def train_model(
             pbar = tqdm(desc=f"Epoch {epoch + 1}/{epochs}", leave=False)
             batch_iter = iter(current_loader)
             while True:
-                if max_train_steps is not None and train_step >= max_train_steps:
+                if _budget_reached(
+                    train_step,
+                    examples_accessed,
+                    max_train_steps,
+                    max_examples_accessed,
+                ):
                     break
                 try:
                     (X, y), _ = next(batch_iter)
@@ -855,6 +1007,14 @@ def train_model(
                 y = y.to(device)
                 batch_size_used = int(y.shape[0])
                 optimizer.zero_grad()
+                current_step_lr = _set_examples_scheduler_lr_if_needed(
+                    optimizer,
+                    examples_scheduler_enabled,
+                    scheduler_examples_base_lr,
+                    scheduler_examples_eta_min,
+                    examples_accessed,
+                    scheduler_t_max_examples,
+                )
                 logits = model(X)
                 losses = loss_fn(logits, y)
                 loss = losses.mean()
@@ -910,6 +1070,8 @@ def train_model(
                     iter_batch_sampler.update_batch_size(next_batch_size)
 
                 if log_to_mlflow:
+                    if current_step_lr is not None:
+                        mlflow.log_metric("lr", current_step_lr, step=metric_step)
                     mlflow.log_metric("adaptive_batch/batch_size", batch_size_used, step=metric_step)
                     mlflow.log_metric(
                         "adaptive_batch/batch_size_next", next_batch_size, step=metric_step
@@ -926,6 +1088,13 @@ def train_model(
                             "adaptive_batch/ratio_raw_iter", ratio_raw_iter, step=metric_step
                         )
 
+                _log_examples_progress(
+                    log_to_mlflow,
+                    use_examples_accessed_steps,
+                    examples_accessed,
+                    train_step + 1,
+                    metric_step,
+                )
                 _log_train_loss_iter(log_to_mlflow, loss_value, metric_step)
                 train_step += 1
                 pbar.update(1)
@@ -953,11 +1122,24 @@ def train_model(
                 leave=False,
             )
             for (X, y), _ in batch_iter:
-                if max_train_steps is not None and train_step >= max_train_steps:
+                if _budget_reached(
+                    train_step,
+                    examples_accessed,
+                    max_train_steps,
+                    max_examples_accessed,
+                ):
                     break
                 X = X.to(device)
                 y = y.to(device)
                 optimizer.zero_grad()
+                current_step_lr = _set_examples_scheduler_lr_if_needed(
+                    optimizer,
+                    examples_scheduler_enabled,
+                    scheduler_examples_base_lr,
+                    scheduler_examples_eta_min,
+                    examples_accessed,
+                    scheduler_t_max_examples,
+                )
                 logits = model(X)
                 losses = loss_fn(logits, y)
                 loss = losses.mean()
@@ -1005,6 +1187,44 @@ def train_model(
                     use_examples_accessed_steps,
                     examples_accessed,
                     train_step,
+                )
+                if use_seesaw_strategy and scheduler_step_unit == "examples":
+                    current_lr_after_step = _cosine_lr_at_examples(
+                        scheduler_examples_base_lr,
+                        scheduler_examples_eta_min,
+                        examples_accessed,
+                        scheduler_t_max_examples,
+                    )
+                    if seesaw_next_lr_threshold is not None:
+                        while (
+                            seesaw_next_lr_threshold > 0.0
+                            and current_lr_after_step <= seesaw_next_lr_threshold
+                        ):
+                            next_batch_size = int(
+                                math.ceil(
+                                    (int(prev_batch_size) if prev_batch_size is not None else batch_size_init)
+                                    * seesaw_alpha
+                                )
+                            )
+                            next_batch_size = max(
+                                batch_size_min, min(batch_size_max, next_batch_size)
+                            )
+                            prev_batch_size = next_batch_size
+                            seesaw_next_lr_threshold /= seesaw_alpha
+                            if log_to_mlflow:
+                                mlflow.log_metric(
+                                    "seesaw/batch_size_next",
+                                    next_batch_size,
+                                    step=metric_step,
+                                )
+                if log_to_mlflow and current_step_lr is not None:
+                    mlflow.log_metric("lr", current_step_lr, step=metric_step)
+                _log_examples_progress(
+                    log_to_mlflow,
+                    use_examples_accessed_steps,
+                    examples_accessed,
+                    train_step + 1,
+                    metric_step,
                 )
                 _log_train_loss_iter(log_to_mlflow, loss_value, metric_step)
                 train_step += 1
@@ -1074,7 +1294,7 @@ def train_model(
                 "epoch": epoch,
             }
 
-        if scheduler is not None and scheduler_step_unit != "step":
+        if scheduler is not None and scheduler_step_unit == "epoch":
             scheduler.step()
 
     if log_to_mlflow:

@@ -60,6 +60,8 @@ def build_scheduler(optimizer: Optimizer, config: Dict[str, Any]) -> Optional[_L
     # AdaBatchGrad does not expose per-group lr expected by schedulers; skip.
     if str(config.get("optimizer", "")).lower() == "adabatchgrad":
         return None
+    if str(config.get("scheduler_step_unit", "epoch")).lower() == "examples":
+        return None
 
     name = str(name).lower()
     if name == "multistep":
