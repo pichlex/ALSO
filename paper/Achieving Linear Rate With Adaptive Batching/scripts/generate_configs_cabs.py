@@ -24,6 +24,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-examples-accessed", type=int, default=10_000_000)
     parser.add_argument("--lr", type=float, default=0.1)
     parser.add_argument("--eta-min", type=float, default=0.001)
+    parser.add_argument("--weight-decay", type=float, default=None)
     parser.add_argument("--adaptive-min", type=int, default=16)
     parser.add_argument("--adaptive-max", type=int, default=2048)
     parser.add_argument("--seesaw-alpha", type=float, default=2.0)
@@ -35,6 +36,11 @@ def parse_args() -> argparse.Namespace:
 
 
 def _base_config(args: argparse.Namespace) -> Dict:
+    weight_decay = (
+        args.weight_decay
+        if args.weight_decay is not None
+        else (5e-4 if args.paper_scale else 0.0)
+    )
     cfg = {
         "dataset": "cifar10",
         "model": "cabs_2conv_3dense",
@@ -47,7 +53,7 @@ def _base_config(args: argparse.Namespace) -> Dict:
         "lr": args.lr,
         "momentum": 0.0,
         "nesterov": False,
-        "weight_decay": 0.0,
+        "weight_decay": weight_decay,
         "scheduler": "cosine",
         "scheduler_step_unit": "examples" if args.paper_scale else "step",
         "scheduler_eta_min": args.eta_min,
