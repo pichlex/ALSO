@@ -24,13 +24,22 @@ def build_optimizer(
     model: torch.nn.Module,
     config: ExperimentConfig,
 ) -> torch.optim.Optimizer:
-    return torch.optim.SGD(
-        model.parameters(),
-        lr=config.lr,
-        momentum=config.momentum,
-        weight_decay=config.weight_decay,
-        nesterov=config.nesterov,
-    )
+    if config.optimizer == "sgd":
+        return torch.optim.SGD(
+            model.parameters(),
+            lr=config.lr,
+            momentum=config.momentum,
+            weight_decay=config.weight_decay,
+            nesterov=config.nesterov,
+        )
+    if config.optimizer == "adamw":
+        return torch.optim.AdamW(
+            model.parameters(),
+            lr=config.lr,
+            weight_decay=config.weight_decay,
+            betas=tuple(config.betas),
+        )
+    raise ValueError(f"Unsupported optimizer: {config.optimizer}")
 
 
 def build_scheduler(

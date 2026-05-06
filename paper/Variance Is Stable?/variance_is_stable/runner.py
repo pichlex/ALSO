@@ -55,7 +55,8 @@ def run_experiment(
 
     data = build_experiment_data(config, device=device)
     logger.info(
-        "Prepared CIFAR10 split: train=%s, val=%s, fixed first batch local indices=%s",
+        "Prepared %s split: train=%s, val=%s, fixed first batch local indices=%s",
+        config.dataset,
         len(data.train_dataset),
         len(data.val_dataset),
         data.train_order[: config.batch_size],

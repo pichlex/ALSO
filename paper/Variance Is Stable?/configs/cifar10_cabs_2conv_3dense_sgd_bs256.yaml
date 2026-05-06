@@ -1,0 +1,27 @@
+dataset: cifar10
+model: cabs_2conv_3dense
+optimizer: sgd
+seed: 0
+batch_size: 256
+epochs: 10000000
+lr: 0.1
+betas:
+- 0.9
+- 0.999
+momentum: 0.0
+weight_decay: 0.0005
+nesterov: false
+scheduler: cosine
+scheduler_T_max: 10000000
+scheduler_eta_min: 0.001
+num_workers: 2
+transform_mode: all
+device: auto
+output_dir: paper/Variance Is Stable?/runs/cifar10_cabs_2conv_3dense_sgd_bs256/
+metric_microbatch_size: 16
+eval_every: 1
+persistent_workers: true
+prefetch_factor: 2
+non_blocking_transfers: true
+cudnn_benchmark: true
+profile_timing: true

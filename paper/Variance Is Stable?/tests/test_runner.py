@@ -55,7 +55,13 @@ def _build_synthetic_data(config: ExperimentConfig, device: torch.device) -> Exp
 
 
 def _build_tiny_model(config: ExperimentConfig) -> torch.nn.Module:
-    del config
+    if config.model == "cabs_2conv_3dense":
+        return torch.nn.Sequential(
+            torch.nn.Flatten(),
+            torch.nn.Linear(3 * 24 * 24, 8),
+            torch.nn.ReLU(),
+            torch.nn.Linear(8, 2),
+        )
     return torch.nn.Sequential(
         torch.nn.Linear(4, 8),
         torch.nn.ReLU(),
@@ -124,6 +130,31 @@ def test_runner_smoke_saves_expected_artifacts(tmp_path: Path, monkeypatch: pyte
     assert not pd.isna(wide_df.loc[1, "metric_5"])
     assert (wide_df["train_time_sec"] > 0).all()
     assert (wide_df["metrics_time_sec"] > 0).all()
+
+
+def test_runner_smoke_supports_resnet34_adamw(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    config = ExperimentConfig(
+        batch_size=4,
+        epochs=1,
+        metric_microbatch_size=2,
+        num_workers=0,
+        output_dir=str(tmp_path),
+        run_name="resnet34-adamw",
+        transform_mode="none",
+        scheduler="none",
+        model="resnet34",
+        optimizer="adamw",
+    )
+    output_dir = prepare_output_dir(config)
+    logger = configure_logging(output_dir)
+
+    monkeypatch.setattr("variance_is_stable.runner.build_experiment_data", _build_synthetic_data)
+    monkeypatch.setattr("variance_is_stable.runner.build_model", _build_tiny_model)
+
+    run_experiment(config=config, output_dir=output_dir, logger=logger)
+
+    wide_df = pd.read_csv(output_dir / "metrics_wide.csv")
+    assert len(wide_df) == 1
 
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA is unavailable.")

@@ -16,6 +16,8 @@ from .experiment_config import ExperimentConfig
 
 CIFAR10_MEAN = (0.4914, 0.4822, 0.4465)
 CIFAR10_STD = (0.2023, 0.1994, 0.2010)
+CIFAR100_MEAN = (0.5071, 0.4867, 0.4408)
+CIFAR100_STD = (0.2675, 0.2565, 0.2761)
 
 
 def seed_everything(seed: int) -> None:
@@ -44,13 +46,13 @@ class FixedOrderSampler(Sampler[int]):
         return len(self._indices)
 
 
-class DeterministicCIFAR10Transform:
-    def __init__(self, mode: str, train: bool, seed: int):
+class DeterministicCIFARTransform:
+    def __init__(self, mode: str, train: bool, seed: int, mean: tuple[float, float, float], std: tuple[float, float, float]):
         self.mode = mode
         self.train = train
         self.seed = seed
-        self.mean = torch.tensor(CIFAR10_MEAN, dtype=torch.float32).view(3, 1, 1)
-        self.std = torch.tensor(CIFAR10_STD, dtype=torch.float32).view(3, 1, 1)
+        self.mean = torch.tensor(mean, dtype=torch.float32).view(3, 1, 1)
+        self.std = torch.tensor(std, dtype=torch.float32).view(3, 1, 1)
 
     def _to_tensor(self, image) -> torch.Tensor:
         array = np.asarray(image, dtype=np.float32) / 255.0
@@ -79,6 +81,61 @@ class DeterministicCIFAR10Transform:
         if self.mode in {"normalize", "all"}:
             tensor = self._normalize(tensor)
         return tensor
+
+
+class DeterministicCIFAR10Transform(DeterministicCIFARTransform):
+    def __init__(self, mode: str, train: bool, seed: int):
+        super().__init__(mode=mode, train=train, seed=seed, mean=CIFAR10_MEAN, std=CIFAR10_STD)
+
+
+class PerImageStandardize:
+    def __call__(self, image: torch.Tensor) -> torch.Tensor:
+        mean = image.mean()
+        std = image.std(unbiased=False)
+        min_std = 1.0 / np.sqrt(float(image.numel()))
+        return (image - mean) / torch.clamp(std, min=min_std)
+
+
+class CABSReferenceTransform:
+    def __init__(self, train: bool, seed: int):
+        self.train = train
+        self.seed = seed
+        self.standardize = PerImageStandardize()
+
+    def _to_tensor(self, image) -> torch.Tensor:
+        array = np.asarray(image, dtype=np.float32) / 255.0
+        return torch.from_numpy(array).permute(2, 0, 1)
+
+    def _random_brightness(self, image: torch.Tensor, rng: random.Random) -> torch.Tensor:
+        delta = rng.uniform(-63.0, 63.0)
+        return image + delta
+
+    def _random_contrast(self, image: torch.Tensor, rng: random.Random) -> torch.Tensor:
+        factor = rng.uniform(0.2, 1.8)
+        channel_mean = image.mean(dim=(-2, -1), keepdim=True)
+        return (image - channel_mean) * factor + channel_mean
+
+    def _crop(self, image, sample_index: int):
+        if self.train:
+            rng = random.Random(self.seed + sample_index * 1_000_003)
+            top = rng.randint(0, 8)
+            left = rng.randint(0, 8)
+            cropped = image.crop((left, top, left + 24, top + 24))
+            if bool(rng.randint(0, 1)):
+                cropped = cropped.transpose(method=Image.Transpose.FLIP_LEFT_RIGHT)
+            return cropped, rng
+
+        left = 4
+        top = 4
+        return image.crop((left, top, left + 24, top + 24)), None
+
+    def __call__(self, image, sample_index: int) -> torch.Tensor:
+        image, rng = self._crop(image, sample_index)
+        tensor = self._to_tensor(image) * 255.0
+        if self.train and rng is not None:
+            tensor = self._random_brightness(tensor, rng)
+            tensor = self._random_contrast(tensor, rng)
+        return self.standardize(tensor)
 
 
 class IndexedSubset(Dataset):
@@ -128,9 +185,29 @@ def _load_cifar10(root: Path):
     )
 
 
+def _load_cifar100(root: Path):
+    import torchvision
+
+    return torchvision.datasets.CIFAR100(
+        root=root,
+        train=True,
+        transform=None,
+        download=True,
+    )
+
+
 def build_experiment_data(config: ExperimentConfig, device: torch.device) -> ExperimentData:
     dataset_root = (Path(__file__).resolve().parents[2] / "datasets").resolve()
-    base_dataset = _load_cifar10(dataset_root)
+    if config.dataset == "cifar10":
+        base_dataset = _load_cifar10(dataset_root)
+        mean = CIFAR10_MEAN
+        std = CIFAR10_STD
+    elif config.dataset == "cifar100":
+        base_dataset = _load_cifar100(dataset_root)
+        mean = CIFAR100_MEAN
+        std = CIFAR100_STD
+    else:
+        raise ValueError(f"Unsupported dataset: {config.dataset}")
     targets = np.asarray(base_dataset.targets)
 
     indices = np.arange(len(base_dataset))
@@ -141,17 +218,25 @@ def build_experiment_data(config: ExperimentConfig, device: torch.device) -> Exp
         random_state=config.seed,
     )
 
-    train_transform = DeterministicCIFAR10Transform(
-        mode=config.transform_mode,
-        train=True,
-        seed=config.seed,
-    )
-    val_mode = "normalize" if config.transform_mode == "all" else config.transform_mode
-    val_transform = DeterministicCIFAR10Transform(
-        mode=val_mode,
-        train=False,
-        seed=config.seed,
-    )
+    if config.model == "cabs_2conv_3dense":
+        train_transform = CABSReferenceTransform(train=True, seed=config.seed)
+        val_transform = CABSReferenceTransform(train=False, seed=config.seed)
+    else:
+        train_transform = DeterministicCIFARTransform(
+            mode=config.transform_mode,
+            train=True,
+            seed=config.seed,
+            mean=mean,
+            std=std,
+        )
+        val_mode = "normalize" if config.transform_mode == "all" else config.transform_mode
+        val_transform = DeterministicCIFARTransform(
+            mode=val_mode,
+            train=False,
+            seed=config.seed,
+            mean=mean,
+            std=std,
+        )
 
     train_dataset = IndexedSubset(base_dataset, train_indices, train_transform)
     val_dataset = IndexedSubset(base_dataset, val_indices, val_transform)

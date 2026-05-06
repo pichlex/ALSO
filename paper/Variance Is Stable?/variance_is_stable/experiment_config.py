@@ -17,6 +17,7 @@ class ExperimentConfig:
     batch_size: int = 64
     epochs: int = 40
     lr: float = 0.005
+    betas: tuple[float, float] | list[float] = (0.9, 0.999)
     momentum: float = 0.9
     weight_decay: float = 5e-3
     nesterov: bool = False
@@ -37,12 +38,14 @@ class ExperimentConfig:
     profile_timing: bool = True
 
     def validate(self) -> "ExperimentConfig":
-        if self.dataset != "cifar10":
-            raise ValueError("Only dataset='cifar10' is supported.")
-        if self.model != "resnet18":
-            raise ValueError("Only model='resnet18' is supported.")
-        if self.optimizer != "sgd":
-            raise ValueError("Only optimizer='sgd' is supported.")
+        if self.dataset not in {"cifar10", "cifar100"}:
+            raise ValueError("dataset must be one of: cifar10, cifar100.")
+        if self.model not in {"resnet18", "resnet34", "cabs_2conv_3dense"}:
+            raise ValueError("model must be one of: resnet18, resnet34, cabs_2conv_3dense.")
+        if self.model == "cabs_2conv_3dense" and self.dataset != "cifar10":
+            raise ValueError("model='cabs_2conv_3dense' is only supported for dataset='cifar10'.")
+        if self.optimizer not in {"sgd", "adamw"}:
+            raise ValueError("optimizer must be one of: sgd, adamw.")
         if self.transform_mode not in {"none", "normalize", "all"}:
             raise ValueError("transform_mode must be one of: none, normalize, all.")
         if self.scheduler not in {"none", "cosine"}:
@@ -59,6 +62,13 @@ class ExperimentConfig:
             raise ValueError("num_workers must be non-negative.")
         if self.prefetch_factor <= 0:
             raise ValueError("prefetch_factor must be positive.")
+        if len(self.betas) != 2:
+            raise ValueError("betas must contain exactly two values.")
+        beta1 = float(self.betas[0])
+        beta2 = float(self.betas[1])
+        if not 0.0 <= beta1 < 1.0 or not 0.0 <= beta2 < 1.0:
+            raise ValueError("betas values must be in [0, 1).")
+        self.betas = (beta1, beta2)
         return self
 
     def to_dict(self) -> dict[str, Any]:

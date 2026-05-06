@@ -6,6 +6,7 @@ from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 
 from variance_is_stable.data import (
+    CABSReferenceTransform,
     DeterministicCIFAR10Transform,
     FixedOrderSampler,
     build_fixed_order,
@@ -47,5 +48,24 @@ def test_deterministic_transforms_all() -> None:
     tensor_a2 = transform_a(image, sample_index=5)
     tensor_b = transform_b(image, sample_index=5)
 
+    assert torch.allclose(tensor_a1, tensor_a2)
+    assert torch.allclose(tensor_a1, tensor_b)
+
+
+def test_cabs_reference_transform_is_deterministic_and_crops_to_24() -> None:
+    array = np.arange(32 * 32 * 3, dtype=np.uint8).reshape(32, 32, 3)
+    image = Image.fromarray(array)
+
+    transform_a = CABSReferenceTransform(train=True, seed=91)
+    transform_b = CABSReferenceTransform(train=True, seed=91)
+    val_transform = CABSReferenceTransform(train=False, seed=91)
+
+    tensor_a1 = transform_a(image, sample_index=7)
+    tensor_a2 = transform_a(image, sample_index=7)
+    tensor_b = transform_b(image, sample_index=7)
+    val_tensor = val_transform(image, sample_index=7)
+
+    assert tensor_a1.shape == (3, 24, 24)
+    assert val_tensor.shape == (3, 24, 24)
     assert torch.allclose(tensor_a1, tensor_a2)
     assert torch.allclose(tensor_a1, tensor_b)
