@@ -25,7 +25,7 @@
   "use_old_tune_params": false,
   "max_examples_accessed": 10000000,
   "scheduler_T_max_examples": 10000000,
-  "mlflow_experiment": "cabs-setup-cifar10-variance_ratio_iter-bs16-seed0",
+  "mlflow_experiment": "cabs-setup-cifar10-variance_ratio_iter-bs16-seed0-final",
   "run_name": "variance_ratio_iter",
   "adaptive_batch": true,
   "adaptive_batch_strategy": "variance_ratio_iter",
